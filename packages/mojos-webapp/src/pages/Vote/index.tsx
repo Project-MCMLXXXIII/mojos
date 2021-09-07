@@ -180,7 +180,7 @@ const VotePage = ({
         </div>
         {proposal && proposal.status === ProposalState.ACTIVE && !showVotingButtons && (
           <Alert variant="secondary" className={classes.voterIneligibleAlert}>
-            Only NOUN votes that were self delegated or delegated to another address before block{' '}
+            Only MOJO votes that were self delegated or delegated to another address before block{' '}
             {proposal.createdBlock} are eligible for voting.
           </Alert>
         )}

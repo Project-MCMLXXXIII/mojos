@@ -16,7 +16,7 @@ const GovernancePage = () => {
           third party.
         </h2>
         <Proposals proposals={proposals} />
-        <p>A minimum threshold of 5% of the total NOUN supply is required to submit proposals</p>
+        <p>A minimum threshold of 5% of the total MOJO supply is required to submit proposals</p>
       </Col>
     </Section>
   );

@@ -3,7 +3,7 @@ export const config = {
   redisPort: Number(process.env.REDIS_PORT ?? 6379),
   redisHost: process.env.REDIS_HOST ?? 'localhost',
   mojosTokenAddress:
-    process.env.NOUNS_TOKEN_ADDRESS ?? '0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9',
+    process.env.MOJOS_TOKEN_ADDRESS ?? '0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9',
   jsonRpcUrl: process.env.JSON_RPC_URL ?? 'http://localhost:8545',
   nftStorageApiKey:
     process.env.NFT_STORAGE_API_KEY ??

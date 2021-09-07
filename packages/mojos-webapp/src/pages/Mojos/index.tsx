@@ -117,7 +117,7 @@ const BioCards: React.FC<{ min: number; max: number }> = props => {
 
 const MojosPage = () => {
   return (
-    <Section bgColor="transparent" fullWidth={true} className={classes.noundersPage}>
+    <Section bgColor="transparent" fullWidth={true} className={classes.mojosPage}>
       <Col lg={{ span: 6, offset: 3 }}>
         <h2 style={{ marginBottom: '2rem' }}>The Mojos</h2>
         <h3 style={{ marginBottom: '2rem' }}>5 artists, 5 technologists</h3>
@@ -127,8 +127,8 @@ const MojosPage = () => {
         </Row>
         <h3>Mojos' Reward</h3>
         <p style={{ textAlign: 'justify' }}>
-          All Noun auction proceeds are sent to the Nouns DAO. For this reason, we, the project's
-          founders (‘Mojos’) have chosen to compensate ourselves with Nouns. Every 10th noun for
+          All Mojo auction proceeds are sent to the Mojos DAO. For this reason, we, the project's
+          founders (‘Mojos’) have chosen to compensate ourselves with Mojos. Every 10th mojo for
           the first 5 years of the project will be sent to our multisig (5/10), where it will be
           vested and distributed to individual Mojos.
         </p>
@@ -136,7 +136,7 @@ const MojosPage = () => {
           The Mojos reward is intended as compensation for our pre and post-launch contributions
           to the project, and to help us participate meaningfully in governance as the project
           matures. Since there are 10 Mojos, after 5 years each Mojo could receive up to 1% of
-          the Noun supply.
+          the Mojo supply.
         </p>
       </Col>
     </Section>
