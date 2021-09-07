@@ -55,7 +55,7 @@ const WalletConnectModal: React.FC<{ onDismiss: () => void }> = props => {
         onClick={() => {
           const walletlink = new WalletLinkConnector({
             appName: 'Mojos.TODO',
-            appLogoUrl: 'https://mojos.wtf/static/media/logo.cdea1650.svg',
+            appLogoUrl: 'https://mojos.todo/static/media/logo.cdea1650.svg',
             url: config.jsonRpcUri,
             supportedChainIds,
           });
