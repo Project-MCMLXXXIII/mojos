@@ -1,0 +1,21 @@
+FROM node:14
+
+WORKDIR /app
+
+ADD lerna.json .
+ADD package.json .
+ADD yarn.lock .
+
+# Build cache layer
+RUN yarn
+
+ADD . .
+
+# Install any package specific dependencies
+RUN yarn
+
+RUN yarn build
+
+WORKDIR /app/packages/mojos-bots
+
+CMD [ "node",  "/app/packages/mojos-bots/dist/index.js"]
