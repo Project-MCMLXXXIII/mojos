@@ -82,7 +82,7 @@ export const deployWeth = async (deployer?: SignerWithAddress): Promise<Weth> =>
 export const populateDescriptor = async (mojosDescriptor: MojosDescriptor): Promise<void> => {
   const [bodies, bodyAccessories, faces, headAccessories] = parts;
 
-  // Split up head and accessory population due to high gas usage
+  // Split up face and bodyAccessory population due to high gas usage
   await Promise.all([
     mojosDescriptor.addManyBackgrounds(bgcolors),
     mojosDescriptor.addManyColorsToPalette(0, partcolors),

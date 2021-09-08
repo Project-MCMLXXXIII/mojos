@@ -10,11 +10,11 @@ interface MojoToken {
 }
 
 export interface IMojoSeed {
-  accessory: number;
+  bodyAccessory: number;
   background: number;
   body: number;
-  glasses: number;
-  head: number;
+  headAccessory: number;
+  face: number;
 }
 
 const abi = new utils.Interface(MojosTokenABI);

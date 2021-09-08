@@ -1,0 +1,99 @@
+specVersion: 0.0.3
+description: >-
+  Randomly generated avatar NFTs auctioned daily.
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: MojosAuctionHouse
+    network: {{network}}
+    source:
+      address: '{{mojosAuctionHouse.address}}'
+      abi: MojosAuctionHouse
+      startBlock: {{mojosAuctionHouse.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mojos-auction-house.ts
+      entities:
+        - Account
+        - Auction
+        - Bid
+        - Mojo
+      abis:
+        - name: MojosAuctionHouse
+          file: ../mojos-contracts/abi/contracts/MojosAuctionHouse.sol/MojosAuctionHouse.json
+      eventHandlers:
+        - event: AuctionCreated(indexed uint256,uint256,uint256)
+          handler: handleAuctionCreated
+        - event: AuctionBid(indexed uint256,address,uint256,bool)
+          handler: handleAuctionBid
+        - event: AuctionExtended(indexed uint256,uint256)
+          handler: handleAuctionExtended
+        - event: AuctionSettled(indexed uint256,address,uint256)
+          handler: handleAuctionSettled
+  - kind: ethereum/contract
+    name: MojosToken
+    network: {{network}}
+    source:
+      address: '{{mojosToken.address}}'
+      abi: MojosToken
+      startBlock: {{mojosToken.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mojos-erc-721.ts
+      entities:
+        - Mojo
+        - Seed
+        - Account
+        - Delegate
+        - Governance
+      abis:
+        - name: MojosToken
+          file: ../mojos-contracts/abi/contracts/MojosToken.sol/MojosToken.json
+      eventHandlers:
+        - event: MojoCreated(indexed uint256,(uint48,uint48,uint48,uint48,uint48))
+          handler: handleMojoCreated
+        - event: DelegateChanged(indexed address,indexed address,indexed address)
+          handler: handleDelegateChanged
+        - event: DelegateVotesChanged(indexed address,uint256,uint256)
+          handler: handleDelegateVotesChanged
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+  - kind: ethereum/contract
+    name: MojosDAO
+    network: {{network}}
+    source:
+      address: '{{mojosDAO.address}}'
+      abi: MojosDAO
+      startBlock: {{mojosDAO.startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mojos-dao.ts
+      entities:
+        - Account
+        - Delegate
+        - Proposal
+        - Vote
+        - Governance
+      abis:
+        - name: MojosDAO
+          file: ../mojos-contracts/abi/contracts/governance/MojosDAOLogicV1.sol/MojosDAOLogicV1.json
+      eventHandlers:
+        - event: ProposalCreatedWithRequirements(uint256,address,address[],uint256[],string[],bytes[],uint256,uint256,uint256,uint256,string)
+          handler: handleProposalCreatedWithRequirements
+        - event: ProposalCanceled(uint256)
+          handler: handleProposalCanceled
+        - event: ProposalVetoed(uint256)
+          handler: handleProposalVetoed
+        - event: ProposalQueued(uint256,uint256)
+          handler: handleProposalQueued
+        - event: ProposalExecuted(uint256)
+          handler: handleProposalExecuted
+        - event: VoteCast(indexed address,uint256,uint8,uint256,string)
+          handler: handleVoteCast

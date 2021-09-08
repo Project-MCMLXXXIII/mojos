@@ -138,8 +138,8 @@ const Documentation = () => {
                   <li>backgrounds (2) </li>
                   <li>bodies (30)</li>
                   <li>accessories (137) </li>
-                  <li>heads (234) </li>
-                  <li>glasses (21)</li>
+                  <li>faces (234) </li>
+                  <li>headAccessory (21)</li>
                 </ul>
                 You can experiment with off-chain mojo generation at the {playgroundLink}
               </Card.Body>

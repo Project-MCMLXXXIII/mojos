@@ -25,7 +25,7 @@ task('populate-descriptor', 'Populates the descriptor with color palettes and Mo
 
     const [bodies, bodyAccessories, faces, headAccessories] = parts;
 
-    // Chunk head and accessory population due to high gas usage
+    // Chunk head and bodyAccessory population due to high gas usage
     await descriptorContract.addManyBackgrounds(bgcolors);
     await descriptorContract.addManyColorsToPalette(0, partcolors);
     await descriptorContract.addManyBodies(bodies.map(({ data }) => data));
