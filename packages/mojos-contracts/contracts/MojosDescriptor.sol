@@ -48,13 +48,13 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     // Mojo Bodies (Custom RLE)
     bytes[] public override bodies;
 
-    // Mojo Accessories (Custom RLE)
+    // Mojo Body Accessories (Custom RLE)
     bytes[] public override bodyAccessories;
 
-    // Mojo Heads (Custom RLE)
+    // Mojo Faces (Custom RLE)
     bytes[] public override faces;
 
-    // Mojo Glasses (Custom RLE)
+    // Mojo Head Accessories (Custom RLE)
     bytes[] public override headAccessories;
 
     /**
@@ -316,24 +316,24 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     }
 
     /**
-     * @notice Add a Mojo accessory.
+     * @notice Add a Mojo bodyAccessory.
      */
-    function _addAccessory(bytes calldata _accessory) internal {
-        accessories.push(_accessory);
+    function _addBodyAccessory(bytes calldata _bodyAccessory) internal {
+        bodyAccessories.push(_bodyAccessory);
     }
 
     /**
-     * @notice Add a Mojo head.
+     * @notice Add a Mojo face.
      */
-    function _addHead(bytes calldata _head) internal {
-        heads.push(_head);
+    function _addFace(bytes calldata _face) internal {
+        faces.push(_face);
     }
 
     /**
-     * @notice Add Mojo glasses.
+     * @notice Add Mojo headAccessory.
      */
-    function _addGlasses(bytes calldata _glasses) internal {
-        glasses.push(_glasses);
+    function _addHeadAccessory(bytes calldata _bodyAccessory) internal {
+        headAccessories.push(_addHeadAccessory);
     }
 
     /**
@@ -342,9 +342,9 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     function _getPartsForSeed(IMojosSeeder.Seed memory seed) internal view returns (bytes[] memory) {
         bytes[] memory _parts = new bytes[](4);
         _parts[0] = bodies[seed.body];
-        _parts[1] = accessories[seed.accessory];
-        _parts[2] = heads[seed.head];
-        _parts[3] = glasses[seed.glasses];
+        _parts[1] = bodyAccessories[seed.bodyAccessory];
+        _parts[2] = faces[seed.face];
+        _parts[3] = headAccessories[seed.headAccessory];
         return _parts;
     }
 }

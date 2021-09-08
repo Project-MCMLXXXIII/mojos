@@ -1,6 +1,6 @@
 // TODO: License
 
-/// @title The Mojos NFT Descriptor
+/// @title The Mojos Multi Part RLE to SVG
 
 /*********************************
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *

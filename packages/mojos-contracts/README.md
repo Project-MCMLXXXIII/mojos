@@ -4,7 +4,7 @@
 
 Mojos are an experimental attempt to improve the formation of on-chain avatar communities. While projects such as Cryptopunks have attempted to bootstrap digital community and identity, Mojos attempt to bootstrap identity, community, governance and a treasury that can be used by the community for the creation of long-term value.
 
-One Mojo is generated and auctioned every day, forever. All Mojo artwork is stored and rendered on-chain. See more information at [mojos.todo](https://mojos.todo).
+Two Mojo is generated and auctioned every day, forever. All Mojo artwork is stored and rendered on-chain. See more information at [mojos.todo](https://mojos.todo).
 
 ## Contracts
 

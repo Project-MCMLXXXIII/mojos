@@ -75,7 +75,7 @@ interface IMojosDescriptor {
 
     function addFace(bytes calldata face) external;
 
-    function addHeadAccessories(bytes calldata headAccessories) external;
+    function addHeadAccessory(bytes calldata headAccessory) external;
 
     function lockParts() external;
 

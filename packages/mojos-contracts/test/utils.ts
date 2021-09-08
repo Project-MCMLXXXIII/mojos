@@ -80,18 +80,18 @@ export const deployWeth = async (deployer?: SignerWithAddress): Promise<Weth> =>
 };
 
 export const populateDescriptor = async (mojosDescriptor: MojosDescriptor): Promise<void> => {
-  const [bodies, accessories, heads, glasses] = parts;
+  const [bodies, bodyAccessories, faces, headAccessories] = parts;
 
   // Split up head and accessory population due to high gas usage
   await Promise.all([
     mojosDescriptor.addManyBackgrounds(bgcolors),
     mojosDescriptor.addManyColorsToPalette(0, partcolors),
     mojosDescriptor.addManyBodies(bodies.map(({ data }) => data)),
-    chunkArray(accessories, 10).map(chunk =>
-      mojosDescriptor.addManyAccessories(chunk.map(({ data }) => data)),
+    chunkArray(bodyAccessories, 10).map(chunk =>
+      mojosDescriptor.addManyBodyAccessories(chunk.map(({ data }) => data)),
     ),
-    chunkArray(heads, 10).map(chunk => mojosDescriptor.addManyHeads(chunk.map(({ data }) => data))),
-    mojosDescriptor.addManyGlasses(glasses.map(({ data }) => data)),
+    chunkArray(faces, 10).map(chunk => mojosDescriptor.addManyFaces(chunk.map(({ data }) => data))),
+    mojosDescriptor.addManyHeadAccessories(headAccessories.map(({ data }) => data)),
   ]);
 };
 
