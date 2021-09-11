@@ -1,4 +1,4 @@
-// TODO: License
+// SPDX-License-Identifier: GPL-3.0
 
 /// @title The Mojos NFT Descriptor
 
@@ -6,12 +6,12 @@
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
- * ░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░ *
- * ░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░ *
- * ░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░ *
- * ░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░ *
- * ░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░ *
- * ░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░ *
+ * ░░░███████████████████████░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
  *********************************/
 
 pragma solidity ^0.8.6;
@@ -96,7 +96,7 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     /**
      * @notice Get the number of available Mojo `headAccessories`.
      */
-    function headAccessoriesCount() external view override returns (uint256) {
+    function headAccessoryCount() external view override returns (uint256) {
         return headAccessories.length;
     }
 
@@ -332,8 +332,8 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     /**
      * @notice Add Mojo headAccessory.
      */
-    function _addHeadAccessory(bytes calldata _bodyAccessory) internal {
-        headAccessories.push(_addHeadAccessory);
+    function _addHeadAccessory(bytes calldata _headAccessory) internal {
+        headAccessories.push(_headAccessory);
     }
 
     /**
