@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "mojos backend api",
   "author": "Mojos",
-  "homepage": "https://mojos.todo",
+  "homepage": "https://1980.network",
   "license": "GPL-3.0",
   "main": "src/index.ts",
   "directories": {

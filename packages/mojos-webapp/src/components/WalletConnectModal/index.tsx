@@ -55,7 +55,7 @@ const WalletConnectModal: React.FC<{ onDismiss: () => void }> = props => {
         onClick={() => {
           const walletlink = new WalletLinkConnector({
             appName: 'Mojos.TODO',
-            appLogoUrl: 'https://mojos.todo/static/media/logo.cdea1650.svg',
+            appLogoUrl: 'https://1980.network/static/media/logo.cdea1650.svg',
             url: config.jsonRpcUri,
             supportedChainIds,
           });
@@ -89,7 +89,7 @@ const WalletConnectModal: React.FC<{ onDismiss: () => void }> = props => {
             chainId: CHAIN_ID,
             url: config.jsonRpcUri,
             manifestAppUrl: 'mojoops+trezorconnect@protonmail.com.todo',
-            manifestEmail: 'https://mojos.todo',
+            manifestEmail: 'https://1980.network',
           });
           activate(trezor);
         }}

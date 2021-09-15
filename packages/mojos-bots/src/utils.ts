@@ -27,7 +27,7 @@ export function formatAuctionStartedTweetText(auctionId: number) {
   return `＊Bleep Bloop Blop＊
         
  An auction has started for Mojo #${auctionId}
- Learn more at https://mojos.todo`;
+ Learn more at https://1980.network`;
 }
 
 /**
@@ -46,7 +46,7 @@ export async function formatBidMessageText(id: number, bid: Bid) {
  * @returns The auction ending soon text
  */
 export function getAuctionEndingSoonTweetText() {
-  return `This auction is ending soon! Bid now at https://mojos.todo`;
+  return `This auction is ending soon! Bid now at https://1980.network`;
 }
 
 /**

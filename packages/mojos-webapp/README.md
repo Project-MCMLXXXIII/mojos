@@ -1,6 +1,6 @@
 # @mojos/webapp
 
-This package contains the source for the Mojos webapp at [mojos.todo](https://mojos.todo).
+This package contains the source for the Mojos webapp at [1980.network](https://1980.network).
 
 ## Quickstart
 

@@ -26,7 +26,7 @@ In order to make retrieving more complex data from the auction history, [mojos-s
 
 ### mojos-webapp
 
-The [mojos-webapp](packages/mojos-webapp) is the frontend for interacting with Mojo auctions as hosted at [mojos.wtf](https://mojos.wtf).
+The [mojos-webapp](packages/mojos-webapp) is the frontend for interacting with Mojo auctions as hosted at [1980.network](https://1980.network).
 
 ## Quickstart
 
