@@ -40,7 +40,7 @@ task('populate-descriptor', 'Populates the descriptor with color palettes and Mo
       await descriptorContract.addManyFaces(chunk.map(({ data }) => data));
     }
 
-    await descriptorContract.addManyHeadAccesories(headAccessories.map(({ data }) => data));
+    await descriptorContract.addManyHeadAccessories(headAccessories.map(({ data }) => data));
 
     console.log('Descriptor populated with palettes and parts');
   });
