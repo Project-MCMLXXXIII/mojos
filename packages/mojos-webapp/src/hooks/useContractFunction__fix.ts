@@ -17,7 +17,7 @@ export const useContractFunction__fix = (
 
   const send = useCallback(
     async (...args: any[]) => {
-      const contractWithSigner = connectContractToSigner(contract, options, library);
+      const contractWithSigner = connectContractToSigner(contract as any, options, library);
       const sendPromise = contractWithSigner[functionName](...args).then(
         (result: any): Promise<any> => {
           // Need to add chainId here to prevent "TypeError: Unsupported Chain" error message

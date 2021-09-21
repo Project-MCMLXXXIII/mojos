@@ -70,11 +70,11 @@ const Bid: React.FC<{
   );
 
   const { send: placeBid, state: placeBidState } = useContractFunction__fix(
-    auctionHouseContract,
+    auctionHouseContract as any,
     AuctionHouseContractFunction.createBid,
   );
   const { send: settleAuction, state: settleAuctionState } = useContractFunction__fix(
-    auctionHouseContract,
+    auctionHouseContract as any,
     AuctionHouseContractFunction.settleCurrentAndCreateNewAuction,
   );
 
@@ -107,7 +107,7 @@ const Bid: React.FC<{
     }
 
     const value = utils.parseEther(bidInputRef.current.value.toString());
-    const contract = connectContractToSigner(auctionHouseContract, undefined, library);
+    const contract = connectContractToSigner(auctionHouseContract as any, undefined, library);
     const gasLimit = await contract.estimateGas.createBid(auction.mojoId, {
       value,
     });
