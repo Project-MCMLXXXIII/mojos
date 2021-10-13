@@ -8,14 +8,6 @@ If you're interested in contributing to Mojos DAO repos we're excited to have yo
 
 ## Packages
 
-### mojos-api
-
-The [mojos api](packages/mojos-api) is an HTTP webserver that hosts token metadata. This is currently unused because on-chain, data URIs are enabled.
-
-### mojos-bots
-
-The [mojos-bots](packages/mojos-bots) package contains a bot that monitors for changes in Mojo auction state and notifies everyone via Twitter and Discord.
-
 ### mojos-contracts
 
 The [mojos contracts](packages/mojos-contracts) is the suite of Solidity contracts powering Mojos DAO.
