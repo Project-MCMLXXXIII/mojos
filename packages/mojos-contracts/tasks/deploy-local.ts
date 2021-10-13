@@ -90,6 +90,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
           () =>
             new Interface(MojosAuctionHouseABI).encodeFunctionData('initialize', [
               contracts['MojosToken'].instance?.address,
+              contracts['MojosToken'].instance?.address,
               contracts['WETH'].instance?.address,
               args.auctionTimeBuffer,
               args.auctionReservePrice,
