@@ -24,7 +24,7 @@ interface Contract {
 }
 
 task('deploy-local', 'Deploy contracts to hardhat')
-  .addOptionalParam('mojosdao', 'The mojos DAO contract address')
+  .addOptionalParam('noundersdao', 'The nounders DAO contract address')
   .addOptionalParam('auctionTimeBuffer', 'The auction time buffer (seconds)', 30, types.int) // Default: 30 seconds
   .addOptionalParam('auctionReservePrice', 'The auction reserve price (wei)', 1, types.int) // Default: 1 wei
   .addOptionalParam(
@@ -72,7 +72,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
       MojosSeeder: {},
       MojosToken: {
         args: [
-          args.mojosdao || deployer.address,
+          args.noundersdao || deployer.address,
           expectedAuctionHouseProxyAddress,
           () => contracts['MojosDescriptor'].instance?.address,
           () => contracts['MojosSeeder'].instance?.address,
@@ -89,7 +89,6 @@ task('deploy-local', 'Deploy contracts to hardhat')
           () => contracts['MojosAuctionHouseProxyAdmin'].instance?.address,
           () =>
             new Interface(MojosAuctionHouseABI).encodeFunctionData('initialize', [
-              contracts['MojosToken'].instance?.address,
               contracts['MojosToken'].instance?.address,
               contracts['WETH'].instance?.address,
               args.auctionTimeBuffer,
@@ -109,7 +108,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
         args: [
           () => contracts['MojosDAOExecutor'].instance?.address,
           () => contracts['MojosToken'].instance?.address,
-          args.mojosdao || deployer.address,
+          args.noundersdao || deployer.address,
           () => contracts['MojosDAOExecutor'].instance?.address,
           () => contracts['MojosDAOLogicV1'].instance?.address,
           args.votingPeriod,

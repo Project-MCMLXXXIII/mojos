@@ -1,0 +1,11 @@
+{
+  "references": [
+    { "path": "packages/mojos-api" },
+    { "path": "packages/mojos-assets" },
+    { "path": "packages/mojos-bots" },
+    { "path": "packages/mojos-contracts" },
+    { "path": "packages/mojos-sdk" },
+    { "path": "packages/mojos-subgraph" },
+    { "path": "packages/mojos-webapp" }
+  ]
+}

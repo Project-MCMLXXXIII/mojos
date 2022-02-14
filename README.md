@@ -8,17 +8,33 @@ If you're interested in contributing to Mojos DAO repos we're excited to have yo
 
 ## Packages
 
+### mojos-api
+
+The [mojos api](packages/mojos-api) is an HTTP webserver that hosts token metadata. This is currently unused because on-chain, data URIs are enabled.
+
+### mojos-assets
+
+The [mojos assets](packages/mojos-assets) package holds the Mojos PNG and run-length encoded image data.
+
+### mojos-bots
+
+The [mojos bots](packages/mojos-bots) package contains a bot that monitors for changes in Mojos auction state and notifies everyone via Twitter and Discord.
+
 ### mojos-contracts
 
-The [mojos contracts](packages/mojos-contracts) is the suite of Solidity contracts powering Mojos DAO.
+The [mojos contracts](packages/mojos-contracts) is the suite of Solidity contracts powering mojos DAO.
+
+### mojos-sdk
+
+The [mojos sdk](packages/mojos-sdk) exposes the mojos contract addresses, ABIs, and instances as well as image encoding and SVG building utilities.
 
 ### mojos-subgraph
 
-In order to make retrieving more complex data from the auction history, [mojos-subgraph](packages/mojos-subgraph) contains subgraph manifests that are deployed onto [The Graph](https://thegraph.com).
+In order to make retrieving more complex data from the auction history, [mojos subgraph](packages/mojos-subgraph) contains subgraph manifests that are deployed onto [The Graph](https://thegraph.com).
 
 ### mojos-webapp
 
-The [mojos-webapp](packages/mojos-webapp) is the frontend for interacting with Mojo auctions as hosted at [1980.network](https://1980.network).
+The [mojos webapp](packages/mojos-webapp) is the frontend for interacting with Mojos auctions as hosted at [mojos.wtf](https://mojos.wtf).
 
 ## Quickstart
 
@@ -45,6 +61,3 @@ yarn lint
 ```sh
 yarn format
 ```
-
-
-[Got My Mojo Working](https://www.youtube.com/watch?v=8hEYwk0bypY)

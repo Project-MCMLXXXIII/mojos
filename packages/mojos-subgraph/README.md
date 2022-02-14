@@ -8,7 +8,7 @@ A subgraph that indexes mojos events.
 yarn
 ```
 
-## Mojos subgraph
+## mojos subgraph
 
 This repo contains the templates for compiling and deploying a graphql schema to thegraph.
 

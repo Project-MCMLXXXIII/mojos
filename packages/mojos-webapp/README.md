@@ -1,6 +1,6 @@
 # @mojos/webapp
 
-This package contains the source for the Mojos webapp at [1980.network](https://1980.network).
+This package contains the source for the mojos webapp at [mojos.wtf](https://mojos.wtf).
 
 ## Quickstart
 
@@ -48,4 +48,4 @@ Then add an RPC provider to MetaMask to point to your local simnet.
          New RPC URL: http://localhost:8545
          Chain ID: 31337
 
-Select the network and connect to your local Mojos webapp to interact with simnet
+Select the network and connect to your local mojos webapp to interact with simnet

@@ -1,38 +1,32 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
-import { bidsByAuctionQuery } from '../../wrappers/subgraph';
 import ShortAddress from '../ShortAddress';
 import _classes from './BidHistory.module.css';
-import { compareBids } from '../../utils/compareBids';
-import * as R from 'ramda';
-import { Spinner } from 'react-bootstrap';
-import moment from 'moment';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
-import { buildEtherscanTxLink, Network } from '../../utils/buildEtherscanLink';
+import dayjs from 'dayjs';
+import link from '../../assets/icons/Link.svg';
+import { buildEtherscanTxLink } from '../../utils/etherscan';
 import TruncatedAmount from '../TruncatedAmount';
 import BigNumber from 'bignumber.js';
-import { CHAIN_ID } from '../../config';
-import { IBid } from '../../wrappers/subgraph';
+import { Bid } from '../../utils/types';
+import { BigNumber as EthersBN } from '@ethersproject/bignumber';
+import { useAuctionBids } from '../../wrappers/onDisplayAuction';
+import { useAppSelector } from '../../hooks';
 
-const bidItem = (bid: IBid, index: number, classes: any) => {
-  const bidAmount = <TruncatedAmount amount={new BigNumber(bid.amount)} />;
-  const date = `${moment(bid.blockTimestamp * 1000).format('MMM DD')} at ${moment(
-    bid.blockTimestamp * 1000,
+const bidItem = (bid: Bid, index: number, classes: any, isCool?: boolean) => {
+  const bidAmount = <TruncatedAmount amount={new BigNumber(EthersBN.from(bid.value).toString())} />;
+  const date = `${dayjs(bid.timestamp.toNumber() * 1000).format('MMM DD')} at ${dayjs(
+    bid.timestamp.toNumber() * 1000,
   ).format('hh:mm a')}`;
 
-  const txLink = buildEtherscanTxLink(
-    bid.id,
-    Number(CHAIN_ID) === 1 ? Network.mainnet : Network.rinkeby,
-  );
+  const txLink = buildEtherscanTxLink(bid.transactionHash);
+  const isMobile = window.innerWidth < 992;
 
   return (
-    <li key={index} className={classes.bidRow}>
+    <li key={index} className={isCool ? classes.bidRowCool : classes.bidRowWarm}>
       <div className={classes.bidItem}>
         <div className={classes.leftSectionWrapper}>
           <div className={classes.bidder}>
             <div>
-              <ShortAddress address={bid.bidder.id} />
+              <ShortAddress address={bid.sender} avatar={isMobile ? false : true} />
             </div>
           </div>
           <div className={classes.bidDate}>{date}</div>
@@ -40,8 +34,8 @@ const bidItem = (bid: IBid, index: number, classes: any) => {
         <div className={classes.rightSectionWrapper}>
           <div className={classes.bidAmount}>{bidAmount}</div>
           <div className={classes.linkSymbol}>
-            <a href={txLink.toString()} target="_blank" rel="noreferrer">
-              <FontAwesomeIcon icon={faExternalLinkAlt} />
+            <a href={txLink} target="_blank" rel="noreferrer">
+              <img src={link} width={24} alt="link symbol" />
             </a>
           </div>
         </div>
@@ -52,33 +46,17 @@ const bidItem = (bid: IBid, index: number, classes: any) => {
 
 const BidHistory: React.FC<{ auctionId: string; max: number; classes?: any }> = props => {
   const { auctionId, max, classes = _classes } = props;
-  const { loading, error, data } = useQuery(bidsByAuctionQuery(auctionId), {
-    pollInterval: 5000,
-  });
-
-  const bids = data && R.sort(compareBids, data.bids).reverse().slice(0, max);
-
+  const isCool = useAppSelector(state => state.application.isCoolBackground);
+  const bids = useAuctionBids(EthersBN.from(auctionId));
   const bidContent =
     bids &&
-    bids.map((bid: IBid, i: number) => {
-      return bidItem(bid, i, classes);
-    });
+    bids
+      .map((bid: Bid, i: number) => {
+        return bidItem(bid, i, classes, isCool);
+      })
+      .slice(0, max);
 
-  return (
-    <>
-      {loading && !error && (
-        <div className={classes.altWrapper}>
-          <Spinner animation="border" />
-        </div>
-      )}
-      {!loading && error && (
-        <div className={classes.altWrapper}>
-          <div>Error loading bid history</div>
-        </div>
-      )}
-      {!loading && !error && <ul className={classes.bidCollection}>{bidContent}</ul>}
-    </>
-  );
+  return <ul className={classes.bidCollection}>{bidContent}</ul>;
 };
 
 export default BidHistory;

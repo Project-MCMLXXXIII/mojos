@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_mojosDAO",
+        "name": "_noundersDAO",
         "type": "address"
       },
       {
@@ -178,7 +178,7 @@
         "type": "uint256"
       }
     ],
-    "name": "MojoBurned",
+    "name": "NounBurned",
     "type": "event"
   },
   {
@@ -204,17 +204,17 @@
           },
           {
             "internalType": "uint48",
-            "name": "bodyAccessory",
+            "name": "accessory",
             "type": "uint48"
           },
           {
             "internalType": "uint48",
-            "name": "face",
+            "name": "head",
             "type": "uint48"
           },
           {
             "internalType": "uint48",
-            "name": "headAccessory",
+            "name": "glasses",
             "type": "uint48"
           }
         ],
@@ -224,7 +224,7 @@
         "type": "tuple"
       }
     ],
-    "name": "MojoCreated",
+    "name": "NounCreated",
     "type": "event"
   },
   {
@@ -233,11 +233,11 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "mojosDAO",
+        "name": "noundersDAO",
         "type": "address"
       }
     ],
-    "name": "MojosDAOUpdated",
+    "name": "NoundersDAOUpdated",
     "type": "event"
   },
   {
@@ -370,7 +370,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "mojoId",
+        "name": "nounId",
         "type": "uint256"
       }
     ],
@@ -710,19 +710,6 @@
   },
   {
     "inputs": [],
-    "name": "mojosDAO",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "name",
     "outputs": [
       {
@@ -748,6 +735,19 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "noundersDAO",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -910,17 +910,17 @@
       },
       {
         "internalType": "uint48",
-        "name": "bodyAccessory",
+        "name": "accessory",
         "type": "uint48"
       },
       {
         "internalType": "uint48",
-        "name": "face",
+        "name": "head",
         "type": "uint48"
       },
       {
         "internalType": "uint48",
-        "name": "headAccessory",
+        "name": "glasses",
         "type": "uint48"
       }
     ],
@@ -988,11 +988,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_mojosDAO",
+        "name": "_noundersDAO",
         "type": "address"
       }
     ],
-    "name": "setMojosDAO",
+    "name": "setNoundersDAO",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

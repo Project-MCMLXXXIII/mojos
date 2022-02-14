@@ -13,7 +13,7 @@ task(
 
   await run('populate-descriptor', {
     nftDescriptor: contracts.NFTDescriptor.instance.address,
-    mojosDescriptor: contracts.MojosDescriptor.instance.address,
+    MojosDescriptor: contracts.MojosDescriptor.instance.address,
   });
 
   await contracts.MojosAuctionHouse.instance
@@ -23,7 +23,7 @@ task(
     });
 
   await run('create-proposal', {
-    mojosDaoProxy: contracts.MojosDAOProxy.instance.address,
+    MojosDaoProxy: contracts.MojosDAOProxy.instance.address,
   });
 
   const { chainId } = await ethers.provider.getNetwork();
@@ -41,7 +41,7 @@ task(
 
   console.table(accounts);
   console.log(
-    `Mojo contracts deployed to local node at http://localhost:8545 (Chain ID: ${chainId})`,
+    `Mojos contracts deployed to local node at http://localhost:8545 (Chain ID: ${chainId})`,
   );
   console.log(`Auction House Proxy address: ${contracts.MojosAuctionHouseProxy.instance.address}`);
   console.log(`Mojos ERC721 address: ${contracts.MojosToken.instance.address}`);

@@ -5,15 +5,15 @@
 /*********************************
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
+ * ░░░░░░█████████░░█████████░░░ *
+ * ░░░░░░██░░░████░░██░░░████░░░ *
+ * ░░██████░░░████████░░░████░░░ *
+ * ░░██░░██░░░████░░██░░░████░░░ *
+ * ░░██░░██░░░████░░██░░░████░░░ *
+ * ░░░░░░█████████░░█████████░░░ *
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
- * ░░░███████████████████████░░░ *
- * ░░░░░░█████████████████░░░░░░ *
- * ░░░░░░█████████████████░░░░░░ *
- * ░░░░░░█████████████████░░░░░░ *
- * ░░░░░░█████████████████░░░░░░ *
- * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
  *********************************/
-
 
 pragma solidity ^0.8.6;
 
@@ -27,8 +27,8 @@ import { IERC721 } from '@openzeppelin/contracts/token/ERC721/IERC721.sol';
 import { IProxyRegistry } from './external/opensea/IProxyRegistry.sol';
 
 contract MojosToken is IMojosToken, Ownable, ERC721Checkpointable {
-    // The mojos DAO address (creators org)
-    address public mojosDAO;
+    // The nounders DAO address (creators org)
+    address public noundersDAO;
 
     // An address who has permissions to mint Mojos
     address public minter;
@@ -48,11 +48,11 @@ contract MojosToken is IMojosToken, Ownable, ERC721Checkpointable {
     // Whether the seeder can be updated
     bool public isSeederLocked;
 
-    // The mojo seeds
+    // The noun seeds
     mapping(uint256 => IMojosSeeder.Seed) public seeds;
 
-    // The internal mojo ID tracker
-    uint256 private _currentMojoId;
+    // The internal noun ID tracker
+    uint256 private _currentNounId;
 
     // IPFS content hash of contract-level metadata
     string private _contractURIHash = 'QmZi1n79FqWt2tTLwCqiy6nLM6xLGRsEPQ5JmReJQKNNzX';
@@ -85,10 +85,10 @@ contract MojosToken is IMojosToken, Ownable, ERC721Checkpointable {
     }
 
     /**
-     * @notice Require that the sender is the mojos DAO.
+     * @notice Require that the sender is the nounders DAO.
      */
-    modifier onlyMojosDAO() {
-        require(msg.sender == mojosDAO, 'Sender is not the mojos DAO');
+    modifier onlyNoundersDAO() {
+        require(msg.sender == noundersDAO, 'Sender is not the nounders DAO');
         _;
     }
 
@@ -101,13 +101,13 @@ contract MojosToken is IMojosToken, Ownable, ERC721Checkpointable {
     }
 
     constructor(
-        address _mojosDAO,
+        address _noundersDAO,
         address _minter,
         IMojosDescriptor _descriptor,
         IMojosSeeder _seeder,
         IProxyRegistry _proxyRegistry
-    ) ERC721('Mojos', 'MOJO') {
-        mojosDAO = _mojosDAO;
+    ) ERC721('Mojos', 'NOUN') {
+        noundersDAO = _noundersDAO;
         minter = _minter;
         descriptor = _descriptor;
         seeder = _seeder;
@@ -141,24 +141,24 @@ contract MojosToken is IMojosToken, Ownable, ERC721Checkpointable {
     }
 
     /**
-     * @notice Mint a Mojo to the minter, along with a possible mojos reward
-     * Mojo. Mojos reward Mojos are minted every 10 Mojos, starting at 0,
-     * until 183 founder Mojos have been minted (5 years w/ 24 hour auctions).
+     * @notice Mint a Mojos to the minter, along with a possible nounders reward
+     * Mojos. Mojos reward Mojos are minted every 10 Mojos, starting at 0,
+     * until 183 nounder Mojos have been minted (5 years w/ 24 hour auctions).
      * @dev Call _mintTo with the to address(es).
      */
     function mint() public override onlyMinter returns (uint256) {
-        if (_currentMojoId <= 1820 && _currentMojoId % 10 == 0) {
-            _mintTo(mojosDAO, _currentMojoId++);
+        if (_currentNounId <= 1820 && _currentNounId % 10 == 0) {
+            _mintTo(noundersDAO, _currentNounId++);
         }
-        return _mintTo(minter, _currentMojoId++);
+        return _mintTo(minter, _currentNounId++);
     }
 
     /**
-     * @notice Burn a mojo.
+     * @notice Burn a noun.
      */
-    function burn(uint256 mojoId) public override onlyMinter {
-        _burn(mojoId);
-        emit MojoBurned(mojoId);
+    function burn(uint256 nounId) public override onlyMinter {
+        _burn(nounId);
+        emit NounBurned(nounId);
     }
 
     /**
@@ -180,13 +180,13 @@ contract MojosToken is IMojosToken, Ownable, ERC721Checkpointable {
     }
 
     /**
-     * @notice Set the mojos DAO.
-     * @dev Only callable by the mojos DAO when not locked.
+     * @notice Set the nounders DAO.
+     * @dev Only callable by the nounders DAO when not locked.
      */
-    function setMojosDAO(address _mojosDAO) external override onlyMojosDAO {
-        mojosDAO = _mojosDAO;
+    function setNoundersDAO(address _noundersDAO) external override onlyNoundersDAO {
+        noundersDAO = _noundersDAO;
 
-        emit MojosDAOUpdated(_mojosDAO);
+        emit NoundersDAOUpdated(_noundersDAO);
     }
 
     /**
@@ -250,14 +250,14 @@ contract MojosToken is IMojosToken, Ownable, ERC721Checkpointable {
     }
 
     /**
-     * @notice Mint a Mojo with `mojoId` to the provided `to` address.
+     * @notice Mint a Mojos with `nounId` to the provided `to` address.
      */
-    function _mintTo(address to, uint256 mojoId) internal returns (uint256) {
-        IMojosSeeder.Seed memory seed = seeds[mojoId] = seeder.generateSeed(mojoId, descriptor);
+    function _mintTo(address to, uint256 nounId) internal returns (uint256) {
+        IMojosSeeder.Seed memory seed = seeds[nounId] = seeder.generateSeed(nounId, descriptor);
 
-        _mint(owner(), to, mojoId);
-        emit MojoCreated(mojoId, seed);
+        _mint(owner(), to, nounId);
+        emit NounCreated(nounId, seed);
 
-        return mojoId;
+        return nounId;
     }
 }

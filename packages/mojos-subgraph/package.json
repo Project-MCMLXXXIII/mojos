@@ -3,19 +3,19 @@
   "version": "0.1.0",
   "description": "A subgraph that indexes mojos events",
   "author": "Mojos",
-  "homepage": "https://1980.network",
+  "homepage": "https://mojos.wtf",
   "license": "GPL-3.0",
   "main": "build/index.js",
   "directories": {
     "src": "src"
   },
   "scripts": {
-    "clean": "rm -rf ./src/types ./build subgraph.yaml",
+    "clean": "rimraf ./src/types ./build subgraph.yaml",
     "codegen": "graph codegen --output-dir src/types/",
     "deploy": "graph deploy --debug --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/",
     "prepare:rinkeby": "mustache config/rinkeby.json subgraph.yaml.mustache > subgraph.yaml",
     "prepare:mainnet": "mustache config/mainnet.json subgraph.yaml.mustache > subgraph.yaml",
-    "deploy:rinkeby": "yarn clean && yarn prepare:rinkeby && yarn codegen && yarn deploy mojosdao/mojos-subgraph-rinkeby",
+    "deploy:rinkeby": "yarn clean && yarn prepare:rinkeby && yarn codegen && yarn deploy pavelespitia/mojo-rinkeby",
     "deploy:mainnet": "yarn clean && yarn prepare:mainnet && yarn codegen && yarn deploy mojosdao/mojos-subgraph"
   },
   "devDependencies": {

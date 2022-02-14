@@ -5,13 +5,14 @@
 /*********************************
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
+ * ░░░░░░█████████░░█████████░░░ *
+ * ░░░░░░██░░░████░░██░░░████░░░ *
+ * ░░██████░░░████████░░░████░░░ *
+ * ░░██░░██░░░████░░██░░░████░░░ *
+ * ░░██░░██░░░████░░██░░░████░░░ *
+ * ░░░░░░█████████░░█████████░░░ *
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
- * ░░░███████████████████████░░░ *
- * ░░░░░░█████████████████░░░░░░ *
- * ░░░░░░█████████████████░░░░░░ *
- * ░░░░░░█████████████████░░░░░░ *
- * ░░░░░░█████████████████░░░░░░ *
- * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
  *********************************/
 
 // LICENSE
@@ -33,8 +34,8 @@ import { IWETH } from './interfaces/IWETH.sol';
 
 contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, ReentrancyGuardUpgradeable, OwnableUpgradeable {
     // The Mojos ERC721 token contract
-    IMojosToken public mojos1;
-    IMojosToken public mojos2;
+    IMojosToken public Mojos;
+
     // The address of the WETH contract
     address public weth;
 
@@ -50,9 +51,8 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
     // The duration of a single auction
     uint256 public duration;
 
-    // The active auctions auction1 & auction2
-    IMojosAuctionHouse.Auction public auction1;
-    IMojosAuctionHouse.Auction public auction2;
+    // The active auction
+    IMojosAuctionHouse.Auction public auction;
 
     /**
      * @notice Initialize the auction house and base contracts,
@@ -60,8 +60,7 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
      * @dev This function can only be called once.
      */
     function initialize(
-        IMojosToken _mojos1,
-        IMojosToken _mojos2,
+        IMojosToken _Mojos,
         address _weth,
         uint256 _timeBuffer,
         uint256 _reservePrice,
@@ -74,8 +73,7 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
 
         _pause();
 
-        mojos1 = _mojos1;
-        mojos2 = _mojos2;
+        Mojos = _Mojos;
         weth = _weth;
         timeBuffer = _timeBuffer;
         reservePrice = _reservePrice;
@@ -84,7 +82,7 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
     }
 
     /**
-     * @notice Settle the current auction, mint a new Mojo, and put it up for auction.
+     * @notice Settle the current auction, mint a new Mojos, and put it up for auction.
      */
     function settleCurrentAndCreateNewAuction() external override nonReentrant whenNotPaused {
         _settleAuction();
@@ -100,17 +98,13 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
     }
 
     /**
-     * @notice Create a bid for a Mojo, with a given amount.
+     * @notice Create a bid for a Mojos, with a given amount.
      * @dev This contract only accepts payment in ETH.
      */
-    function createBid(uint256 mojoId) external payable override nonReentrant {
-        IMojosAuctionHouse.Auction memory _auction = auction1;
-        uint8 auctionSlot = 1;
-        if (_auction.mojoId != mojoId) {
-            _auction = auction2;
-            auctionSlot = 2;
-        }
-        require(_auction.mojoId == mojoId, 'Mojo not up for auction');
+    function createBid(uint256 nounId) external payable override nonReentrant {
+        IMojosAuctionHouse.Auction memory _auction = auction;
+
+        require(_auction.nounId == nounId, 'Mojos not up for auction');
         require(block.timestamp < _auction.endTime, 'Auction expired');
         require(msg.value >= reservePrice, 'Must send at least reservePrice');
         require(
@@ -125,34 +119,19 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
             _safeTransferETHWithFallback(lastBidder, _auction.amount);
         }
 
-        if (auctionSlot == 1) {
-            auction1.amount = msg.value;
-            auction1.bidder = payable(msg.sender);
+        auction.amount = msg.value;
+        auction.bidder = payable(msg.sender);
 
-            // Extend the auction if the bid was received within `timeBuffer` of the auction end time
-            bool extended = _auction.endTime - block.timestamp < timeBuffer;
-            if (extended) {
-                auction1.endTime = _auction.endTime = block.timestamp + timeBuffer;
-            }
-            emit AuctionBid(_auction.mojoId, msg.sender, msg.value, extended);
+        // Extend the auction if the bid was received within `timeBuffer` of the auction end time
+        bool extended = _auction.endTime - block.timestamp < timeBuffer;
+        if (extended) {
+            auction.endTime = _auction.endTime = block.timestamp + timeBuffer;
+        }
 
-            if (extended) {
-                emit AuctionExtended(_auction.mojoId, _auction.endTime);
-            }
-        } else {
-            auction2.amount = msg.value;
-            auction2.bidder = payable(msg.sender);
+        emit AuctionBid(_auction.nounId, msg.sender, msg.value, extended);
 
-            // Extend the auction if the bid was received within `timeBuffer` of the auction end time
-            bool extended = _auction.endTime - block.timestamp < timeBuffer;
-            if (extended) {
-                auction2.endTime = _auction.endTime = block.timestamp + timeBuffer;
-            }
-            emit AuctionBid(_auction.mojoId, msg.sender, msg.value, extended);
-
-            if (extended) {
-                emit AuctionExtended(_auction.mojoId, _auction.endTime);
-            }
+        if (extended) {
+            emit AuctionExtended(_auction.nounId, _auction.endTime);
         }
     }
 
@@ -174,7 +153,7 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
     function unpause() external override onlyOwner {
         _unpause();
 
-        if ((auction1.startTime == 0 || auction1.settled) && (auction2.startTime == 0 || auction2.settled)) {
+        if (auction.startTime == 0 || auction.settled) {
             _createAuction();
         }
     }
@@ -216,38 +195,20 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
      * catch the revert and pause this contract.
      */
     function _createAuction() internal {
-        try mojos1.mint() returns (uint256 mojoId1) {
+        try Mojos.mint() returns (uint256 nounId) {
             uint256 startTime = block.timestamp;
             uint256 endTime = startTime + duration;
 
-            auction1 = Auction({
-            mojoId: mojoId1,
-            amount: 0,
-            startTime: startTime,
-            endTime: endTime,
-            bidder: payable(0),
-            settled: false
+            auction = Auction({
+                nounId: nounId,
+                amount: 0,
+                startTime: startTime,
+                endTime: endTime,
+                bidder: payable(0),
+                settled: false
             });
 
-            emit AuctionCreated(mojoId1, startTime, endTime);
-        } catch Error(string memory) {
-            _pause();
-        }
-
-        try mojos2.mint() returns (uint256 mojoId2) {
-            uint256 startTime = block.timestamp;
-            uint256 endTime = startTime + duration;
-
-            auction2 = Auction({
-            mojoId: mojoId2,
-            amount: 0,
-            startTime: startTime,
-            endTime: endTime,
-            bidder: payable(0),
-            settled: false
-            });
-
-            emit AuctionCreated(mojoId2, startTime, endTime);
+            emit AuctionCreated(nounId, startTime, endTime);
         } catch Error(string memory) {
             _pause();
         }
@@ -255,43 +216,28 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
 
     /**
      * @notice Settle an auction, finalizing the bid and paying out to the owner.
-     * @dev If there are no bids, the Mojo is burned.
+     * @dev If there are no bids, the Mojos is burned.
      */
     function _settleAuction() internal {
-        IMojosAuctionHouse.Auction memory _auction1 = auction1;
-        IMojosAuctionHouse.Auction memory _auction2 = auction2;
-        require(_auction1.startTime != 0, "Auction 1 hasn't begun");
-        require(_auction2.startTime != 0, "Auction 2 hasn't begun");
-        require(!_auction1.settled, 'Auction 1 has already been settled');
-        require(!_auction2.settled, 'Auction 2 has already been settled');
-        require(block.timestamp >= _auction1.endTime, "Auction hasn't completed");
-        require(block.timestamp >= _auction2.endTime, "Auction hasn't completed");
+        IMojosAuctionHouse.Auction memory _auction = auction;
 
-        auction1.settled = true;
-        auction2.settled = true;
+        require(_auction.startTime != 0, "Auction hasn't begun");
+        require(!_auction.settled, 'Auction has already been settled');
+        require(block.timestamp >= _auction.endTime, "Auction hasn't completed");
 
-        if (_auction1.bidder == address(0)) {
-            mojos1.burn(_auction1.mojoId);
+        auction.settled = true;
+
+        if (_auction.bidder == address(0)) {
+            Mojos.burn(_auction.nounId);
         } else {
-            mojos1.transferFrom(address(this), _auction1.bidder, _auction1.mojoId);
+            Mojos.transferFrom(address(this), _auction.bidder, _auction.nounId);
         }
 
-        if (_auction2.bidder == address(0)) {
-            mojos2.burn(_auction2.mojoId);
-        } else {
-            mojos2.transferFrom(address(this), _auction2.bidder, _auction2.mojoId);
+        if (_auction.amount > 0) {
+            _safeTransferETHWithFallback(owner(), _auction.amount);
         }
 
-        if (_auction1.amount > 0) {
-            _safeTransferETHWithFallback(owner(), _auction1.amount);
-        }
-
-        if (_auction2.amount > 0) {
-            _safeTransferETHWithFallback(owner(), _auction2.amount);
-        }
-
-        emit AuctionSettled(_auction1.mojoId, _auction1.bidder, _auction1.amount);
-        emit AuctionSettled(_auction2.mojoId, _auction2.bidder, _auction2.amount);
+        emit AuctionSettled(_auction.nounId, _auction.bidder, _auction.amount);
     }
 
     /**

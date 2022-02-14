@@ -2,45 +2,45 @@ import { BigNumber, BigNumberish } from 'ethers';
 import Section from '../../layout/Section';
 import classes from './HistoryCollection.module.css';
 import clsx from 'clsx';
-import StandaloneMojo from '../StandaloneMojo';
-import { LoadingMojo } from '../Mojo';
+import StandaloneNoun from '../StandaloneNoun';
+import { LoadingMojos } from '../Mojos';
 import config from '../../config';
 import { Container, Row } from 'react-bootstrap';
 
 interface HistoryCollectionProps {
   historyCount: number;
-  latestMojoId: BigNumberish;
+  latestNounId: BigNumberish;
 }
 
 const HistoryCollection: React.FC<HistoryCollectionProps> = (props: HistoryCollectionProps) => {
-  const { historyCount, latestMojoId } = props;
+  const { historyCount, latestNounId } = props;
 
-  if (!latestMojoId) return null;
+  if (!latestNounId) return null;
 
-  const startAtZero = BigNumber.from(latestMojoId).sub(historyCount).lt(0);
+  const startAtZero = BigNumber.from(latestNounId).sub(historyCount).lt(0);
 
-  let mojoIds: Array<BigNumber | null> = new Array(historyCount);
-  mojoIds = mojoIds.fill(null).map((_, i) => {
-    if (BigNumber.from(i).lt(latestMojoId)) {
+  let nounIds: Array<BigNumber | null> = new Array(historyCount);
+  nounIds = nounIds.fill(null).map((_, i) => {
+    if (BigNumber.from(i).lt(latestNounId)) {
       const index = startAtZero
         ? BigNumber.from(0)
-        : BigNumber.from(Number(latestMojoId) - historyCount);
+        : BigNumber.from(Number(latestNounId) - historyCount);
       return index.add(i);
     } else {
       return null;
     }
   });
 
-  const mojosContent = mojoIds.map((mojoId, i) => {
-    return !mojoId ? <LoadingMojo key={i} /> : <StandaloneMojo key={i} mojoId={mojoId} />;
+  const mojosContent = nounIds.map((nounId, i) => {
+    return !nounId ? <LoadingMojos key={i} /> : <StandaloneNoun key={i} nounId={nounId} />;
   });
 
   return (
-    <Section bgColor="white" fullWidth={true}>
+    <Section fullWidth={true}>
       <Container fluid>
         <Row className="justify-content-md-center">
           <div className={clsx(classes.historyCollection)}>
-            {config.enableHistory && mojosContent}
+            {config.app.enableHistory && mojosContent}
           </div>
         </Row>
       </Container>

@@ -1,9 +1,11 @@
 import { useContractCall } from '@usedapp/core';
 import { BigNumber as EthersBN, utils } from 'ethers';
-import { Contract } from '@ethersproject/contracts';
-import { MojosAuctionHouseABI } from '@mojos/contracts';
+import { mojosAuctionHouseABI } from '@mojos/sdk';
 import config from '../config';
 import BigNumber from 'bignumber.js';
+import { isNounderNoun } from '../utils/nounderNoun';
+import { useAppSelector } from '../hooks';
+import { AuctionState } from '../state/slices/auction';
 
 export enum AuctionHouseContractFunction {
   auction = 'auction',
@@ -19,15 +21,11 @@ export interface Auction {
   bidder: string;
   endTime: EthersBN;
   startTime: EthersBN;
-  length: number;
-  mojoId: EthersBN;
+  nounId: EthersBN;
   settled: boolean;
 }
 
-const abi = new utils.Interface(MojosAuctionHouseABI);
-
-export const auctionHouseContractFactory = (auctionHouseProxyAddress: string) =>
-  new Contract(auctionHouseProxyAddress, abi);
+const abi = new utils.Interface(mojosAuctionHouseABI);
 
 export const useAuction = (auctionHouseProxyAddress: string) => {
   const auction = useContractCall<Auction>({
@@ -42,7 +40,7 @@ export const useAuction = (auctionHouseProxyAddress: string) => {
 export const useAuctionMinBidIncPercentage = () => {
   const minBidIncrement = useContractCall({
     abi,
-    address: config.auctionProxyAddress,
+    address: config.addresses.mojosAuctionHouseProxy,
     method: 'minBidIncrementPercentage',
     args: [],
   });
@@ -52,4 +50,29 @@ export const useAuctionMinBidIncPercentage = () => {
   }
 
   return new BigNumber(minBidIncrement[0]);
+};
+
+/**
+ * Computes timestamp after which a Mojos could vote
+ * @param nounId TokenId of Mojos
+ * @returns Unix timestamp after which Mojos could vote
+ */
+export const useNounCanVoteTimestamp = (nounId: number) => {
+  const nextNounId = nounId + 1;
+
+  const nextNounIdForQuery = isNounderNoun(EthersBN.from(nextNounId)) ? nextNounId + 1 : nextNounId;
+
+  const pastAuctions = useAppSelector(state => state.pastAuctions.pastAuctions);
+
+  const maybeNounCanVoteTimestamp = pastAuctions.find((auction: AuctionState, i: number) => {
+    const maybeNounId = auction.activeAuction?.nounId;
+    return maybeNounId ? EthersBN.from(maybeNounId).eq(EthersBN.from(nextNounIdForQuery)) : false;
+  })?.activeAuction?.startTime;
+
+  if (!maybeNounCanVoteTimestamp) {
+    // This state only occurs during loading flashes
+    return EthersBN.from(0);
+  }
+
+  return EthersBN.from(maybeNounCanVoteTimestamp);
 };

@@ -14,7 +14,6 @@
  * ░░░░░░█████████████████░░░░░░ *
  *********************************/
 
-
 pragma solidity ^0.8.6;
 
 import { IMojosSeeder } from './interfaces/IMojosSeeder.sol';
@@ -22,35 +21,35 @@ import { IMojosDescriptor } from './interfaces/IMojosDescriptor.sol';
 
 contract MojosSeeder is IMojosSeeder {
     /**
-     * @notice Generate a pseudo-random Mojo seed using the previous blockhash and Mojo ID.
+     * @notice Generate a pseudo-random Mojos seed using the previous blockhash and noun ID.
      */
     // prettier-ignore
-    function generateSeed(uint256 mojoId, IMojosDescriptor descriptor) external view override returns (Seed memory) {
+    function generateSeed(uint256 nounId, IMojosDescriptor descriptor) external view override returns (Seed memory) {
         uint256 pseudorandomness = uint256(
-            keccak256(abi.encodePacked(blockhash(block.number - 1), mojoId))
+            keccak256(abi.encodePacked(blockhash(block.number - 1), nounId))
         );
 
         uint256 backgroundCount = descriptor.backgroundCount();
         uint256 bodyCount = descriptor.bodyCount();
-        uint256 bodyAccessoryCount = descriptor.bodyAccessoryCount();
-        uint256 faceCount = descriptor.faceCount();
-        uint256 headAccessoryCount = descriptor.headAccessoryCount();
+        uint256 accessoryCount = descriptor.accessoryCount();
+        uint256 headCount = descriptor.headCount();
+        uint256 glassesCount = descriptor.glassesCount();
 
         return Seed({
-        background: uint48(
+            background: uint48(
                 uint48(pseudorandomness) % backgroundCount
             ),
-        body: uint48(
+            body: uint48(
                 uint48(pseudorandomness >> 48) % bodyCount
             ),
-        bodyAccessory: uint48(
-                uint48(pseudorandomness >> 96) % bodyAccessoryCount
+            accessory: uint48(
+                uint48(pseudorandomness >> 96) % accessoryCount
             ),
-        face: uint48(
-                uint48(pseudorandomness >> 144) % faceCount
+            head: uint48(
+                uint48(pseudorandomness >> 144) % headCount
             ),
-        headAccessory: uint48(
-                uint48(pseudorandomness >> 192) % headAccessoryCount
+            glasses: uint48(
+                uint48(pseudorandomness >> 192) % glassesCount
             )
         });
     }

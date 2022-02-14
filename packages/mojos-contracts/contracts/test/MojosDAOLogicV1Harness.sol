@@ -7,7 +7,7 @@ import '../governance/MojosDAOLogicV1.sol';
 contract MojosDAOLogicV1Harness is MojosDAOLogicV1 {
     function initialize(
         address timelock_,
-        address mojos_,
+        address Mojos_,
         address vetoer_,
         uint256 votingPeriod_,
         uint256 votingDelay_,
@@ -18,7 +18,7 @@ contract MojosDAOLogicV1Harness is MojosDAOLogicV1 {
         require(address(timelock) == address(0), 'MojosDAO::initialize: can only initialize once');
 
         timelock = IMojosDAOExecutor(timelock_);
-        mojos = MojosTokenLike(mojos_);
+        Mojos = MojosTokenLike(Mojos_);
         vetoer = vetoer_;
         votingPeriod = votingPeriod_;
         votingDelay = votingDelay_;

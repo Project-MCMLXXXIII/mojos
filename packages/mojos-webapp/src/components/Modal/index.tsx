@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import xIcon from '../../assets/x-icon.png';
 import React from 'react';
 
-const Backdrop: React.FC<{ onDismiss: () => void }> = props => {
+export const Backdrop: React.FC<{ onDismiss: () => void }> = props => {
   return <div className={classes.backdrop} onClick={props.onDismiss} />;
 };
 
@@ -24,21 +24,24 @@ const ModalOverlay: React.FC<{
   );
 };
 
-const Modal: React.FC<{ title?: string; content?: React.ReactNode; onDismiss: () => void }> =
-  props => {
-    const { title, content, onDismiss } = props;
-    return (
-      <>
-        {ReactDOM.createPortal(
-          <Backdrop onDismiss={onDismiss} />,
-          document.getElementById('backdrop-root')!,
-        )}
-        {ReactDOM.createPortal(
-          <ModalOverlay title={title} content={content} onDismiss={onDismiss} />,
-          document.getElementById('overlay-root')!,
-        )}
-      </>
-    );
-  };
+const Modal: React.FC<{
+  title?: string;
+  content?: React.ReactNode;
+  onDismiss: () => void;
+}> = props => {
+  const { title, content, onDismiss } = props;
+  return (
+    <>
+      {ReactDOM.createPortal(
+        <Backdrop onDismiss={onDismiss} />,
+        document.getElementById('backdrop-root')!,
+      )}
+      {ReactDOM.createPortal(
+        <ModalOverlay title={title} content={content} onDismiss={onDismiss} />,
+        document.getElementById('overlay-root')!,
+      )}
+    </>
+  );
+};
 
 export default Modal;

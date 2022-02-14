@@ -1,16 +1,21 @@
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { BigNumberish } from '@ethersproject/bignumber';
 import BigNumber from 'bignumber.js';
 
 export interface IBid {
-  amount: BigNumber;
+  id: string;
   bidder: {
     id: string;
   };
+  amount: BigNumber;
   blockNumber: number;
   blockTimestamp: number;
-  id: string;
-  mojo: {
+  txIndex?: number;
+  noun: {
     id: number;
+    startTime?: BigNumberish;
+    endTime?: BigNumberish;
+    settled?: boolean;
   };
 }
 
@@ -25,15 +30,15 @@ export const auctionQuery = (auctionId: number) => gql`
 	  }
 	  startTime
 	  endTime
-	  mojo {
+	  noun {
 		id
 		seed {
 		  id
 		  background
 		  body
-		  bodyAccessory
-		  face
-		  headAccessory
+		  accessory
+		  head
+		  glasses
 		}
 		owner {
 		  id
@@ -60,23 +65,23 @@ export const bidsByAuctionQuery = (auctionId: string) => gql`
 	  bidder {
 	  	id
 	  }
-	  mojo {
+	  noun {
 		id
 	  }
 	}
   }
  `;
 
-export const mojoQuery = (id: string) => gql`
+export const nounQuery = (id: string) => gql`
  {
-	mojo(id:"${id}") {
+	noun(id:"${id}") {
 	  id
 	  seed {
 	  background
 		body
-		bodyAccessory
-		face
-		headAccessory
+		accessory
+		head
+		glasses
 	}
 	  owner {
 		id
@@ -85,18 +90,94 @@ export const mojoQuery = (id: string) => gql`
   }
  `;
 
-export const latestAuctionsQuery = (first: number = 50) => gql`
- {
-	auctions(orderDirection: desc, first: ${first}) {
+export const mojosIndex = () => gql`
+  {
+    mojos {
+      id
+      owner {
+        id
+      }
+    }
+  }
+`;
+
+export const latestAuctionsQuery = () => gql`
+  {
+    auctions(orderBy: startTime, orderDirection: desc, first: 1000) {
+      id
+      amount
+      settled
+      bidder {
+        id
+      }
+      startTime
+      endTime
+      noun {
+        id
+        owner {
+          id
+        }
+      }
+      bids {
+        id
+        amount
+        blockNumber
+        blockTimestamp
+        txIndex
+        bidder {
+          id
+        }
+      }
+    }
+  }
+`;
+
+export const latestBidsQuery = (first: number = 10) => gql`
+{
+	bids(
+	  first: ${first},
+	  orderBy:blockTimestamp,
+	  orderDirection: desc
+	) {
 	  id
-	  amount
-	  settled
-	  startTime
-	  endTime
-	  mojo {
+	  bidder {
 		id
 	  }
+	  amount
+	  blockTimestamp
+	  txIndex
+	  blockNumber
+	  auction {
+		id
+		startTime
+		endTime
+		settled
+	  }
 	}
+  }  
+`;
+
+export const nounVotingHistoryQuery = (nounId: number) => gql`
+{
+	noun(id: ${nounId}) {
+		id
+		votes {
+		proposal {
+			id
+		}
+		support
+		supportDetailed
+		}
+	}
+}
+`;
+
+export const createTimestampAllProposals = () => gql`
+  {
+    proposals(orderBy: createdTimestamp, orderDirection: asc, first: 1000) {
+      id
+      createdTimestamp
+    }
   }
 `;
 

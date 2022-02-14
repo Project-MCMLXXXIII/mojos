@@ -21,11 +21,11 @@ import { IMojosDescriptor } from './IMojosDescriptor.sol';
 import { IMojosSeeder } from './IMojosSeeder.sol';
 
 interface IMojosToken is IERC721 {
-    event MojoCreated(uint256 indexed tokenId, IMojosSeeder.Seed seed);
+    event NounCreated(uint256 indexed tokenId, IMojosSeeder.Seed seed);
 
-    event MojoBurned(uint256 indexed tokenId);
+    event NounBurned(uint256 indexed tokenId);
 
-    event MojosDAOUpdated(address mojosDAO);
+    event NoundersDAOUpdated(address noundersDAO);
 
     event MinterUpdated(address minter);
 
@@ -45,7 +45,7 @@ interface IMojosToken is IERC721 {
 
     function dataURI(uint256 tokenId) external returns (string memory);
 
-    function setMojosDAO(address mojosDAO) external;
+    function setNoundersDAO(address noundersDAO) external;
 
     function setMinter(address minter) external;
 
