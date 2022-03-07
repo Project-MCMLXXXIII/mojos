@@ -2,7 +2,7 @@ import { config } from './config';
 import Redis from 'ioredis';
 import TwitterApi from 'twitter-api-v2';
 import { Contract, providers } from 'ethers';
-import { mojosTokenABI } from '@mojos/contracts';
+import { MojosTokenABI } from '@mojos/contracts';
 import Discord from 'discord.js';
 import axios from 'axios';
 
@@ -30,11 +30,11 @@ export const twitter = new TwitterApi({
 export const jsonRpcProvider = new providers.JsonRpcProvider(config.jsonRpcUrl);
 
 /**
- * mojos ERC721 Token Contract
+ * Mojos ERC721 Token Contract
  */
 export const mojosTokenContract = new Contract(
   config.mojosTokenAddress,
-  mojosTokenABI,
+  MojosTokenABI,
   jsonRpcProvider,
 );
 
@@ -57,7 +57,7 @@ export const publicDiscordWebhook = new Discord.WebhookClient(
 );
 
 /**
- * Increment one of the mojos infra counters
+ * Increment one of the Mojos infra counters
  * @param counterName counter name to increment
  * @returns
  */

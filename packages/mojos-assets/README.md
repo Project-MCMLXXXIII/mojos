@@ -10,7 +10,7 @@ yarn
 
 ## Usage
 
-**Access Mojos RLE Image Data**
+**Access Mojo RLE Image Data**
 
 ```ts
 import { ImageData } from '@mojos/assets';
@@ -19,10 +19,10 @@ const { bgcolors, palette, images } = ImageData;
 const { bodies, accessories, heads, glasses } = images;
 ```
 
-**Get Mojos Part & Background Data**
+**Get Mojo Part & Background Data**
 
 ```ts
-import { getNounData } from '@mojos/assets';
+import { getMojoData } from '@mojos/assets';
 
 const seed = {
   background: 0,
@@ -31,16 +31,16 @@ const seed = {
   head: 71,
   glasses: 2,
 };
-const { parts, background } = getNounData(seed);
+const { parts, background } = getMojoData(seed);
 ```
 
-**Emulate `mojoseeder.sol` Pseudorandom seed generation**
+**Emulate `MojoSeeder.sol` Pseudorandom seed generation**
 
 ```ts
-import { getmojoseedFromBlockHash } from '@mojos/assets';
+import { getMojoSeedFromBlockHash } from '@mojos/assets';
 
 const blockHash = '0x5014101691e81d79a2eba711e698118e1a90c9be7acb2f40d7f200134ee53e01';
-const nounId = 116;
+const mojoId = 116;
 
 /**
  {
@@ -51,24 +51,24 @@ const nounId = 116;
     glasses: 15
   }
 */
-const seed = getmojoseedFromBlockHash(nounId, blockHash);
+const seed = getMojoSeedFromBlockHash(mojoId, blockHash);
 ```
 
 ## Examples
 
-**Almost off-chain Mojos Crystal Ball**
-Generate a Mojos using only a block hash, which saves calls to `mojoseeder` and `NounDescriptor` contracts. This can be used for a faster crystal ball.
+**Almost off-chain Mojo Crystal Ball**
+Generate a Mojo using only a block hash, which saves calls to `MojoSeeder` and `MojoDescriptor` contracts. This can be used for a faster crystal ball.
 
 ```ts
 /**
  * For you to implement:
    - hook up providers with ether/web3.js
-   - get currently auctioned Mojos Id from the mojosAuctionHouse contract
-   - add 1 to the current Mojos Id to get the next Mojos Id (named `nextNounId` below)
+   - get currently auctioned Mojo Id from the MojosAuctionHouse contract
+   - add 1 to the current Mojo Id to get the next Mojo Id (named `nextMojoId` below)
    - get the latest block hash from your provider (named `latestBlockHash` below)
 */
 
-import { ImageData, getmojoseedFromBlockHash, getNounData } from '@mojos/assets';
+import { ImageData, getMojoSeedFromBlockHash, getMojoData } from '@mojos/assets';
 import { buildSVG } from '@mojos/sdk';
 const { palette } = ImageData; // Used with `buildSVG``
 
@@ -82,7 +82,7 @@ const { palette } = ImageData; // Used with `buildSVG``
       glasses: 15
     }
 */
-const seed = getmojoseedFromBlockHash(nextNounId, latestBlockHash);
+const seed = getMojoSeedFromBlockHash(nextMojoId, latestBlockHash);
 
 /** 
  * OUTPUT:
@@ -93,7 +93,7 @@ const seed = getmojoseedFromBlockHash(nextNounId, latestBlockHash);
          data: '...'
        },
        {
-         filename: 'accessory-txt-noun-multicolor',
+         filename: 'accessory-txt-mojo-multicolor',
          data: '...'
        },
        {
@@ -108,13 +108,13 @@ const seed = getmojoseedFromBlockHash(nextNounId, latestBlockHash);
      background: 'e1d7d5'
    }
 */
-const { parts, background } = getNounData(seed);
+const { parts, background } = getMojoData(seed);
 
 const svgBinary = buildSVG(parts, palette, background);
 const svgBase64 = btoa(svgBinary);
 ```
 
-The Mojos SVG can then be displayed. Here's a dummy example using React
+The Mojo SVG can then be displayed. Here's a dummy example using React
 
 ```ts
 function SVG({ svgBase64 }) {

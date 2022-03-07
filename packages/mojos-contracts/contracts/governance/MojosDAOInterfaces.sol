@@ -1,18 +1,17 @@
-// SPDX-License-Identifier: BSD-3-Clause
+// SPDX-License-Identifier: GPL-3.0
 
 /// @title Mojos DAO Logic interfaces and events
 
 /*********************************
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
- * ░░░░░░█████████░░█████████░░░ *
- * ░░░░░░██░░░████░░██░░░████░░░ *
- * ░░██████░░░████████░░░████░░░ *
- * ░░██░░██░░░████░░██░░░████░░░ *
- * ░░██░░██░░░████░░██░░░████░░░ *
- * ░░░░░░█████████░░█████████░░░ *
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
- * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
+ * ░░░███████████████████████░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
  *********************************/
 
 // LICENSE
@@ -143,7 +142,7 @@ contract MojosDAOStorageV1 is MojosDAOProxyStorage {
     IMojosDAOExecutor public timelock;
 
     /// @notice The address of the Mojos tokens
-    MojosTokenLike public Mojos;
+    MojosTokenLike public mojos;
 
     /// @notice The official record of all proposals ever proposed
     mapping(uint256 => Proposal) public proposals;

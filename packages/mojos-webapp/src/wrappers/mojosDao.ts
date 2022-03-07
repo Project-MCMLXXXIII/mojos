@@ -1,4 +1,4 @@
-import { mojosDAOABI, mojosDaoLogicV1Factory } from '@mojos/sdk';
+import { MojosDAOABI, MojosDaoLogicV1Factory } from '@mojos/sdk';
 import { useContractCall, useContractCalls, useContractFunction, useEthers } from '@usedapp/core';
 import { utils, BigNumber as EthersBN } from 'ethers';
 import { defaultAbiCoder } from 'ethers/lib/utils';
@@ -80,8 +80,8 @@ export interface ProposalTransaction {
   calldata: string;
 }
 
-const abi = new utils.Interface(mojosDAOABI);
-const mojosDaoContract = new mojosDaoLogicV1Factory().attach(config.addresses.mojosDAOProxy);
+const abi = new utils.Interface(MojosDAOABI);
+const mojosDaoContract = new MojosDaoLogicV1Factory().attach(config.addresses.mojosDAOProxy);
 const proposalCreatedFilter = mojosDaoContract.filters?.ProposalCreated(
   null,
   null,

@@ -1,15 +1,15 @@
 import { keccak256 as solidityKeccak256 } from '@ethersproject/solidity';
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
-import { mojoseed, NounData } from './types';
+import { MojoSeed, MojoData } from './types';
 import { images, bgcolors } from './image-data.json';
 
 const { bodies, accessories, heads, glasses } = images;
 
 /**
- * Get encoded part and background information using a Mojos seed
- * @param seed The Mojos seed
+ * Get encoded part and background information using a Mojo seed
+ * @param seed The Mojo seed
  */
-export const getNounData = (seed: mojoseed): NounData => {
+export const getMojoData = (seed: MojoSeed): MojoData => {
   return {
     parts: [
       bodies[seed.body],
@@ -22,10 +22,10 @@ export const getNounData = (seed: mojoseed): NounData => {
 };
 
 /**
- * Generate a random Mojos seed
- * @param seed The Mojos seed
+ * Generate a random Mojo seed
+ * @param seed The Mojo seed
  */
-export const getRandommojoseed = (): mojoseed => {
+export const getRandomMojoSeed = (): MojoSeed => {
   return {
     background: Math.floor(Math.random() * bgcolors.length),
     body: Math.floor(Math.random() * bodies.length),
@@ -51,7 +51,7 @@ export const shiftRightAndCast = (
 };
 
 /**
- * Emulates the mojosSeeder.sol methodology for pseudorandomly selecting a part
+ * Emulates the MojosSeeder.sol methodology for pseudorandomly selecting a part
  * @param pseudorandomness Hex representation of a number
  * @param partCount The number of parts to pseudorandomly choose from
  * @param shiftAmount The amount to right shift
@@ -68,12 +68,12 @@ export const getPseudorandomPart = (
 };
 
 /**
- * Emulates the mojosSeeder.sol methodology for generating a Mojos seed
- * @param nounId The Mojos tokenId used to create pseudorandomness
+ * Emulates the MojosSeeder.sol methodology for generating a Mojo seed
+ * @param mojoId The Mojo tokenId used to create pseudorandomness
  * @param blockHash The block hash use to create pseudorandomness
  */
-export const getmojoseedFromBlockHash = (nounId: BigNumberish, blockHash: string): mojoseed => {
-  const pseudorandomness = solidityKeccak256(['bytes32', 'uint256'], [blockHash, nounId]);
+export const getMojoSeedFromBlockHash = (mojoId: BigNumberish, blockHash: string): MojoSeed => {
+  const pseudorandomness = solidityKeccak256(['bytes32', 'uint256'], [blockHash, mojoId]);
   return {
     background: getPseudorandomPart(pseudorandomness, bgcolors.length, 0),
     body: getPseudorandomPart(pseudorandomness, bodies.length, 48),

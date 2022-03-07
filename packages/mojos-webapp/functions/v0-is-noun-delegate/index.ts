@@ -1,5 +1,5 @@
 import { Handler } from '@netlify/functions';
-import { isNounDelegate, mojosQuery } from '../theGraph';
+import { isMojoDelegate, mojosQuery } from '../theGraph';
 import { sharedResponseHeaders } from '../utils';
 
 const handler: Handler = async (event, context) => {
@@ -10,7 +10,7 @@ const handler: Handler = async (event, context) => {
       'Content-Type': 'application/json',
       ...sharedResponseHeaders,
     },
-    body: JSON.stringify(isNounDelegate(event.body, mojos)),
+    body: JSON.stringify(isMojoDelegate(event.body, mojos)),
   };
 };
 

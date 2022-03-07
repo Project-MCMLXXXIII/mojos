@@ -53,51 +53,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "accessories",
-    "outputs": [
-      {
-        "internalType": "bytes",
-        "name": "",
-        "type": "bytes"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "accessoryCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes",
-        "name": "_accessory",
-        "type": "bytes"
-      }
-    ],
-    "name": "addAccessory",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "string",
         "name": "_background",
         "type": "string"
@@ -124,6 +79,19 @@
   {
     "inputs": [
       {
+        "internalType": "bytes",
+        "name": "_bodyAccessory",
+        "type": "bytes"
+      }
+    ],
+    "name": "addBodyAccessory",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint8",
         "name": "_paletteIndex",
         "type": "uint8"
@@ -143,11 +111,11 @@
     "inputs": [
       {
         "internalType": "bytes",
-        "name": "_glasses",
+        "name": "_face",
         "type": "bytes"
       }
     ],
-    "name": "addGlasses",
+    "name": "addFace",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -156,24 +124,11 @@
     "inputs": [
       {
         "internalType": "bytes",
-        "name": "_head",
+        "name": "_headAccessory",
         "type": "bytes"
       }
     ],
-    "name": "addHead",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes[]",
-        "name": "_accessories",
-        "type": "bytes[]"
-      }
-    ],
-    "name": "addManyAccessories",
+    "name": "addHeadAccessory",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -207,6 +162,19 @@
   {
     "inputs": [
       {
+        "internalType": "bytes[]",
+        "name": "_bodyAccessories",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "addManyBodyAccessories",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint8",
         "name": "paletteIndex",
         "type": "uint8"
@@ -226,11 +194,11 @@
     "inputs": [
       {
         "internalType": "bytes[]",
-        "name": "_glasses",
+        "name": "_faces",
         "type": "bytes[]"
       }
     ],
-    "name": "addManyGlasses",
+    "name": "addManyFaces",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -239,11 +207,11 @@
     "inputs": [
       {
         "internalType": "bytes[]",
-        "name": "_heads",
+        "name": "_headAccessories",
         "type": "bytes[]"
       }
     ],
-    "name": "addManyHeads",
+    "name": "addManyHeadAccessories",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -326,6 +294,38 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "bodyAccessories",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "bodyAccessoryCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "bodyCount",
     "outputs": [
@@ -384,6 +384,38 @@
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "faceCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "faces",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
       }
     ],
     "stateMutability": "view",
@@ -499,7 +531,7 @@
         "type": "uint256"
       }
     ],
-    "name": "glasses",
+    "name": "headAccessories",
     "outputs": [
       {
         "internalType": "bytes",
@@ -512,44 +544,12 @@
   },
   {
     "inputs": [],
-    "name": "glassesCount",
+    "name": "headAccessoryCount",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "headCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "heads",
-    "outputs": [
-      {
-        "internalType": "bytes",
-        "name": "",
-        "type": "bytes"
       }
     ],
     "stateMutability": "view",

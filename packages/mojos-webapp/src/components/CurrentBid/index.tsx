@@ -7,12 +7,12 @@ import clsx from 'clsx';
 
 /**
  * Passible to CurrentBid as `currentBid` prop to indicate that
- * the bid amount is not applicable to this auction. (Nounder Mojos)
+ * the bid amount is not applicable to this auction. (Mojoder Mojo)
  */
 export const BID_N_A = 'n/a';
 
 /**
- * Special Bid type for not applicable auctions (Nounder mojos)
+ * Special Bid type for not applicable auctions (Mojoder Mojos)
  */
 type BidNa = typeof BID_N_A;
 

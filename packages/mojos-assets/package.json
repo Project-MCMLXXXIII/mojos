@@ -1,9 +1,8 @@
 {
   "name": "@mojos/assets",
   "version": "0.2.0",
-  "description": "mojos run-length encoded image data",
+  "description": "Mojos run-length encoded image data",
   "author": "Mojos",
-  "homepage": "https://mojos.wtf",
   "license": "GPL-3.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

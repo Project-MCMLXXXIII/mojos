@@ -19,8 +19,8 @@ import auction, {
   setFullAuction,
 } from './state/slices/auction';
 import onDisplayAuction, {
-  setLastAuctionNounId,
-  setOnDisplayAuctionNounId,
+  setLastAuctionMojoId,
+  setOnDisplayAuctionMojoId,
 } from './state/slices/onDisplayAuction';
 import { ApolloProvider, useQuery } from '@apollo/client';
 import { clientFactory, latestAuctionsQuery } from './wrappers/subgraph';
@@ -30,7 +30,7 @@ import LogsUpdater from './state/updaters/logs';
 import config, { CHAIN_ID, createNetworkHttpUrl } from './config';
 import { WebSocketProvider } from '@ethersproject/providers';
 import { BigNumber, BigNumberish } from 'ethers';
-import { mojosAuctionHouseFactory } from '@mojos/sdk';
+import { MojosAuctionHouseFactory } from '@mojos/sdk';
 import dotenv from 'dotenv';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { appendBid } from './state/slices/auction';
@@ -40,7 +40,7 @@ import { applyMiddleware, createStore, combineReducers, PreloadedState } from 'r
 import { routerMiddleware } from 'connected-react-router';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { nounPath } from './utils/history';
+import { mojoPath } from './utils/history';
 import { push } from 'connected-react-router';
 
 dotenv.config();
@@ -105,7 +105,7 @@ const ChainSubscriber: React.FC = () => {
 
   const loadState = async () => {
     const wsProvider = new WebSocketProvider(config.app.wsRpcUri);
-    const mojosAuctionHouseContract = mojosAuctionHouseFactory.connect(
+    const mojosAuctionHouseContract = MojosAuctionHouseFactory.connect(
       config.addresses.mojosAuctionHouseProxy,
       wsProvider,
     );
@@ -115,7 +115,7 @@ const ChainSubscriber: React.FC = () => {
     const createdFilter = mojosAuctionHouseContract.filters.AuctionCreated(null, null, null);
     const settledFilter = mojosAuctionHouseContract.filters.AuctionSettled(null, null, null);
     const processBidFilter = async (
-      nounId: BigNumberish,
+      mojoId: BigNumberish,
       sender: string,
       value: BigNumberish,
       extended: boolean,
@@ -124,33 +124,33 @@ const ChainSubscriber: React.FC = () => {
       const timestamp = (await event.getBlock()).timestamp;
       const transactionHash = event.transactionHash;
       dispatch(
-        appendBid(reduxSafeBid({ nounId, sender, value, extended, transactionHash, timestamp })),
+        appendBid(reduxSafeBid({ mojoId, sender, value, extended, transactionHash, timestamp })),
       );
     };
     const processAuctionCreated = (
-      nounId: BigNumberish,
+      mojoId: BigNumberish,
       startTime: BigNumberish,
       endTime: BigNumberish,
     ) => {
       dispatch(
-        setActiveAuction(reduxSafeNewAuction({ nounId, startTime, endTime, settled: false })),
+        setActiveAuction(reduxSafeNewAuction({ mojoId, startTime, endTime, settled: false })),
       );
-      const nounIdNumber = BigNumber.from(nounId).toNumber();
-      dispatch(push(nounPath(nounIdNumber)));
-      dispatch(setOnDisplayAuctionNounId(nounIdNumber));
-      dispatch(setLastAuctionNounId(nounIdNumber));
+      const mojoIdNumber = BigNumber.from(mojoId).toNumber();
+      dispatch(push(mojoPath(mojoIdNumber)));
+      dispatch(setOnDisplayAuctionMojoId(mojoIdNumber));
+      dispatch(setLastAuctionMojoId(mojoIdNumber));
     };
-    const processAuctionExtended = (nounId: BigNumberish, endTime: BigNumberish) => {
-      dispatch(setAuctionExtended({ nounId, endTime }));
+    const processAuctionExtended = (mojoId: BigNumberish, endTime: BigNumberish) => {
+      dispatch(setAuctionExtended({ mojoId, endTime }));
     };
-    const processAuctionSettled = (nounId: BigNumberish, winner: string, amount: BigNumberish) => {
-      dispatch(setAuctionSettled({ nounId, amount, winner }));
+    const processAuctionSettled = (mojoId: BigNumberish, winner: string, amount: BigNumberish) => {
+      dispatch(setAuctionSettled({ mojoId, amount, winner }));
     };
 
     // Fetch the current auction
-    const currentAuction = await mojosAuctionHouseContract.auction();
+    const currentAuction = await mojosAuctionHouseContract.auction1();
     dispatch(setFullAuction(reduxSafeAuction(currentAuction)));
-    dispatch(setLastAuctionNounId(currentAuction.nounId.toNumber()));
+    dispatch(setLastAuctionMojoId(currentAuction.mojoId.toNumber()));
 
     // Fetch the previous 24hours of  bids
     const previousBids = await mojosAuctionHouseContract.queryFilter(bidFilter, 0 - BLOCKS_PER_DAY);
@@ -159,23 +159,17 @@ const ChainSubscriber: React.FC = () => {
       processBidFilter(...(event.args as [BigNumber, string, BigNumber, boolean]), event);
     }
 
-    mojosAuctionHouseContract.on(
-      bidFilter,
-      (nounId: BigNumberish, sender: string, value: BigNumberish, extended: boolean, event: any) =>
-        processBidFilter(nounId, sender, value, extended, event),
+    mojosAuctionHouseContract.on(bidFilter, (mojoId, sender, value, extended, event) =>
+      processBidFilter(mojoId, sender, value, extended, event),
     );
-    mojosAuctionHouseContract.on(
-      createdFilter,
-      (nounId: BigNumberish, startTime: BigNumberish, endTime: BigNumberish) =>
-        processAuctionCreated(nounId, startTime, endTime),
+    mojosAuctionHouseContract.on(createdFilter, (mojoId, startTime, endTime) =>
+      processAuctionCreated(mojoId, startTime, endTime),
     );
-    mojosAuctionHouseContract.on(extendedFilter, (nounId: BigNumberish, endTime: BigNumberish) =>
-      processAuctionExtended(nounId, endTime),
+    mojosAuctionHouseContract.on(extendedFilter, (mojoId, endTime) =>
+      processAuctionExtended(mojoId, endTime),
     );
-    mojosAuctionHouseContract.on(
-      settledFilter,
-      (nounId: BigNumberish, winner: string, amount: BigNumberish) =>
-        processAuctionSettled(nounId, winner, amount),
+    mojosAuctionHouseContract.on(settledFilter, (mojoId, winner, amount) =>
+      processAuctionSettled(mojoId, winner, amount),
     );
   };
   loadState();
@@ -184,7 +178,7 @@ const ChainSubscriber: React.FC = () => {
 };
 
 const PastAuctions: React.FC = () => {
-  const latestAuctionId = useAppSelector(state => state.onDisplayAuction.lastAuctionNounId);
+  const latestAuctionId = useAppSelector(state => state.onDisplayAuction.lastAuctionMojoId);
   const { data } = useQuery(latestAuctionsQuery());
   const dispatch = useAppDispatch();
 

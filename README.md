@@ -4,7 +4,7 @@ Mojos DAO is a generative avatar art collective run by a group of crypto misfits
 
 ## Contributing
 
-If you're interested in contributing to Mojos DAO repos we're excited to have you. Please discuss any changes in `#developers` in [discord.gg/mojos.TODO](https://discord.gg/mojos) prior to contributing to reduce duplication of effort and in case there is any prior art that may be useful to you.
+If you're interested in contributing to Mojos DAO repos we're excited to have you. Please discuss any changes in `#developers` in [discord.gg/mojos](https://discord.gg/mojos) prior to contributing to reduce duplication of effort and in case there is any prior art that may be useful to you.
 
 ## Packages
 
@@ -14,19 +14,19 @@ The [mojos api](packages/mojos-api) is an HTTP webserver that hosts token metada
 
 ### mojos-assets
 
-The [mojos assets](packages/mojos-assets) package holds the Mojos PNG and run-length encoded image data.
+The [mojos assets](packages/mojos-assets) package holds the Mojo PNG and run-length encoded image data.
 
 ### mojos-bots
 
-The [mojos bots](packages/mojos-bots) package contains a bot that monitors for changes in Mojos auction state and notifies everyone via Twitter and Discord.
+The [mojos bots](packages/mojos-bots) package contains a bot that monitors for changes in Mojo auction state and notifies everyone via Twitter and Discord.
 
 ### mojos-contracts
 
-The [mojos contracts](packages/mojos-contracts) is the suite of Solidity contracts powering mojos DAO.
+The [mojos contracts](packages/mojos-contracts) is the suite of Solidity contracts powering Mojos DAO.
 
 ### mojos-sdk
 
-The [mojos sdk](packages/mojos-sdk) exposes the mojos contract addresses, ABIs, and instances as well as image encoding and SVG building utilities.
+The [mojos sdk](packages/mojos-sdk) exposes the Mojos contract addresses, ABIs, and instances as well as image encoding and SVG building utilities.
 
 ### mojos-subgraph
 
@@ -34,7 +34,7 @@ In order to make retrieving more complex data from the auction history, [mojos s
 
 ### mojos-webapp
 
-The [mojos webapp](packages/mojos-webapp) is the frontend for interacting with Mojos auctions as hosted at [mojos.wtf](https://mojos.wtf).
+The [mojos webapp](packages/mojos-webapp) is the frontend for interacting with Mojo auctions as hosted at [mojos.wtf](https://mojos.wtf).
 
 ## Quickstart
 

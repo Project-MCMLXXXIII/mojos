@@ -4,12 +4,12 @@ import { task, types } from 'hardhat/config';
 task('create-proposal', 'Create a governance proposal')
   .addOptionalParam(
     'mojosDaoProxy',
-    'The `mojosDAOProxy` contract address',
+    'The `MojosDAOProxy` contract address',
     '0x610178dA211FEF7D417bC0e6FeD39F05609AD788',
     types.string,
   )
   .setAction(async ({ mojosDaoProxy }, { ethers }) => {
-    const mojosDaoFactory = await ethers.getContractFactory('mojosDAOLogicV1');
+    const mojosDaoFactory = await ethers.getContractFactory('MojosDAOLogicV1');
     const mojosDao = mojosDaoFactory.attach(mojosDaoProxy);
 
     const [deployer] = await ethers.getSigners();

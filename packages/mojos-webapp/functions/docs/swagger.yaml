@@ -1,12 +1,12 @@
 openapi: '3.0.3'
 info:
   description: |
-    The mojos serverless API can provide projected data that may be easier to use for non-blockchain-native clients.
+    The Mojos serverless API can provide projected data that may be easier to use for non-blockchain-native clients.
 
     ## Function Versioning
     `v0-` prefixed functions are in development and may change before becoming finalized.
   version: '0.1.0'
-  title: 'mojos Serverless API'
+  title: 'Mojos Serverless API'
   license:
     name: 'CC0'
 tags:
@@ -14,22 +14,22 @@ tags:
     description: 'Functions that check status of Ethereum addresses'
   - name: 'Governance'
     description: 'Functions for fetching governance data'
-  - name: 'mojos'
-    description: 'Information about Mojos tokens'
+  - name: 'Mojos'
+    description: 'Information about Mojo tokens'
   - name: 'Cryptography'
     description: 'Functions for verifying identity'
 servers:
   - url: 'https://mojos.wtf/.netlify/functions/'
     description: Production Deployment
 paths:
-  /v0-is-noun-owner:
+  /v0-is-mojo-owner:
     post:
       tags:
         - 'Address Data'
-      summary: 'Check if an Ethereum address owns a Mojos'
-      operationId: 'isNounOwner'
+      summary: 'Check if an Ethereum address owns a Mojo'
+      operationId: 'isMojoOwner'
       requestBody:
-        description: The Ethereum address to check for Mojos ownership
+        description: The Ethereum address to check for Mojo ownership
         content:
           'text/plain':
             schema:
@@ -37,20 +37,20 @@ paths:
             example: '0x2536c09e5f5691498805884fa37811be3b2bddb4'
       responses:
         '200':
-          description: 'Does address own a Mojos'
+          description: 'Does address own a Mojo'
           content:
             application/json:
               schema:
                 type: boolean
               example: true
-  /v0-is-noun-delegate:
+  /v0-is-mojo-delegate:
     post:
       tags:
         - 'Address Data'
-      summary: 'Check if an Ethereum is delegated the voting power of a Mojos'
-      operationId: 'isNounDelegate'
+      summary: 'Check if an Ethereum is delegated the voting power of a Mojo'
+      operationId: 'isMojoDelegate'
       requestBody:
-        description: The Ethereum address to check for Mojos delegation
+        description: The Ethereum address to check for Mojo delegation
         content:
           'text/plain':
             schema:
@@ -58,42 +58,42 @@ paths:
             example: '0x75ee6eb3d8dacf41ee2e5307090b197d3e1cca6e'
       responses:
         '200':
-          description: 'Is address delegated the voting power of a Mojos'
+          description: 'Is address delegated the voting power of a Mojo'
           content:
             application/json:
               schema:
                 type: boolean
               example: true
-  /v0-noun-owners:
+  /v0-mojo-owners:
     get:
-      summary: 'Ethereum addresses that own mojos or are delegated voting power'
+      summary: 'Ethereum addresses that own Mojos or are delegated voting power'
       tags:
         - 'Address Data'
-      operationId: 'getNounOwners'
+      operationId: 'getMojoOwners'
       responses:
         '200':
-          description: 'Lite Mojos information including owners and delegates'
+          description: 'Lite Mojo information including owners and delegates'
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/LiteNoun'
-  /v0-noun-votes:
+                  $ref: '#/components/schemas/LiteMojo'
+  /v0-mojo-votes:
     get:
-      summary: 'All mojos and their votes'
+      summary: 'All Mojos and their votes'
       tags:
         - 'Governance'
-      operationId: 'getNounVotes'
+      operationId: 'getMojoVotes'
       responses:
         '200':
-          description: 'All mojos and how the votes they cast in mojos governance proposals'
+          description: 'All Mojos and how the votes they cast in Mojos governance proposals'
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NounWithVotes'
+                  $ref: '#/components/schemas/MojoWithVotes'
   /v0-proposal-votes:
     get:
       summary: 'All governance proposals and their votes'
@@ -107,21 +107,21 @@ paths:
             application/json:
               schema:
                 type: object
-  /v0-noun-seeds:
+  /v0-mojo-seeds:
     get:
-      summary: 'All mojos and their seeds'
+      summary: 'All Mojos and their seeds'
       tags:
-        - 'mojos'
-      operationId: 'getmojoseeds'
+        - 'Mojos'
+      operationId: 'getMojoSeeds'
       responses:
         '200':
-          description: 'All mojos and their seeds'
+          description: 'All Mojos and their seeds'
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NounWithSeeds'
+                  $ref: '#/components/schemas/MojoWithSeeds'
   /v0-verify-signature:
     post:
       summary: 'Verify an ethereum signed message'
@@ -131,7 +131,7 @@ paths:
       parameters:
         - name: fetchParticipation
           in: 'query'
-          description: If set to true and the signature is valid, fetch to see if the signer owns or is delegated a Mojos
+          description: If set to true and the signature is valid, fetch to see if the signer owns or is delegated a Mojo
           schema:
             type: boolean
           example: false
@@ -141,7 +141,7 @@ paths:
             schema:
               $ref: '#/components/schemas/VerifySignatureRequest'
             example:
-              message: "I am 0x28f1F4ea77Af433c45366151F6f9906435d9DB19\n\nThis is me testing the mojos serverless API"
+              message: "I am 0x28f1F4ea77Af433c45366151F6f9906435d9DB19\n\nThis is me testing the Mojos serverless API"
               signer: '0x28f1F4ea77Af433c45366151F6f9906435d9DB19'
               signature": '0xc82fd716033ae41efd155258622a6c7d0d42ce56d03d6ba0bef1091d54675c4872e99f5718dfe0cb1a1a8dfd8d62fd35dfa10445d40e001174756a7059dd80d81b'
       responses:
@@ -155,19 +155,19 @@ components:
   schemas:
     NormalizedVote:
       type: object
-      description: A mojos proposal vote
+      description: A Mojos proposal vote
       properties:
         proposalId:
           type: integer
           format: uint256
-          description: The ID of the mojos Governance proposal
+          description: The ID of the Mojos Governance proposal
         supportDetailed:
           type: integer
           format: uint256
           description: 'The integer support value: against (0), for (1), or abstain (2)'
     Seed:
       type: object
-      description: The attributes that make up a Mojos's seed
+      description: The attributes that make up a Mojo's seed
       properties:
         head:
           type: integer
@@ -179,9 +179,9 @@ components:
           type: integer
         glasses:
           type: integer
-    NormalizedNoun:
+    NormalizedMojo:
       type: object
-      description: A Mojos record
+      description: A Mojo record
       properties:
         id:
           type: integer
@@ -190,7 +190,7 @@ components:
           type: string
         delegatedTo:
           type: string
-          description: The address that the Mojos's voting power is delegated to
+          description: The address that the Mojo's voting power is delegated to
         votes:
           type: array
           items:
@@ -199,25 +199,25 @@ components:
           $ref: '#/components/schemas/Seed'
     ProposalVote:
       type: object
-      description: How a Mojos voted on a governance proposal
+      description: How a Mojo voted on a governance proposal
       properties:
-        nounId:
+        mojoId:
           type: integer
         owner:
           type: string
-          description: The owner of the Mojos
+          description: The owner of the Mojo
         delegatedTo:
           type: string
-          description: The Ethereum address the Mojos's voting power is delegated
+          description: The Ethereum address the Mojo's voting power is delegated
         supportDetailed:
           type: integer
           description: 'The integer support value: against (0), for (1), or abstain (2)'
     ProposalVotes:
       type: object
-      description: A map of Mojos governance proposal ID to an array of votes
-    NounWithSeeds:
+      description: A map of Mojo governance proposal ID to an array of votes
+    MojoWithSeeds:
       type: object
-      description: A Mojos and its seed attributes
+      description: A Mojo and its seed attributes
       properties:
         id:
           type: integer
@@ -225,24 +225,24 @@ components:
         seed:
           type: object
           $ref: '#/components/schemas/Seed'
-    NounWithVotes:
+    MojoWithVotes:
       type: object
-      description: How a Mojos has voted on mojos governance proposals
+      description: How a Mojo has voted on Mojos governance proposals
       properties:
         id:
           type: integer
           format: uint256
         owner:
           type: string
-          description: The owner of the Mojos
+          description: The owner of the Mojo
         delegatedTo:
           type: string
-          description: The Ethereum address a Mojos's voting power has been delegated to
+          description: The Ethereum address a Mojo's voting power has been delegated to
         votes:
           type: array
           items:
             $ref: '#/components/schemas/NormalizedVote'
-    LiteNoun:
+    LiteMojo:
       type: object
       properties:
         id:
@@ -250,10 +250,10 @@ components:
           format: uint256
         owner:
           type: string
-          description: The owner of the Mojos
+          description: The owner of the Mojo
         delegatedTo:
           type: string
-          description: The Ethereum address a Mojos's voting power has been delegated to
+          description: The Ethereum address a Mojo's voting power has been delegated to
     VerifySignatureRequest:
       type: object
       required:
@@ -294,9 +294,9 @@ components:
         validSignature:
           type: boolean
           description: If the supplied signature is valid
-        isNounOwner:
+        isMojoOwner:
           type: boolean
-          description: If the signature is valid and the address owns a Mojos
-        isNounDelegate:
+          description: If the signature is valid and the address owns a Mojo
+        isMojoDelegate:
           type: boolean
-          description: If the signature is valid and the address is delegated a Mojos
+          description: If the signature is valid and the address is delegated a Mojo

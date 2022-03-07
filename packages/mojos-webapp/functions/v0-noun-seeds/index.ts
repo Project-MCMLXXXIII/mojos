@@ -3,25 +3,25 @@ import { mojosQuery, Seed } from '../theGraph';
 import * as R from 'ramda';
 import { sharedResponseHeaders } from '../utils';
 
-interface SeededNoun {
+interface SeededMojo {
   id: number;
   seed: Seed;
 }
 
-const buildSeededNoun = R.pick(['id', 'seed']);
+const buildSeededMojo = R.pick(['id', 'seed']);
 
-const buildSeededmojos = R.map(buildSeededNoun);
+const buildSeededMojos = R.map(buildSeededMojo);
 
 const handler: Handler = async (event, context) => {
   const mojos = await mojosQuery();
-  const seededmojos: SeededNoun[] = buildSeededmojos(mojos);
+  const seededMojos: SeededMojo[] = buildSeededMojos(mojos);
   return {
     statusCode: 200,
     headers: {
       'Content-Type': 'application/json',
       ...sharedResponseHeaders,
     },
-    body: JSON.stringify(seededmojos),
+    body: JSON.stringify(seededMojos),
   };
 };
 

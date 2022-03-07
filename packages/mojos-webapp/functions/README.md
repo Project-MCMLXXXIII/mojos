@@ -1,10 +1,10 @@
-# mojos Serverless API
+# Mojos Serverless API
 
-`mojos.wtf` provides a serverless API to make fetching data about the mojos ecosystem easier. [An Insomnia manifest is provided for example.](./docs/insomnia.json)
+`mojos.wtf` provides a serverless API to make fetching data about the Mojos ecosystem easier. [An Insomnia manifest is provided for example.](./docs/insomnia.json)
 
 ## Keeping Up To Date
 
-mojos is a new project and these API endpoints may change, be sure to join [`#developers` in the mojos Discord](https://discord.gg/mojos) to keep informed.
+Mojos is a new project and these API endpoints may change, be sure to join [`#developers` in the Mojos Discord](https://discord.gg/mojos) to keep informed.
 
 ## API Convention
 

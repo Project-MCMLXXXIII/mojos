@@ -1,24 +1,24 @@
 import Discord from 'discord.js';
-import { formatBidMessageText, getNounPngBuffer } from '../utils';
+import { formatBidMessageText, getMojoPngBuffer } from '../utils';
 import { Bid, IAuctionLifecycleHandler } from '../types';
 
 export class DiscordAuctionLifecycleHandler implements IAuctionLifecycleHandler {
   constructor(public readonly discordClients: Discord.WebhookClient[]) {}
 
   /**
-   * Send Discord message with an image of the current noun alerting users
+   * Send Discord message with an image of the current mojo alerting users
    * @param auctionId The current auction ID
    */
   async handleNewAuction(auctionId: number) {
-    const png = await getNounPngBuffer(auctionId.toString());
+    const png = await getMojoPngBuffer(auctionId.toString());
     if (png) {
       const attachmentName = `Auction-${auctionId}.png`;
       const attachment = new Discord.MessageAttachment(png, attachmentName);
       const message = new Discord.MessageEmbed()
         .setTitle(`New Auction Discovered`)
-        .setDescription(`An auction has started for Mojos #${auctionId}`)
+        .setDescription(`An auction has started for Mojo #${auctionId}`)
         .setURL('https://mojos.wtf')
-        .addField('Mojos ID', auctionId, true)
+        .addField('Mojo ID', auctionId, true)
         .attachFiles([attachment])
         .setImage(`attachment://${attachmentName}`)
         .setTimestamp();
@@ -29,7 +29,7 @@ export class DiscordAuctionLifecycleHandler implements IAuctionLifecycleHandler 
 
   /**
    * Send Discord message with new bid event data
-   * @param auctionId Mojos auction number
+   * @param auctionId Mojo auction number
    * @param bid Bid amount and ID
    */
   async handleNewBid(auctionId: number, bid: Bid) {

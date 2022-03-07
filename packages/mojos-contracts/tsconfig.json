@@ -1,12 +1,16 @@
 {
   "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false
+  },
   "include": [
     "utils.ts",
     "./tasks",
     "./src",
     "./test",
     "./typechain",
-    "./abi/**/*.json",
+    "../abi",
+    "./abi",
     "./files/*.json"
   ],
   "files": ["./hardhat.config.ts"],

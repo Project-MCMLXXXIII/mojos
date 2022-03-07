@@ -9,7 +9,7 @@ import { Spinner, InputGroup, FormControl, Button, Col } from 'react-bootstrap';
 import { useAuctionMinBidIncPercentage } from '../../wrappers/mojosAuction';
 import { useAppDispatch } from '../../hooks';
 import { AlertModal, setAlertModal } from '../../state/slices/application';
-import { mojosAuctionHouseFactory } from '@mojos/sdk';
+import { MojosAuctionHouseFactory } from '@mojos/sdk';
 import config from '../../config';
 import WalletConnectModal from '../WalletConnectModal';
 import SettleManuallyBtn from '../SettleManuallyBtn';
@@ -49,7 +49,7 @@ const Bid: React.FC<{
   const { library } = useEthers();
   let { auction, auctionEnded } = props;
 
-  const mojosAuctionHouseContract = new mojosAuctionHouseFactory().attach(
+  const mojosAuctionHouseContract = new MojosAuctionHouseFactory().attach(
     config.addresses.mojosAuctionHouseProxy,
   );
 
@@ -117,10 +117,10 @@ const Bid: React.FC<{
 
     const value = utils.parseEther(bidInputRef.current.value.toString());
     const contract = connectContractToSigner(mojosAuctionHouseContract, undefined, library);
-    const gasLimit = await contract.estimateGas.createBid(auction.nounId, {
+    const gasLimit = await contract.estimateGas.createBid(auction.mojoId, {
       value,
     });
-    placeBid(auction.nounId, {
+    placeBid(auction.mojoId, {
       value,
       gasLimit: gasLimit.add(10_000), // A 10,000 gas pad is used to avoid 'Out of gas' errors
     });
@@ -151,7 +151,7 @@ const Bid: React.FC<{
         message: `Bid was placed successfully!`,
         show: true,
       });
-      setBidButtonContent({ loading: false, content: 'Bid' });
+      setBidButtonContent({ loading: false, content: 'Place bid' });
       clearBidInput();
     }
   }, [auction, placeBidState, account, setModal]);
@@ -236,8 +236,8 @@ const Bid: React.FC<{
     placeBidState.status === 'Mining' || settleAuctionState.status === 'Mining' || !activeAccount;
 
   const minBidCopy = `Ξ ${minBidEth(minBid)} or more`;
-  const fomomojosBtnOnClickHandler = () => {
-    // Open Fomo mojos in a new tab
+  const fomoMojosBtnOnClickHandler = () => {
+    // Open Fomo Mojos in a new tab
     window.open('https://fomomojos.wtf', '_blank')?.focus();
   };
 
@@ -274,9 +274,9 @@ const Bid: React.FC<{
           </Button>
         ) : (
           <>
-            <Col lg={12}>
-              <Button className={classes.bidBtnAuctionEnded} onClick={fomomojosBtnOnClickHandler}>
-                Vote for the next Mojos ⌐◧-◧
+            <Col lg={12} className={classes.voteForNextMojoBtnWrapper}>
+              <Button className={classes.bidBtnAuctionEnded} onClick={fomoMojosBtnOnClickHandler}>
+                Vote for the next Mojo ⌐◧-◧
               </Button>
             </Col>
             {/* Only show force settle button if wallet connected */}

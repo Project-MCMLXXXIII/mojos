@@ -1,5 +1,5 @@
 import {
-  ContractAddresses as mojosContractAddresses,
+  ContractAddresses as MojosContractAddresses,
   getContractAddressesForChainOrThrow,
 } from '@mojos/sdk';
 import { ChainId } from '@usedapp/core';
@@ -8,7 +8,7 @@ interface ExternalContractAddresses {
   lidoToken: string | undefined;
 }
 
-export type ContractAddresses = mojosContractAddresses & ExternalContractAddresses;
+export type ContractAddresses = MojosContractAddresses & ExternalContractAddresses;
 
 interface AppConfig {
   jsonRpcUri: string;
@@ -69,7 +69,7 @@ const externalAddresses: Record<SupportedChains, ExternalContractAddresses> = {
 };
 
 const getAddresses = (): ContractAddresses => {
-  let mojosAddresses = {} as mojosContractAddresses;
+  let mojosAddresses = {} as MojosContractAddresses;
   try {
     mojosAddresses = getContractAddressesForChainOrThrow(CHAIN_ID);
   } catch {}

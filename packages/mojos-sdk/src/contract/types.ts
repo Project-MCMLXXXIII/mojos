@@ -1,9 +1,9 @@
 import {
-  mojosTokenFactory,
-  mojosAuctionHouseFactory,
-  mojosDescriptorFactory,
-  mojosSeederFactory,
-  mojosDaoLogicV1Factory,
+  MojosTokenFactory,
+  MojosAuctionHouseFactory,
+  MojosDescriptorFactory,
+  MojosSeederFactory,
+  MojosDaoLogicV1Factory,
 } from '@mojos/contracts';
 
 export interface ContractAddresses {
@@ -20,11 +20,11 @@ export interface ContractAddresses {
 }
 
 export interface Contracts {
-  mojosTokenContract: ReturnType<typeof mojosTokenFactory.connect>;
-  mojosAuctionHouseContract: ReturnType<typeof mojosAuctionHouseFactory.connect>;
-  mojosDescriptorContract: ReturnType<typeof mojosDescriptorFactory.connect>;
-  mojosSeederContract: ReturnType<typeof mojosSeederFactory.connect>;
-  mojosDaoContract: ReturnType<typeof mojosDaoLogicV1Factory.connect>;
+  mojosTokenContract: ReturnType<typeof MojosTokenFactory.connect>;
+  mojosAuctionHouseContract: ReturnType<typeof MojosAuctionHouseFactory.connect>;
+  mojosDescriptorContract: ReturnType<typeof MojosDescriptorFactory.connect>;
+  mojosSeederContract: ReturnType<typeof MojosSeederFactory.connect>;
+  mojosDaoContract: ReturnType<typeof MojosDaoLogicV1Factory.connect>;
 }
 
 export enum ChainId {

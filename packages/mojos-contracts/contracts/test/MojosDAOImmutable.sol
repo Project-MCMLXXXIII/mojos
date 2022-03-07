@@ -7,7 +7,7 @@ import '../governance/MojosDAOLogicV1.sol';
 contract MojosDAOImmutable is MojosDAOLogicV1 {
     constructor(
         address timelock_,
-        address Mojos_,
+        address mojos_,
         address admin_,
         address vetoer_,
         uint256 votingPeriod_,
@@ -16,14 +16,14 @@ contract MojosDAOImmutable is MojosDAOLogicV1 {
         uint256 quorumVotesBPS_
     ) {
         admin = msg.sender;
-        initialize(timelock_, Mojos_, vetoer_, votingPeriod_, votingDelay_, proposalThresholdBPS_, quorumVotesBPS_);
+        initialize(timelock_, mojos_, vetoer_, votingPeriod_, votingDelay_, proposalThresholdBPS_, quorumVotesBPS_);
 
         admin = admin_;
     }
 
     function initialize(
         address timelock_,
-        address Mojos_,
+        address mojos_,
         address vetoer_,
         uint256 votingPeriod_,
         uint256 votingDelay_,
@@ -34,7 +34,7 @@ contract MojosDAOImmutable is MojosDAOLogicV1 {
         require(address(timelock) == address(0), 'MojosDAO::initialize: can only initialize once');
 
         timelock = IMojosDAOExecutor(timelock_);
-        Mojos = MojosTokenLike(Mojos_);
+        mojos = MojosTokenLike(mojos_);
         vetoer = vetoer_;
         votingPeriod = votingPeriod_;
         votingDelay = votingDelay_;

@@ -1,9 +1,8 @@
 {
   "name": "@mojos/sdk",
   "version": "0.1.5",
-  "description": "Useful tooling for interacting with the mojos protocol",
+  "description": "Useful tooling for interacting with the Mojos protocol",
   "author": "Mojos",
-  "homepage": "https://mojos.wtf",
   "license": "GPL-3.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

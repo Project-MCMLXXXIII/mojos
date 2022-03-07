@@ -16,7 +16,7 @@ export interface Seed {
   glasses: number;
 }
 
-export interface NormalizedNoun {
+export interface NormalizedMojo {
   id: number;
   owner: string;
   delegatedTo: null | string;
@@ -64,31 +64,31 @@ export const normalizeSeed = (seed: any): Seed => ({
   head: Number(seed.head),
 });
 
-export const normalizeNoun = (noun: any): NormalizedNoun => ({
-  id: Number(noun.id),
-  owner: noun.owner.id,
-  delegatedTo: noun.owner.delegate?.id,
-  votes: normalizeVotes(noun.votes),
-  seed: normalizeSeed(noun.seed),
+export const normalizeMojo = (mojo: any): NormalizedMojo => ({
+  id: Number(mojo.id),
+  owner: mojo.owner.id,
+  delegatedTo: mojo.owner.delegate?.id,
+  votes: normalizeVotes(mojo.votes),
+  seed: normalizeSeed(mojo.seed),
 });
 
-export const normalizemojos = R.map(normalizeNoun);
+export const normalizeMojos = R.map(normalizeMojo);
 
 export const normalizeVotes = R.map(normalizeVote);
 
 export const ownerFilterFactory = (address: string) =>
-  R.filter((noun: any) => bigNumbersEqual(address, noun.owner));
+  R.filter((mojo: any) => bigNumbersEqual(address, mojo.owner));
 
-export const isNounOwner = (address: string, mojos: NormalizedNoun[]) =>
+export const isMojoOwner = (address: string, mojos: NormalizedMojo[]) =>
   ownerFilterFactory(address)(mojos).length > 0;
 
 export const delegateFilterFactory = (address: string) =>
-  R.filter((noun: any) => noun.delegatedTo && bigNumbersEqual(address, noun.delegatedTo));
+  R.filter((mojo: any) => mojo.delegatedTo && bigNumbersEqual(address, mojo.delegatedTo));
 
-export const isNounDelegate = (address: string, mojos: NormalizedNoun[]) =>
+export const isMojoDelegate = (address: string, mojos: NormalizedMojo[]) =>
   delegateFilterFactory(address)(mojos).length > 0;
 
 export const mojosQuery = async () =>
-  normalizemojos(
+  normalizeMojos(
     (await axios.post(config.app.subgraphApiUri, { query: mojosGql })).data.data.mojos,
   );

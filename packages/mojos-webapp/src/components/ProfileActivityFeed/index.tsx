@@ -5,56 +5,56 @@ import classes from './ProfileActivityFeed.module.css';
 
 import { useQuery } from '@apollo/client';
 import { Proposal, useAllProposals } from '../../wrappers/mojosDao';
-import { createTimestampAllProposals, nounVotingHistoryQuery } from '../../wrappers/subgraph';
-import NounProfileVoteRow from '../NounProfileVoteRow';
-import { LoadingMojos } from '../Mojos';
-import { useNounCanVoteTimestamp } from '../../wrappers/mojosAuction';
+import { createTimestampAllProposals, mojoVotingHistoryQuery } from '../../wrappers/subgraph';
+import MojoProfileVoteRow from '../MojoProfileVoteRow';
+import { LoadingMojo } from '../Mojo';
+import { useMojoCanVoteTimestamp } from '../../wrappers/mojosAuction';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 interface ProfileActivityFeedProps {
-  nounId: number;
+  mojoId: number;
 }
 
 interface ProposalInfo {
   id: number;
 }
 
-export interface NounVoteHistory {
+export interface MojoVoteHistory {
   proposal: ProposalInfo;
   support: boolean;
   supportDetailed: number;
 }
 
 const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
-  const { nounId } = props;
+  const { mojoId } = props;
 
   const MAX_EVENTS_SHOW_ABOVE_FOLD = 5;
 
   const [truncateProposals, setTruncateProposals] = useState(true);
 
-  const { loading, error, data } = useQuery(nounVotingHistoryQuery(nounId));
+  const { loading, error, data } = useQuery(mojoVotingHistoryQuery(mojoId));
   const {
     loading: proposalTimestampLoading,
     error: proposalTimestampError,
     data: proposalCreatedTimestamps,
   } = useQuery(createTimestampAllProposals());
 
-  const nounCanVoteTimestamp = useNounCanVoteTimestamp(nounId);
+  const mojoCanVoteTimestamp = useMojoCanVoteTimestamp(mojoId);
 
   const { data: proposals } = useAllProposals();
 
   if (loading || !proposals || !proposals.length || proposalTimestampLoading) {
     return <></>;
   } else if (error || proposalTimestampError) {
-    return <div>Failed to fetch noun activity history</div>;
+    return <div>Failed to fetch mojo activity history</div>;
   }
 
-  const nounVotes: { [key: string]: NounVoteHistory } = data.noun.votes
+  const mojoVotes: { [key: string]: MojoVoteHistory } = data.mojo.votes
     .slice(0)
-    .reduce((acc: any, h: NounVoteHistory, i: number) => {
+    .reduce((acc: any, h: MojoVoteHistory, i: number) => {
       acc[h.proposal.id] = h;
       return acc;
     }, {});
@@ -62,8 +62,8 @@ const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
   const filteredProposals = proposals.filter((p: Proposal, id: number) => {
     return (
       parseInt(proposalCreatedTimestamps.proposals[id].createdTimestamp) >
-        nounCanVoteTimestamp.toNumber() ||
-      (p.id && nounVotes[p.id])
+        mojoCanVoteTimestamp.toNumber() ||
+      (p.id && mojoVotes[p.id])
     );
   });
 
@@ -76,36 +76,36 @@ const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
         {filteredProposals && filteredProposals.length ? (
           <>
             <Table responsive hover className={classes.aboveTheFoldEventsTable}>
-              <tbody className={classes.nounInfoPadding}>
+              <tbody className={classes.mojoInfoPadding}>
                 {filteredProposals?.length ? (
                   filteredProposals
                     .slice(0)
                     .reverse()
                     .slice(0, MAX_EVENTS_SHOW_ABOVE_FOLD)
                     .map((p: Proposal, i: number) => {
-                      const vote = p.id ? nounVotes[p.id] : undefined;
-                      return <NounProfileVoteRow proposal={p} vote={vote} key={i} />;
+                      const vote = p.id ? mojoVotes[p.id] : undefined;
+                      return <MojoProfileVoteRow proposal={p} vote={vote} key={i} />;
                     })
                 ) : (
-                  <LoadingMojos />
+                  <LoadingMojo />
                 )}
               </tbody>
             </Table>
             <Collapse in={!truncateProposals}>
               <div>
                 <Table responsive hover>
-                  <tbody className={classes.nounInfoPadding}>
+                  <tbody className={classes.mojoInfoPadding}>
                     {filteredProposals?.length ? (
                       filteredProposals
                         .slice(0)
                         .reverse()
                         .slice(MAX_EVENTS_SHOW_ABOVE_FOLD, filteredProposals.length)
                         .map((p: Proposal, i: number) => {
-                          const vote = p.id ? nounVotes[p.id] : undefined;
-                          return <NounProfileVoteRow proposal={p} vote={vote} key={i} />;
+                          const vote = p.id ? mojoVotes[p.id] : undefined;
+                          return <MojoProfileVoteRow proposal={p} vote={vote} key={i} />;
                         })
                     ) : (
-                      <LoadingMojos />
+                      <LoadingMojo />
                     )}
                   </tbody>
                 </Table>
@@ -137,7 +137,7 @@ const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
           </>
         ) : (
           <div className={classes.nullStateCopy}>
-            This Mojos has no activity, since it was just created. Check back soon!
+            This Mojo has no activity, since it was just created. Check back soon!
           </div>
         )}
       </Col>

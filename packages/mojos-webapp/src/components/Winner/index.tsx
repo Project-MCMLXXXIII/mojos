@@ -8,11 +8,11 @@ import { isMobileScreen } from '../../utils/isMobile';
 
 interface WinnerProps {
   winner: string;
-  isNounders?: boolean;
+  isMojoders?: boolean;
 }
 
 const Winner: React.FC<WinnerProps> = props => {
-  const { winner, isNounders } = props;
+  const { winner, isMojoders } = props;
   const activeAccount = useAppSelector(state => state.account.activeAccount);
 
   const isCool = useAppSelector(state => state.application.isCoolBackground);
@@ -21,7 +21,7 @@ const Winner: React.FC<WinnerProps> = props => {
   const isWinnerYou =
     activeAccount !== undefined && activeAccount.toLocaleLowerCase() === winner.toLocaleLowerCase();
 
-  const nonNounderNounContent = isWinnerYou ? (
+  const nonMojosMojo = isWinnerYou ? (
     <Row className={classes.youSection}>
       <Col lg={4} className={classes.youCopy}>
         <h2
@@ -45,7 +45,7 @@ const Winner: React.FC<WinnerProps> = props => {
     <ShortAddress size={40} address={winner} avatar={true} />
   );
 
-  const nounderNounContent = <h2>nounders.eth</h2>;
+  const mojosMojoContent = <h2>mojoders.eth</h2>;
 
   return (
     <>
@@ -66,7 +66,7 @@ const Winner: React.FC<WinnerProps> = props => {
               color: isCool ? 'var(--brand-cool-dark-text)' : 'var(--brand-warm-dark-text)',
             }}
           >
-            {isNounders ? nounderNounContent : nonNounderNounContent}
+            {isMojoders ? mojosMojoContent : nonMojosMojo}
           </h2>
         </Col>
       </Row>

@@ -5,11 +5,11 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: mojosAuctionHouse
+    name: MojosAuctionHouse
     network: {{network}}
     source:
       address: '{{mojosAuctionHouse.address}}'
-      abi: mojosAuctionHouse
+      abi: MojosAuctionHouse
       startBlock: {{mojosAuctionHouse.startBlock}}
     mapping:
       kind: ethereum/events
@@ -20,10 +20,10 @@ dataSources:
         - Account
         - Auction
         - Bid
-        - Mojos
+        - Mojo
       abis:
-        - name: mojosAuctionHouse
-          file: ../mojos-contracts/abi/contracts/mojosAuctionHouse.sol/mojosAuctionHouse.json
+        - name: MojosAuctionHouse
+          file: ../mojos-contracts/abi/contracts/MojosAuctionHouse.sol/MojosAuctionHouse.json
       eventHandlers:
         - event: AuctionCreated(indexed uint256,uint256,uint256)
           handler: handleAuctionCreated
@@ -34,11 +34,11 @@ dataSources:
         - event: AuctionSettled(indexed uint256,address,uint256)
           handler: handleAuctionSettled
   - kind: ethereum/contract
-    name: mojosToken
+    name: MojosToken
     network: {{network}}
     source:
       address: '{{mojosToken.address}}'
-      abi: mojosToken
+      abi: MojosToken
       startBlock: {{mojosToken.startBlock}}
     mapping:
       kind: ethereum/events
@@ -46,17 +46,17 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/mojos-erc-721.ts
       entities:
-        - Mojos
+        - Mojo
         - Seed
         - Account
         - Delegate
         - Governance
       abis:
-        - name: mojosToken
-          file: ../mojos-contracts/abi/contracts/mojosToken.sol/mojosToken.json
+        - name: MojosToken
+          file: ../mojos-contracts/abi/contracts/MojosToken.sol/MojosToken.json
       eventHandlers:
-        - event: NounCreated(indexed uint256,(uint48,uint48,uint48,uint48,uint48))
-          handler: handleNounCreated
+        - event: MojoCreated(indexed uint256,(uint48,uint48,uint48,uint48,uint48))
+          handler: handleMojoCreated
         - event: DelegateChanged(indexed address,indexed address,indexed address)
           handler: handleDelegateChanged
         - event: DelegateVotesChanged(indexed address,uint256,uint256)
@@ -64,11 +64,11 @@ dataSources:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
   - kind: ethereum/contract
-    name: mojosDAO
+    name: MojosDAO
     network: {{network}}
     source:
       address: '{{mojosDAO.address}}'
-      abi: mojosDAO
+      abi: MojosDAO
       startBlock: {{mojosDAO.startBlock}}
     mapping:
       kind: ethereum/events
@@ -82,8 +82,8 @@ dataSources:
         - Vote
         - Governance
       abis:
-        - name: mojosDAO
-          file: ../mojos-contracts/abi/contracts/governance/mojosDAOLogicV1.sol/mojosDAOLogicV1.json
+        - name: MojosDAO
+          file: ../mojos-contracts/abi/contracts/governance/MojosDAOLogicV1.sol/MojosDAOLogicV1.json
       eventHandlers:
         - event: ProposalCreatedWithRequirements(uint256,address,address[],uint256[],string[],bytes[],uint256,uint256,uint256,uint256,string)
           handler: handleProposalCreatedWithRequirements

@@ -1,7 +1,7 @@
 import { config } from './config';
 import { Contract, providers } from 'ethers';
 import { NFTStorage } from 'nft.storage';
-import { mojosTokenABI } from '@mojos/contracts';
+import { MojosTokenABI } from '@mojos/contracts';
 import Redis from 'ioredis';
 
 /**
@@ -20,10 +20,10 @@ export const redis = new Redis(config.redisPort, config.redisHost);
 export const jsonRpcProvider = new providers.JsonRpcProvider(config.jsonRpcUrl);
 
 /**
- * mojos ERC721 Token Contract
+ * Mojos ERC721 Token Contract
  */
 export const mojosTokenContract = new Contract(
   config.mojosTokenAddress,
-  mojosTokenABI,
+  MojosTokenABI,
   jsonRpcProvider,
 );

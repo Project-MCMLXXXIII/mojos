@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "A subgraph that indexes mojos events",
   "author": "Mojos",
-  "homepage": "https://mojos.wtf",
   "license": "GPL-3.0",
   "main": "build/index.js",
   "directories": {

@@ -1,22 +1,21 @@
-.nounWrapper {
+.mojoWrapper {
   align-self: flex-end;
   width: 100%;
 }
 
-.nounContentCol {
+.mojoContentCol {
   display: flex;
 }
 
 .auctionActivityCol {
   padding-right: 5rem;
-  padding-bottom: 1rem;
+  padding-bottom: 0rem;
   min-height: 520px;
-  align-self: start !important;
-  /* maintains auction arrow buttons fixed from auction to auction  */
+  align-self: flex-end !important;
 }
 
 @media (max-width: 992px) {
-  .nounWrapper {
+  .mojoWrapper {
     width: 70%;
     margin-left: 15%;
     margin-right: 15%;
@@ -41,10 +40,14 @@
     padding-left: 0;
   }
 
-  .nounWrapper {
+  .mojoWrapper {
     width: 80%;
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 2rem;
+  }
+
+  .mojoContentCol {
+    padding: 0rem;
   }
 }

@@ -53,7 +53,7 @@ const WalletConnectModal: React.FC<{ onDismiss: () => void }> = props => {
       <WalletButton
         onClick={() => {
           const walletlink = new WalletLinkConnector({
-            appName: 'mojos.WTF',
+            appName: 'Mojos.WTF',
             appLogoUrl: 'https://mojos.wtf/static/media/logo.cdea1650.svg',
             url: config.app.jsonRpcUri,
             supportedChainIds,
@@ -88,7 +88,7 @@ const WalletConnectModal: React.FC<{ onDismiss: () => void }> = props => {
             chainId: CHAIN_ID,
             url: config.app.jsonRpcUri,
             manifestAppUrl: 'https://mojos.wtf',
-            manifestEmail: 'nounops+trezorconnect@protonmail.com',
+            manifestEmail: 'mojoops+trezorconnect@protonmail.com',
           });
           activate(trezor);
         }}

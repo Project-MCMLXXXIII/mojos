@@ -39,7 +39,7 @@ import './MojosDAOInterfaces.sol';
 contract MojosDAOProxy is MojosDAOProxyStorage, MojosDAOEvents {
     constructor(
         address timelock_,
-        address Mojos_,
+        address mojos_,
         address vetoer_,
         address admin_,
         address implementation_,
@@ -56,7 +56,7 @@ contract MojosDAOProxy is MojosDAOProxyStorage, MojosDAOEvents {
             abi.encodeWithSignature(
                 'initialize(address,address,address,uint256,uint256,uint256,uint256)',
                 timelock_,
-                Mojos_,
+                mojos_,
                 vetoer_,
                 votingPeriod_,
                 votingDelay_,

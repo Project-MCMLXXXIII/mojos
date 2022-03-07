@@ -1,6 +1,6 @@
 # @mojos/bots
 
-A bot that monitors for changes in Mojos auction state and notifies everyone via Twitter and Discord.
+A bot that monitors for changes in Mojo auction state and notifies everyone via Twitter and Discord.
 
 ## Install dependencies
 

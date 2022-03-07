@@ -16,7 +16,7 @@ yarn test
 
 ## Usage
 
-The mojos SDK contains useful tooling for interacting with the mojos protocol.
+The Mojos SDK contains useful tooling for interacting with the Mojos protocol.
 
 ### Contracts
 
@@ -41,7 +41,7 @@ const { mojosTokenContract } = getContractsForChainOrThrow(ChainId.Mainnet, prov
 **Get Contract ABIs**
 
 ```ts
-import { mojosTokenABI } from '@mojos/sdk';
+import { MojosTokenABI } from '@mojos/sdk';
 ```
 
 ### Images

@@ -8,7 +8,7 @@ export const config = {
   redisDb: Number(process.env.REDIS_DB ?? 0),
   redisPassword: process.env.REDIS_PASSWORD,
   mojosSubgraph:
-    process.env.mojos_SUBGRAPH_URL ??
+    process.env.MOJOS_SUBGRAPH_URL ??
     'https://api.thegraph.com/subgraphs/name/mojosdao/mojos-subgraph',
   twitterEnabled: process.env.TWITTER_ENABLED === 'true',
   twitterAppKey: process.env.TWITTER_APP_KEY ?? '',
@@ -16,7 +16,7 @@ export const config = {
   twitterAccessToken: process.env.TWITTER_ACCESS_TOKEN ?? '',
   twitterAccessSecret: process.env.TWITTER_ACCESS_SECRET ?? '',
   mojosTokenAddress:
-    process.env.mojos_TOKEN_ADDRESS ?? '0x9C8fF314C9Bc7F6e59A9d9225Fb22946427eDC03',
+    process.env.MOJOS_TOKEN_ADDRESS ?? '0x9C8fF314C9Bc7F6e59A9d9225Fb22946427eDC03',
   jsonRpcUrl: process.env.JSON_RPC_URL ?? 'http://localhost:8545',
   discordEnabled: process.env.DISCORD_ENABLED === 'true',
   discordWebhookToken: process.env.DISCORD_WEBHOOK_TOKEN ?? '',

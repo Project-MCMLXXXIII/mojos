@@ -5,7 +5,7 @@ import { useEtherBalance } from '@usedapp/core';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Nav, Navbar, Container } from 'react-bootstrap';
-import testnetNoun from '../../assets/testnet-noun.png';
+import testnetMojo from '../../assets/testnet-mojo.png';
 import config, { CHAIN_ID } from '../../config';
 import { utils } from 'ethers';
 import { buildEtherscanHoldingsLink } from '../../utils/etherscan';
@@ -32,7 +32,7 @@ const NavBar = () => {
 
   const useStateBg =
     history.location.pathname === '/' ||
-    history.location.pathname.includes('/noun/') ||
+    history.location.pathname.includes('/mojo/') ||
     history.location.pathname.includes('/auction/');
 
   const nonWalletButtonStyle = !useStateBg
@@ -51,11 +51,11 @@ const NavBar = () => {
         <Container style={{ maxWidth: 'unset' }}>
           <div className={classes.brandAndTreasuryWrapper}>
             <Navbar.Brand as={Link} to="/" className={classes.navBarBrand}>
-              <img src={logo} className={classes.navBarLogo} alt="mojos DAO logo" />
+              <img src={logo} className={classes.navBarLogo} alt="Mojos DAO logo" />
             </Navbar.Brand>
             {Number(CHAIN_ID) !== 1 && (
               <Nav.Item>
-                <img className={classes.testnetImg} src={testnetNoun} alt="testnet noun" />
+                <img className={classes.testnetImg} src={testnetMojo} alt="testnet mojo" />
                 TESTNET
               </Nav.Item>
             )}

@@ -2,37 +2,37 @@ import { BigNumber, BigNumberish } from 'ethers';
 import Section from '../../layout/Section';
 import classes from './HistoryCollection.module.css';
 import clsx from 'clsx';
-import StandaloneNoun from '../StandaloneNoun';
-import { LoadingMojos } from '../Mojos';
+import StandaloneMojo from '../StandaloneMojo';
+import { LoadingMojo } from '../Mojo';
 import config from '../../config';
 import { Container, Row } from 'react-bootstrap';
 
 interface HistoryCollectionProps {
   historyCount: number;
-  latestNounId: BigNumberish;
+  latestMojoId: BigNumberish;
 }
 
 const HistoryCollection: React.FC<HistoryCollectionProps> = (props: HistoryCollectionProps) => {
-  const { historyCount, latestNounId } = props;
+  const { historyCount, latestMojoId } = props;
 
-  if (!latestNounId) return null;
+  if (!latestMojoId) return null;
 
-  const startAtZero = BigNumber.from(latestNounId).sub(historyCount).lt(0);
+  const startAtZero = BigNumber.from(latestMojoId).sub(historyCount).lt(0);
 
-  let nounIds: Array<BigNumber | null> = new Array(historyCount);
-  nounIds = nounIds.fill(null).map((_, i) => {
-    if (BigNumber.from(i).lt(latestNounId)) {
+  let mojoIds: Array<BigNumber | null> = new Array(historyCount);
+  mojoIds = mojoIds.fill(null).map((_, i) => {
+    if (BigNumber.from(i).lt(latestMojoId)) {
       const index = startAtZero
         ? BigNumber.from(0)
-        : BigNumber.from(Number(latestNounId) - historyCount);
+        : BigNumber.from(Number(latestMojoId) - historyCount);
       return index.add(i);
     } else {
       return null;
     }
   });
 
-  const mojosContent = nounIds.map((nounId, i) => {
-    return !nounId ? <LoadingMojos key={i} /> : <StandaloneNoun key={i} nounId={nounId} />;
+  const mojosContent = mojoIds.map((mojoId, i) => {
+    return !mojoId ? <LoadingMojo key={i} /> : <StandaloneMojo key={i} mojoId={mojoId} />;
   });
 
   return (

@@ -37,6 +37,7 @@ library MultiPartRLEToSVG {
     struct DecodedImage {
         uint8 paletteIndex;
         ContentBounds bounds;
+        uint256 width;
         Rect[] rects;
     }
 
@@ -102,7 +103,7 @@ library MultiPartRLEToSVG {
                 }
 
                 currentX += rect.length;
-                if (currentX == image.bounds.right) {
+                if (currentX - image.bounds.left == image.width) {
                     currentX = image.bounds.left;
                     currentY++;
                 }
@@ -144,6 +145,7 @@ library MultiPartRLEToSVG {
             bottom: uint8(image[3]),
             left: uint8(image[4])
         });
+        uint256 width = bounds.right - bounds.left;
 
         uint256 cursor;
         Rect[] memory rects = new Rect[]((image.length - 5) / 2);
@@ -151,6 +153,6 @@ library MultiPartRLEToSVG {
             rects[cursor] = Rect({ length: uint8(image[i]), colorIndex: uint8(image[i + 1]) });
             cursor++;
         }
-        return DecodedImage({ paletteIndex: paletteIndex, bounds: bounds, rects: rects });
+        return DecodedImage({ paletteIndex: paletteIndex, bounds: bounds, width: width, rects: rects });
     }
 }

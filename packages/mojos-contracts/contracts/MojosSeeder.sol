@@ -21,34 +21,34 @@ import { IMojosDescriptor } from './interfaces/IMojosDescriptor.sol';
 
 contract MojosSeeder is IMojosSeeder {
     /**
-     * @notice Generate a pseudo-random Mojos seed using the previous blockhash and noun ID.
+     * @notice Generate a pseudo-random Mojo seed using the previous blockhash and Mojo ID.
      */
     // prettier-ignore
-    function generateSeed(uint256 nounId, IMojosDescriptor descriptor) external view override returns (Seed memory) {
+    function generateSeed(uint256 mojoId, IMojosDescriptor descriptor) external view override returns (Seed memory) {
         uint256 pseudorandomness = uint256(
-            keccak256(abi.encodePacked(blockhash(block.number - 1), nounId))
+            keccak256(abi.encodePacked(blockhash(block.number - 1), mojoId))
         );
 
         uint256 backgroundCount = descriptor.backgroundCount();
         uint256 bodyCount = descriptor.bodyCount();
-        uint256 accessoryCount = descriptor.accessoryCount();
-        uint256 headCount = descriptor.headCount();
-        uint256 glassesCount = descriptor.glassesCount();
+        uint256 accessoryCount = descriptor.bodyAccessoryCount();
+        uint256 headCount  = descriptor.faceCount();
+        uint256 glassesCount  = descriptor.headAccessoryCount();
 
         return Seed({
-            background: uint48(
+        background: uint48(
                 uint48(pseudorandomness) % backgroundCount
             ),
-            body: uint48(
+        body: uint48(
                 uint48(pseudorandomness >> 48) % bodyCount
             ),
-            accessory: uint48(
+        accessory: uint48(
                 uint48(pseudorandomness >> 96) % accessoryCount
             ),
-            head: uint48(
+        head: uint48(
                 uint48(pseudorandomness >> 144) % headCount
             ),
-            glasses: uint48(
+        glasses: uint48(
                 uint48(pseudorandomness >> 192) % glassesCount
             )
         });

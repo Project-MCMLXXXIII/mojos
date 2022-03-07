@@ -27,8 +27,8 @@ interface Contract {
 }
 
 task('deploy', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosToken')
-  .addParam('noundersdao', 'The nounders DAO contract address', undefined, types.string)
-  .addParam('weth', 'The WETH contract address', undefined, types.string)
+  .addOptionalParam('mojosdao', 'The mojos DAO contract address', undefined, types.string)
+  .addOptionalParam('weth', 'The WETH contract address', undefined, types.string)
   .addOptionalParam('auctionTimeBuffer', 'The auction time buffer (seconds)', 5 * 60, types.int)
   .addOptionalParam('auctionReservePrice', 'The auction reserve price (wei)', 1, types.int)
   .addOptionalParam(
@@ -43,6 +43,11 @@ task('deploy', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosTo
   .addOptionalParam('votingDelay', 'The voting delay (blocks)', 1, types.int) // Default: 1 block
   .addOptionalParam('proposalThresholdBps', 'The proposal threshold (basis points)', 500, types.int) // Default: 5%
   .addOptionalParam('quorumVotesBps', 'Votes required for quorum (basis points)', 1_000, types.int) // Default: 10%
+  .addOptionalParam(
+    'multiSigFeeWallet',
+    'MultiSig wallet for fees',
+    '0x50779Ecf871ba1a1BD97a5C7379fd8e3c35b2abB',
+  ) // Must change
   .setAction(async (args, { ethers }) => {
     const network = await ethers.provider.getNetwork();
     const proxyRegistryAddress =
@@ -73,7 +78,7 @@ task('deploy', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosTo
       MojosSeeder: {},
       MojosToken: {
         args: [
-          args.noundersdao,
+          args.mojosdao || deployer.address,
           expectedAuctionHouseProxyAddress,
           () => contracts['MojosDescriptor'].address,
           () => contracts['MojosSeeder'].address,
@@ -96,6 +101,7 @@ task('deploy', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosTo
               args.auctionReservePrice,
               args.auctionMinIncrementBidPercentage,
               args.auctionDuration,
+              args.multiSigFeeWallet,
             ]),
         ],
       },
@@ -109,7 +115,7 @@ task('deploy', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosTo
         args: [
           () => contracts['MojosDAOExecutor'].address,
           () => contracts['MojosToken'].address,
-          args.noundersdao,
+          args.mojosdao || deployer.address,
           () => contracts['MojosDAOExecutor'].address,
           () => contracts['MojosDAOLogicV1'].address,
           args.votingPeriod,
@@ -131,7 +137,7 @@ task('deploy', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosTo
           gasPrice: {
             type: 'integer',
             required: true,
-            description: 'Enter a gas price (gwei)',
+            description: `${network.chainId} - Enter a gas price (gwei)`,
             default: gasInGwei,
           },
         },
@@ -159,7 +165,7 @@ task('deploy', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosTo
         `Estimated cost to deploy ${name}: ${ethers.utils.formatUnits(
           deploymentCost,
           'ether',
-        )} ETH`,
+        )} FTM`,
       );
 
       result = await promptjs.get([

@@ -1,21 +1,21 @@
 import { Col } from 'react-bootstrap';
-import { StandaloneNounWithSeed } from '../StandaloneNoun';
+import { StandaloneMojoWithSeed } from '../StandaloneMojo';
 import AuctionActivity from '../AuctionActivity';
 import { Row, Container } from 'react-bootstrap';
 import { setStateBackgroundColor } from '../../state/slices/application';
-import { LoadingMojos } from '../Mojos';
+import { LoadingMojo } from '../Mojo';
 import { Auction as IAuction } from '../../wrappers/mojosAuction';
 import classes from './Auction.module.css';
 import { IMojoSeed } from '../../wrappers/mojosToken';
-import NounderNounContent from '../NounderNounContent';
+import MojosMojo from '../MojosMojoContent';
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { isNounderNoun } from '../../utils/nounderNoun';
+import { isMojoderMojo } from '../../utils/mojosMojo';
 import {
-  setNextOnDisplayAuctionNounId,
-  setPrevOnDisplayAuctionNounId,
+  setNextOnDisplayAuctionMojoId,
+  setPrevOnDisplayAuctionMojoId,
 } from '../../state/slices/onDisplayAuction';
-import { beige, grey } from '../../utils/nounBgColors';
+import { beige, grey } from '../../utils/mojosBgColors';
 
 interface AuctionProps {
   auction?: IAuction;
@@ -27,53 +27,53 @@ const Auction: React.FC<AuctionProps> = props => {
   const history = useHistory();
   const dispatch = useAppDispatch();
   let stateBgColor = useAppSelector(state => state.application.stateBackgroundColor);
-  const lastNounId = useAppSelector(state => state.onDisplayAuction.lastAuctionNounId);
+  const lastMojoId = useAppSelector(state => state.onDisplayAuction.lastAuctionMojoId);
 
-  const loadedNounHandler = (seed: IMojoSeed) => {
+  const loadedMojoHandler = (seed: IMojoSeed) => {
     dispatch(setStateBackgroundColor(seed.background === 0 ? grey : beige));
   };
 
   const prevAuctionHandler = () => {
-    dispatch(setPrevOnDisplayAuctionNounId());
-    currentAuction && history.push(`/noun/${currentAuction.nounId.toNumber() - 1}`);
+    dispatch(setPrevOnDisplayAuctionMojoId());
+    currentAuction && history.push(`/mojo/${currentAuction.mojoId.toNumber() - 1}`);
   };
   const nextAuctionHandler = () => {
-    dispatch(setNextOnDisplayAuctionNounId());
-    currentAuction && history.push(`/noun/${currentAuction.nounId.toNumber() + 1}`);
+    dispatch(setNextOnDisplayAuctionMojoId());
+    currentAuction && history.push(`/mojo/${currentAuction.mojoId.toNumber() + 1}`);
   };
 
-  const nounContent = currentAuction && (
-    <div className={classes.nounWrapper}>
-      <StandaloneNounWithSeed
-        nounId={currentAuction.nounId}
-        onLoadSeed={loadedNounHandler}
+  const mojoContent = currentAuction && (
+    <div className={classes.mojoWrapper}>
+      <StandaloneMojoWithSeed
+        mojoId={currentAuction.mojoId}
+        onLoadSeed={loadedMojoHandler}
         shouldLinkToProfile={false}
       />
     </div>
   );
 
-  const loadingNoun = (
-    <div className={classes.nounWrapper}>
-      <LoadingMojos />
+  const loadingMojo = (
+    <div className={classes.mojoWrapper}>
+      <LoadingMojo />
     </div>
   );
 
-  const currentAuctionActivityContent = currentAuction && lastNounId && (
+  const currentAuctionActivityContent = currentAuction && lastMojoId && (
     <AuctionActivity
       auction={currentAuction}
-      isFirstAuction={currentAuction.nounId.eq(0)}
-      isLastAuction={currentAuction.nounId.eq(lastNounId)}
+      isFirstAuction={currentAuction.mojoId.eq(0)}
+      isLastAuction={currentAuction.mojoId.eq(lastMojoId)}
       onPrevAuctionClick={prevAuctionHandler}
       onNextAuctionClick={nextAuctionHandler}
       displayGraphDepComps={true}
     />
   );
-  const nounderNounContent = currentAuction && lastNounId && (
-    <NounderNounContent
+  const mojosMojoContent = currentAuction && lastMojoId && (
+    <MojosMojo
       mintTimestamp={currentAuction.startTime}
-      nounId={currentAuction.nounId}
-      isFirstAuction={currentAuction.nounId.eq(0)}
-      isLastAuction={currentAuction.nounId.eq(lastNounId)}
+      mojoId={currentAuction.mojoId}
+      isFirstAuction={currentAuction.mojoId.eq(0)}
+      isLastAuction={currentAuction.mojoId.eq(lastMojoId)}
       onPrevAuctionClick={prevAuctionHandler}
       onNextAuctionClick={nextAuctionHandler}
     />
@@ -83,13 +83,13 @@ const Auction: React.FC<AuctionProps> = props => {
     <div style={{ backgroundColor: stateBgColor }} className={classes.wrapper}>
       <Container fluid="xl">
         <Row>
-          <Col lg={{ span: 6 }} className={classes.nounContentCol}>
-            {currentAuction ? nounContent : loadingNoun}
+          <Col lg={{ span: 6 }} className={classes.mojoContentCol}>
+            {currentAuction ? mojoContent : loadingMojo}
           </Col>
           <Col lg={{ span: 6 }} className={classes.auctionActivityCol}>
             {currentAuction &&
-              (isNounderNoun(currentAuction.nounId)
-                ? nounderNounContent
+              (isMojoderMojo(currentAuction.mojoId)
+                ? mojosMojoContent
                 : currentAuctionActivityContent)}
           </Col>
         </Row>

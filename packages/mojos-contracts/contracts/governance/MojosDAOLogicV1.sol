@@ -26,13 +26,13 @@
 // MODIFICATIONS
 // MojosDAOLogicV1 adds:
 // - Proposal Threshold basis points instead of fixed number
-//   due to the Mojos token's increasing supply
+//   due to the Mojo token's increasing supply
 //
 // - Quorum Votes basis points instead of fixed number
-//   due to the Mojos token's increasing supply
+//   due to the Mojo token's increasing supply
 //
 // - Per proposal storing of fixed `proposalThreshold`
-//   and `quorumVotes` calculated using the Mojos token's total supply
+//   and `quorumVotes` calculated using the Mojo token's total supply
 //   at the block the proposal was created and the basis point parameters
 //
 // - `ProposalCreatedWithRequirements` event that emits `ProposalCreated` parameters with
@@ -102,7 +102,7 @@ contract MojosDAOLogicV1 is MojosDAOStorageV1, MojosDAOEvents {
     /**
      * @notice Used to initialize the contract during delegator contructor
      * @param timelock_ The address of the MojosDAOExecutor
-     * @param Mojos_ The address of the NOUN tokens
+     * @param mojos_ The address of the MOJOS tokens
      * @param vetoer_ The address allowed to unilaterally veto proposals
      * @param votingPeriod_ The initial voting period
      * @param votingDelay_ The initial voting delay
@@ -111,7 +111,7 @@ contract MojosDAOLogicV1 is MojosDAOStorageV1, MojosDAOEvents {
      */
     function initialize(
         address timelock_,
-        address Mojos_,
+        address mojos_,
         address vetoer_,
         uint256 votingPeriod_,
         uint256 votingDelay_,
@@ -121,7 +121,7 @@ contract MojosDAOLogicV1 is MojosDAOStorageV1, MojosDAOEvents {
         require(address(timelock) == address(0), 'MojosDAO::initialize: can only initialize once');
         require(msg.sender == admin, 'MojosDAO::initialize: admin only');
         require(timelock_ != address(0), 'MojosDAO::initialize: invalid timelock address');
-        require(Mojos_ != address(0), 'MojosDAO::initialize: invalid Mojos address');
+        require(mojos_ != address(0), 'MojosDAO::initialize: invalid mojos address');
         require(
             votingPeriod_ >= MIN_VOTING_PERIOD && votingPeriod_ <= MAX_VOTING_PERIOD,
             'MojosDAO::initialize: invalid voting period'
@@ -145,7 +145,7 @@ contract MojosDAOLogicV1 is MojosDAOStorageV1, MojosDAOEvents {
         emit QuorumVotesBPSSet(quorumVotesBPS, quorumVotesBPS_);
 
         timelock = IMojosDAOExecutor(timelock_);
-        Mojos = MojosTokenLike(Mojos_);
+        mojos = MojosTokenLike(mojos_);
         vetoer = vetoer_;
         votingPeriod = votingPeriod_;
         votingDelay = votingDelay_;
@@ -179,12 +179,12 @@ contract MojosDAOLogicV1 is MojosDAOStorageV1, MojosDAOEvents {
     ) public returns (uint256) {
         ProposalTemp memory temp;
 
-        temp.totalSupply = Mojos.totalSupply();
+        temp.totalSupply = mojos.totalSupply();
 
         temp.proposalThreshold = bps2Uint(proposalThresholdBPS, temp.totalSupply);
 
         require(
-            Mojos.getPriorVotes(msg.sender, block.number - 1) > temp.proposalThreshold,
+            mojos.getPriorVotes(msg.sender, block.number - 1) > temp.proposalThreshold,
             'MojosDAO::propose: proposer votes below proposal threshold'
         );
         require(
@@ -337,7 +337,7 @@ contract MojosDAOLogicV1 is MojosDAOStorageV1, MojosDAOEvents {
         Proposal storage proposal = proposals[proposalId];
         require(
             msg.sender == proposal.proposer ||
-                Mojos.getPriorVotes(proposal.proposer, block.number - 1) < proposal.proposalThreshold,
+                mojos.getPriorVotes(proposal.proposer, block.number - 1) < proposal.proposalThreshold,
             'MojosDAO::cancel: proposer above threshold'
         );
 
@@ -504,7 +504,7 @@ contract MojosDAOLogicV1 is MojosDAOStorageV1, MojosDAOEvents {
         require(receipt.hasVoted == false, 'MojosDAO::castVoteInternal: voter already voted');
 
         /// @notice: Unlike GovernerBravo, votes are considered from the block the proposal was created in order to normalize quorumVotes and proposalThreshold metrics
-        uint96 votes = Mojos.getPriorVotes(voter, proposal.startBlock - votingDelay);
+        uint96 votes = mojos.getPriorVotes(voter, proposal.startBlock - votingDelay);
 
         if (support == 0) {
             proposal.againstVotes = proposal.againstVotes + votes;
@@ -653,19 +653,19 @@ contract MojosDAOLogicV1 is MojosDAOStorageV1, MojosDAOEvents {
     }
 
     /**
-     * @notice Current proposal threshold using Mojos Total Supply
+     * @notice Current proposal threshold using Mojo Total Supply
      * Differs from `GovernerBravo` which uses fixed amount
      */
     function proposalThreshold() public view returns (uint256) {
-        return bps2Uint(proposalThresholdBPS, Mojos.totalSupply());
+        return bps2Uint(proposalThresholdBPS, mojos.totalSupply());
     }
 
     /**
-     * @notice Current quorum votes using Mojos Total Supply
+     * @notice Current quorum votes using Mojo Total Supply
      * Differs from `GovernerBravo` which uses fixed amount
      */
     function quorumVotes() public view returns (uint256) {
-        return bps2Uint(quorumVotesBPS, Mojos.totalSupply());
+        return bps2Uint(quorumVotesBPS, mojos.totalSupply());
     }
 
     function bps2Uint(uint256 bps, uint256 number) internal pure returns (uint256) {

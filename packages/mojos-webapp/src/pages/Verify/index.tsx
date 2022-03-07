@@ -20,21 +20,21 @@ const VerifyPage: React.FC<VerifyPageProp> = props => {
   const [signedMessage, setSignedMessage] = useState<undefined | object>(undefined);
   const { library } = useEthers();
 
-  const extractOwnedNounIdsFrommojosIndex = (owner: string | undefined, mojosIndex: any) =>
+  const extractOwnedMojoIdsFromMojosIndex = (owner: string | undefined, mojosIndex: any) =>
     R.pipe(
       (mojos: any) =>
-        mojos.filter((noun: any) =>
+        mojos.filter((mojo: any) =>
           !owner
             ? false
-            : (noun.owner.id as string)
+            : (mojo.owner.id as string)
                 .toLocaleLowerCase()
                 .localeCompare(owner.toLocaleLowerCase()) === 0,
         ),
-      R.map((noun: any) => Number(noun.id)),
+      R.map((mojo: any) => Number(mojo.id)),
       R.sort((a: number, b: number) => a - b),
     )(mojosIndex.mojos);
 
-  const loadingContent = () => <div className={classes.loadingContent}>loading your mojos...</div>;
+  const loadingContent = () => <div className={classes.loadingContent}>loading your Mojos...</div>;
 
   useEffect(() => {
     if (!data) return;
@@ -42,12 +42,12 @@ const VerifyPage: React.FC<VerifyPageProp> = props => {
       [
         activeAccount ? `I am ${activeAccount}` : undefined,
         mojos.length > 0
-          ? ` and I own Mojos${mojos.length > 1 ? 's' : ''} ${mojos.join(', ')}`
+          ? ` and I own Mojo${mojos.length > 1 ? 's' : ''} ${mojos.join(', ')}`
           : undefined,
       ]
         .filter((part: string | undefined) => part)
         .join(' ');
-    setMessageToSign(initialMessage(extractOwnedNounIdsFrommojosIndex(activeAccount, data)));
+    setMessageToSign(initialMessage(extractOwnedMojoIdsFromMojosIndex(activeAccount, data)));
   }, [data, activeAccount]);
 
   return (

@@ -1,5 +1,5 @@
 type Seed @entity {
-  "The Mojos's ERC721 token id"
+  "The Mojo's ERC721 token id"
   id: ID!
 
   "The background index"
@@ -18,17 +18,17 @@ type Seed @entity {
   glasses: BigInt!
 }
 
-type Mojos @entity {
-  "The Mojos's ERC721 token id"
+type Mojo @entity {
+  "The Mojo's ERC721 token id"
   id: ID!
 
-  "The seed used to determine the Mojos's traits"
+  "The seed used to determine the Mojo's traits"
   seed: Seed
 
-  "The owner of the Mojos"
+  "The owner of the Mojo"
   owner: Account!
 
-  "Historical votes for the Mojos"
+  "Historical votes for the Mojo"
   votes: [Vote!]! @derivedFrom(field: "mojos")
 }
 
@@ -36,8 +36,8 @@ type Bid @entity {
   "Bid transaction hash"
   id: ID!
 
-  "The Mojos being bid on"
-  noun: Mojos!
+  "The Mojo being bid on"
+  mojo: Mojo!
 
   "Bid amount"
   amount: BigInt!
@@ -59,11 +59,11 @@ type Bid @entity {
 }
 
 type Auction @entity {
-  "The Mojos's ERC721 token id"
+  "The Mojo's ERC721 token id"
   id: ID!
 
-  "The Mojos"
-  noun: Mojos!
+  "The Mojo"
+  mojo: Mojo!
 
   "The current highest bid amount"
   amount: BigInt!
@@ -94,36 +94,36 @@ enum ProposalStatus {
 }
 
 type Account @entity {
-  "An Account is any address that holds any amount of mojos, the id used is the blockchain address."
+  "An Account is any address that holds any amount of Mojos, the id used is the blockchain address."
   id: ID!
 
   "Delegate address of the token holder which will participate in votings. Delegates don't need to hold any tokens and can even be the token holder itself."
   delegate: Delegate
 
-  "Mojos balance of this address expressed in the smallest unit of the mojos ERC721 Token"
+  "Mojo balance of this address expressed in the smallest unit of the Mojos ERC721 Token"
   tokenBalanceRaw: BigInt!
 
-  "Mojos balance of this address expressed as a BigInt normalized value for the mojos ERC721 Token"
+  "Mojo balance of this address expressed as a BigInt normalized value for the Mojos ERC721 Token"
   tokenBalance: BigInt!
 
-  "Total amount of mojos ever held by this address expressed in the smallest unit of the mojos ERC721 Token"
+  "Total amount of Mojos ever held by this address expressed in the smallest unit of the Mojos ERC721 Token"
   totalTokensHeldRaw: BigInt!
 
-  "Total amount of mojos ever held by this address expressed as a BigInt normalized value for the mojos ERC721 Token"
+  "Total amount of Mojos ever held by this address expressed as a BigInt normalized value for the Mojos ERC721 Token"
   totalTokensHeld: BigInt!
 
-  "The mojos owned by this account"
-  mojos: [Mojos!]!
+  "The Mojos owned by this account"
+  mojos: [Mojo!]!
 }
 
 type Delegate @entity {
   "A Delegate is any address that has been delegated with voting tokens by a token holder, id is the blockchain address of said delegate"
   id: ID!
 
-  "Amount of votes delegated to this delegate to be used on proposal votings expressed in the smallest unit of the mojos ERC721 Token"
+  "Amount of votes delegated to this delegate to be used on proposal votings expressed in the smallest unit of the Mojos ERC721 Token"
   delegatedVotesRaw: BigInt!
 
-  "Amount of votes delegated to this delegate to be used on proposal votings expressed as a BigInt normalized value for the mojos ERC721 Token"
+  "Amount of votes delegated to this delegate to be used on proposal votings expressed as a BigInt normalized value for the Mojos ERC721 Token"
   delegatedVotes: BigInt!
 
   tokenHoldersRepresentedAmount: Int!
@@ -131,8 +131,8 @@ type Delegate @entity {
   "Token holders that this delegate represents"
   tokenHoldersRepresented: [Account!]! @derivedFrom(field: "delegate")
 
-  "mojos that this delegate represents"
-  mojosRepresented: [Mojos!]!
+  "Mojos that this delegate represents"
+  mojosRepresented: [Mojo!]!
 
   "Votes that a delegate has made in different proposals"
   votes: [Vote!]! @derivedFrom(field: "voter")
@@ -198,17 +198,17 @@ type Vote @entity {
   "The integer support value: against (0), for (1), or abstain (2)"
   supportDetailed: Int!
 
-  "Amount of votes in favour or against expressed in the smallest unit of the mojos ERC721 Token"
+  "Amount of votes in favour or against expressed in the smallest unit of the Mojos ERC721 Token"
   votesRaw: BigInt!
 
-  "Amount of votes in favour or against expressed as a BigInt normalized value for the mojos ERC721 Token"
+  "Amount of votes in favour or against expressed as a BigInt normalized value for the Mojos ERC721 Token"
   votes: BigInt!
 
   "Delegate that emitted the vote"
   voter: Delegate!
 
-  "The mojos used to vote"
-  mojos: [Mojos!]
+  "The Mojos used to vote"
+  mojos: [Mojo!]
 
   "Proposal that is being voted on"
   proposal: Proposal!
@@ -233,10 +233,10 @@ type Governance @entity {
   "Total number of delegates that held delegated votes"
   totalDelegates: BigInt!
 
-  "Total number of votes delegated expressed in the smallest unit of the mojos ERC721 Token"
+  "Total number of votes delegated expressed in the smallest unit of the Mojos ERC721 Token"
   delegatedVotesRaw: BigInt!
 
-  "Total number of votes delegated expressed as a BigInt normalized value for the mojos ERC721 Token"
+  "Total number of votes delegated expressed as a BigInt normalized value for the Mojos ERC721 Token"
   delegatedVotes: BigInt!
 
   "Number of proposals currently queued for execution"

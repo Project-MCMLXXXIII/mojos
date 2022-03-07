@@ -23,7 +23,7 @@ export const reduxSafeNewAuction = (auction: AuctionCreateEvent): IAuction => ({
   bidder: '',
   startTime: BigNumber.from(auction.startTime).toJSON(),
   endTime: BigNumber.from(auction.endTime).toJSON(),
-  nounId: BigNumber.from(auction.nounId).toJSON(),
+  mojoId: BigNumber.from(auction.mojoId).toJSON(),
   settled: false,
 });
 
@@ -32,12 +32,12 @@ export const reduxSafeAuction = (auction: IAuction): IAuction => ({
   bidder: auction.bidder,
   startTime: BigNumber.from(auction.startTime).toJSON(),
   endTime: BigNumber.from(auction.endTime).toJSON(),
-  nounId: BigNumber.from(auction.nounId).toJSON(),
+  mojoId: BigNumber.from(auction.mojoId).toJSON(),
   settled: auction.settled,
 });
 
 export const reduxSafeBid = (bid: BidEvent): BidEvent => ({
-  nounId: BigNumber.from(bid.nounId).toJSON(),
+  mojoId: BigNumber.from(bid.mojoId).toJSON(),
   sender: bid.sender,
   value: BigNumber.from(bid.value).toJSON(),
   extended: bid.extended,
@@ -54,7 +54,7 @@ const maxBid = (bids: BidEvent[]): BidEvent => {
 const auctionsEqual = (
   a: IAuction,
   b: AuctionSettledEvent | AuctionCreateEvent | BidEvent | AuctionExtendedEvent,
-) => BigNumber.from(a.nounId).eq(BigNumber.from(b.nounId));
+) => BigNumber.from(a.mojoId).eq(BigNumber.from(b.mojoId));
 
 const containsBid = (bidEvents: BidEvent[], bidEvent: BidEvent) =>
   bidEvents.map(bid => bid.transactionHash).indexOf(bidEvent.transactionHash) >= 0;

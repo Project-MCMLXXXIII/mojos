@@ -5,14 +5,13 @@
 /*********************************
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
- * ░░░░░░█████████░░█████████░░░ *
- * ░░░░░░██░░░████░░██░░░████░░░ *
- * ░░██████░░░████████░░░████░░░ *
- * ░░██░░██░░░████░░██░░░████░░░ *
- * ░░██░░██░░░████░░██░░░████░░░ *
- * ░░░░░░█████████░░█████████░░░ *
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
- * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
+ * ░░░███████████████████████░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
+ * ░░░░░░█████████████████░░░░░░ *
  *********************************/
 
 // LICENSE
@@ -28,14 +27,16 @@ import { PausableUpgradeable } from '@openzeppelin/contracts-upgradeable/securit
 import { ReentrancyGuardUpgradeable } from '@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol';
 import { OwnableUpgradeable } from '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
 import { IERC20 } from '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+
+import '@openzeppelin/contracts/utils/math/SafeMath.sol';
 import { IMojosAuctionHouse } from './interfaces/IMojosAuctionHouse.sol';
 import { IMojosToken } from './interfaces/IMojosToken.sol';
 import { IWETH } from './interfaces/IWETH.sol';
 
 contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, ReentrancyGuardUpgradeable, OwnableUpgradeable {
     // The Mojos ERC721 token contract
-    IMojosToken public Mojos;
-
+    IMojosToken public mojos1;
+    IMojosToken public mojos2;
     // The address of the WETH contract
     address public weth;
 
@@ -51,8 +52,16 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
     // The duration of a single auction
     uint256 public duration;
 
-    // The active auction
-    IMojosAuctionHouse.Auction public auction;
+    // The active auctions auction1 & auction2
+    IMojosAuctionHouse.Auction public auction1;
+    IMojosAuctionHouse.Auction public auction2;
+
+    // The creation (deployment) date for the contract
+    uint256 public creationDate;
+
+    address public multiSigFeeWallet;
+
+    using SafeMath for uint256;
 
     /**
      * @notice Initialize the auction house and base contracts,
@@ -60,12 +69,14 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
      * @dev This function can only be called once.
      */
     function initialize(
-        IMojosToken _Mojos,
+        IMojosToken _mojos1,
+        IMojosToken _mojos2,
         address _weth,
         uint256 _timeBuffer,
         uint256 _reservePrice,
         uint8 _minBidIncrementPercentage,
-        uint256 _duration
+        uint256 _duration,
+        address _multisigFeeWallet
     ) external initializer {
         __Pausable_init();
         __ReentrancyGuard_init();
@@ -73,16 +84,19 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
 
         _pause();
 
-        Mojos = _Mojos;
+        mojos1 = _mojos1;
+        mojos2 = _mojos2;
         weth = _weth;
         timeBuffer = _timeBuffer;
         reservePrice = _reservePrice;
         minBidIncrementPercentage = _minBidIncrementPercentage;
         duration = _duration;
+        creationDate = block.timestamp;
+        multiSigFeeWallet = _multisigFeeWallet;
     }
 
     /**
-     * @notice Settle the current auction, mint a new Mojos, and put it up for auction.
+     * @notice Settle the current auction, mint a new Mojo, and put it up for auction.
      */
     function settleCurrentAndCreateNewAuction() external override nonReentrant whenNotPaused {
         _settleAuction();
@@ -98,13 +112,17 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
     }
 
     /**
-     * @notice Create a bid for a Mojos, with a given amount.
+     * @notice Create a bid for a Mojo, with a given amount.
      * @dev This contract only accepts payment in ETH.
      */
-    function createBid(uint256 nounId) external payable override nonReentrant {
-        IMojosAuctionHouse.Auction memory _auction = auction;
-
-        require(_auction.nounId == nounId, 'Mojos not up for auction');
+    function createBid(uint256 mojoId) external payable override nonReentrant {
+        IMojosAuctionHouse.Auction memory _auction = auction1;
+        uint8 auctionSlot = 1;
+        if (_auction.mojoId != mojoId) {
+            _auction = auction2;
+            auctionSlot = 2;
+        }
+        require(_auction.mojoId == mojoId, 'Mojo not up for auction');
         require(block.timestamp < _auction.endTime, 'Auction expired');
         require(msg.value >= reservePrice, 'Must send at least reservePrice');
         require(
@@ -119,19 +137,34 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
             _safeTransferETHWithFallback(lastBidder, _auction.amount);
         }
 
-        auction.amount = msg.value;
-        auction.bidder = payable(msg.sender);
+        if (auctionSlot == 1) {
+            auction1.amount = msg.value;
+            auction1.bidder = payable(msg.sender);
 
-        // Extend the auction if the bid was received within `timeBuffer` of the auction end time
-        bool extended = _auction.endTime - block.timestamp < timeBuffer;
-        if (extended) {
-            auction.endTime = _auction.endTime = block.timestamp + timeBuffer;
-        }
+            // Extend the auction if the bid was received within `timeBuffer` of the auction end time
+            bool extended = _auction.endTime - block.timestamp < timeBuffer;
+            if (extended) {
+                auction1.endTime = _auction.endTime = block.timestamp + timeBuffer;
+            }
+            emit AuctionBid(_auction.mojoId, msg.sender, msg.value, extended);
 
-        emit AuctionBid(_auction.nounId, msg.sender, msg.value, extended);
+            if (extended) {
+                emit AuctionExtended(_auction.mojoId, _auction.endTime);
+            }
+        } else {
+            auction2.amount = msg.value;
+            auction2.bidder = payable(msg.sender);
 
-        if (extended) {
-            emit AuctionExtended(_auction.nounId, _auction.endTime);
+            // Extend the auction if the bid was received within `timeBuffer` of the auction end time
+            bool extended = _auction.endTime - block.timestamp < timeBuffer;
+            if (extended) {
+                auction2.endTime = _auction.endTime = block.timestamp + timeBuffer;
+            }
+            emit AuctionBid(_auction.mojoId, msg.sender, msg.value, extended);
+
+            if (extended) {
+                emit AuctionExtended(_auction.mojoId, _auction.endTime);
+            }
         }
     }
 
@@ -153,7 +186,7 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
     function unpause() external override onlyOwner {
         _unpause();
 
-        if (auction.startTime == 0 || auction.settled) {
+        if ((auction1.startTime == 0 || auction1.settled) && (auction2.startTime == 0 || auction2.settled)) {
             _createAuction();
         }
     }
@@ -188,6 +221,10 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
         emit AuctionMinBidIncrementPercentageUpdated(_minBidIncrementPercentage);
     }
 
+    function oneYearHavePassed() public view returns (bool) {
+        return (block.timestamp >= (creationDate + 365 days));
+    }
+
     /**
      * @notice Create an auction.
      * @dev Store the auction details in the `auction` state variable and emit an AuctionCreated event.
@@ -195,12 +232,12 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
      * catch the revert and pause this contract.
      */
     function _createAuction() internal {
-        try Mojos.mint() returns (uint256 nounId) {
+        try mojos1.mint() returns (uint256 mojoId1) {
             uint256 startTime = block.timestamp;
             uint256 endTime = startTime + duration;
 
-            auction = Auction({
-                nounId: nounId,
+            auction1 = Auction({
+                mojoId: mojoId1,
                 amount: 0,
                 startTime: startTime,
                 endTime: endTime,
@@ -208,7 +245,25 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
                 settled: false
             });
 
-            emit AuctionCreated(nounId, startTime, endTime);
+            emit AuctionCreated(mojoId1, startTime, endTime);
+        } catch Error(string memory) {
+            _pause();
+        }
+
+        try mojos2.mint() returns (uint256 mojoId2) {
+            uint256 startTime = block.timestamp;
+            uint256 endTime = startTime + duration;
+
+            auction2 = Auction({
+                mojoId: mojoId2,
+                amount: 0,
+                startTime: startTime,
+                endTime: endTime,
+                bidder: payable(0),
+                settled: false
+            });
+
+            emit AuctionCreated(mojoId2, startTime, endTime);
         } catch Error(string memory) {
             _pause();
         }
@@ -216,28 +271,57 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
 
     /**
      * @notice Settle an auction, finalizing the bid and paying out to the owner.
-     * @dev If there are no bids, the Mojos is burned.
+     * @dev If there are no bids, the Mojo is burned.
      */
     function _settleAuction() internal {
-        IMojosAuctionHouse.Auction memory _auction = auction;
+        IMojosAuctionHouse.Auction memory _auction1 = auction1;
+        IMojosAuctionHouse.Auction memory _auction2 = auction2;
+        require(_auction1.startTime != 0, "Auction 1 hasn't begun");
+        require(_auction2.startTime != 0, "Auction 2 hasn't begun");
+        require(!_auction1.settled, 'Auction 1 has already been settled');
+        require(!_auction2.settled, 'Auction 2 has already been settled');
+        require(block.timestamp >= _auction1.endTime, "Auction hasn't completed");
+        require(block.timestamp >= _auction2.endTime, "Auction hasn't completed");
 
-        require(_auction.startTime != 0, "Auction hasn't begun");
-        require(!_auction.settled, 'Auction has already been settled');
-        require(block.timestamp >= _auction.endTime, "Auction hasn't completed");
+        auction1.settled = true;
+        auction2.settled = true;
 
-        auction.settled = true;
-
-        if (_auction.bidder == address(0)) {
-            Mojos.burn(_auction.nounId);
+        if (_auction1.bidder == address(0)) {
+            mojos1.burn(_auction1.mojoId);
         } else {
-            Mojos.transferFrom(address(this), _auction.bidder, _auction.nounId);
+            mojos1.transferFrom(address(this), _auction1.bidder, _auction1.mojoId);
         }
 
-        if (_auction.amount > 0) {
-            _safeTransferETHWithFallback(owner(), _auction.amount);
+        if (_auction2.bidder == address(0)) {
+            mojos2.burn(_auction2.mojoId);
+        } else {
+            mojos2.transferFrom(address(this), _auction2.bidder, _auction2.mojoId);
         }
 
-        emit AuctionSettled(_auction.nounId, _auction.bidder, _auction.amount);
+        if (_auction1.amount > 0) {
+            if (!oneYearHavePassed()) {
+                uint256 fee = _auction1.amount.mul(10).div(100);
+                //10% fee for multisig
+                _safeTransferETHWithFallback(multiSigFeeWallet, fee);
+                _safeTransferETHWithFallback(owner(), _auction1.amount.sub(fee));
+            } else {
+                _safeTransferETHWithFallback(owner(), _auction1.amount);
+            }
+        }
+
+        if (_auction2.amount > 0) {
+            if (!oneYearHavePassed()) {
+                uint256 fee = _auction2.amount.mul(10).div(100);
+                //10% fee for multisig
+                _safeTransferETHWithFallback(multiSigFeeWallet, fee);
+                _safeTransferETHWithFallback(owner(), _auction2.amount.sub(fee));
+            } else {
+                _safeTransferETHWithFallback(owner(), _auction2.amount);
+            }
+        }
+
+        emit AuctionSettled(_auction1.mojoId, _auction1.bidder, _auction1.amount);
+        emit AuctionSettled(_auction2.mojoId, _auction2.bidder, _auction2.amount);
     }
 
     /**

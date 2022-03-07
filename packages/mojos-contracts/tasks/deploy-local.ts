@@ -24,7 +24,7 @@ interface Contract {
 }
 
 task('deploy-local', 'Deploy contracts to hardhat')
-  .addOptionalParam('noundersdao', 'The nounders DAO contract address')
+  .addOptionalParam('mojosdao', 'The mojos DAO contract address')
   .addOptionalParam('auctionTimeBuffer', 'The auction time buffer (seconds)', 30, types.int) // Default: 30 seconds
   .addOptionalParam('auctionReservePrice', 'The auction reserve price (wei)', 1, types.int) // Default: 1 wei
   .addOptionalParam(
@@ -39,6 +39,11 @@ task('deploy-local', 'Deploy contracts to hardhat')
   .addOptionalParam('votingDelay', 'The voting delay (blocks)', 1, types.int) // Default: 1 block
   .addOptionalParam('proposalThresholdBps', 'The proposal threshold (basis points)', 500, types.int) // Default: 5%
   .addOptionalParam('quorumVotesBps', 'Votes required for quorum (basis points)', 1_000, types.int) // Default: 10%
+  .addOptionalParam(
+    'multiSigFeeWallet',
+    'MultiSig wallet for fees',
+    '0x50779Ecf871ba1a1BD97a5C7379fd8e3c35b2abB',
+  ) // Must change
   .setAction(async (args, { ethers }) => {
     const network = await ethers.provider.getNetwork();
     if (network.chainId !== 31337) {
@@ -72,7 +77,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
       MojosSeeder: {},
       MojosToken: {
         args: [
-          args.noundersdao || deployer.address,
+          args.mojosdao || deployer.address,
           expectedAuctionHouseProxyAddress,
           () => contracts['MojosDescriptor'].instance?.address,
           () => contracts['MojosSeeder'].instance?.address,
@@ -90,11 +95,13 @@ task('deploy-local', 'Deploy contracts to hardhat')
           () =>
             new Interface(MojosAuctionHouseABI).encodeFunctionData('initialize', [
               contracts['MojosToken'].instance?.address,
+              contracts['MojosToken'].instance?.address,
               contracts['WETH'].instance?.address,
               args.auctionTimeBuffer,
               args.auctionReservePrice,
               args.auctionMinIncrementBidPercentage,
               args.auctionDuration,
+              args.multiSigFeeWallet,
             ]),
         ],
       },
@@ -108,7 +115,7 @@ task('deploy-local', 'Deploy contracts to hardhat')
         args: [
           () => contracts['MojosDAOExecutor'].instance?.address,
           () => contracts['MojosToken'].instance?.address,
-          args.noundersdao || deployer.address,
+          args.mojosdao || deployer.address,
           () => contracts['MojosDAOExecutor'].instance?.address,
           () => contracts['MojosDAOLogicV1'].instance?.address,
           args.votingPeriod,

@@ -1,4 +1,4 @@
-export interface mojoseed {
+export interface MojoSeed {
   background: number;
   body: number;
   accessory: number;
@@ -11,7 +11,7 @@ export interface EncodedImage {
   data: string;
 }
 
-export interface NounData {
+export interface MojoData {
   parts: EncodedImage[];
   background: string;
 }

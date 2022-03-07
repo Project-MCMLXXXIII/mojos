@@ -3,26 +3,26 @@ import { mojosQuery } from '../theGraph';
 import * as R from 'ramda';
 import { sharedResponseHeaders } from '../utils';
 
-export interface LiteNoun {
+export interface LiteMojo {
   id: number;
   owner: string;
   delegatedTo: null | string;
 }
 
-const lightenNoun = R.pick(['id', 'owner', 'delegatedTo']);
+const lightenMojo = R.pick(['id', 'owner', 'delegatedTo']);
 
-const lightenmojos = R.map(lightenNoun);
+const lightenMojos = R.map(lightenMojo);
 
 const handler: Handler = async (event, context) => {
   const mojos = await mojosQuery();
-  const litemojos: LiteNoun[] = lightenmojos(mojos);
+  const liteMojos: LiteMojo[] = lightenMojos(mojos);
   return {
     statusCode: 200,
     headers: {
       'Content-Type': 'application/json',
       ...sharedResponseHeaders,
     },
-    body: JSON.stringify(litemojos),
+    body: JSON.stringify(liteMojos),
   };
 };
 

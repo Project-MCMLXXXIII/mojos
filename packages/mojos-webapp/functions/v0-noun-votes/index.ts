@@ -3,27 +3,27 @@ import { NormalizedVote, mojosQuery } from '../theGraph';
 import * as R from 'ramda';
 import { sharedResponseHeaders } from '../utils';
 
-interface NounVote {
+interface MojoVote {
   id: number;
   owner: string;
   delegatedTo: null | string;
   votes: NormalizedVote[];
 }
 
-const buildNounVote = R.pick(['id', 'owner', 'delegatedTo', 'votes']);
+const buildMojoVote = R.pick(['id', 'owner', 'delegatedTo', 'votes']);
 
-const buildNounVotes = R.map(buildNounVote);
+const buildMojoVotes = R.map(buildMojoVote);
 
 const handler: Handler = async (event, context) => {
   const mojos = await mojosQuery();
-  const nounVotes: NounVote[] = buildNounVotes(mojos);
+  const mojoVotes: MojoVote[] = buildMojoVotes(mojos);
   return {
     statusCode: 200,
     headers: {
       'Content-Type': 'application/json',
       ...sharedResponseHeaders,
     },
-    body: JSON.stringify(nounVotes),
+    body: JSON.stringify(mojoVotes),
   };
 };
 

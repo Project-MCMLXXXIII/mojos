@@ -11,7 +11,7 @@ export interface IBid {
   blockNumber: number;
   blockTimestamp: number;
   txIndex?: number;
-  noun: {
+  mojo: {
     id: number;
     startTime?: BigNumberish;
     endTime?: BigNumberish;
@@ -30,7 +30,7 @@ export const auctionQuery = (auctionId: number) => gql`
 	  }
 	  startTime
 	  endTime
-	  noun {
+	  mojo {
 		id
 		seed {
 		  id
@@ -65,16 +65,16 @@ export const bidsByAuctionQuery = (auctionId: string) => gql`
 	  bidder {
 	  	id
 	  }
-	  noun {
+	  mojo {
 		id
 	  }
 	}
   }
  `;
 
-export const nounQuery = (id: string) => gql`
+export const mojoQuery = (id: string) => gql`
  {
-	noun(id:"${id}") {
+	mojo(id:"${id}") {
 	  id
 	  seed {
 	  background
@@ -112,7 +112,7 @@ export const latestAuctionsQuery = () => gql`
       }
       startTime
       endTime
-      noun {
+      mojo {
         id
         owner {
           id
@@ -157,9 +157,9 @@ export const latestBidsQuery = (first: number = 10) => gql`
   }  
 `;
 
-export const nounVotingHistoryQuery = (nounId: number) => gql`
+export const mojoVotingHistoryQuery = (mojoId: number) => gql`
 {
-	noun(id: ${nounId}) {
+	mojo(id: ${mojoId}) {
 		id
 		votes {
 		proposal {

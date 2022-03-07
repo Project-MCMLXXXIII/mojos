@@ -44,7 +44,7 @@ h4 {
   align-self: flex-start;
 }
 
-.modalHeaderNounImgWrapper {
+.modalHeaderMojoImgWrapper {
   width: 150px;
   height: 150px;
 }
@@ -91,7 +91,7 @@ h4 {
     padding-left: 0rem;
   }
 
-  .fomomojosLink {
+  .fomoMojosLink {
     padding-left: 14px;
   }
 }
@@ -104,18 +104,18 @@ h4 {
   }
 }
 
-.fomomojosLink {
+.fomoMojosLink {
   margin-top: 0rem;
   margin-bottom: 1rem;
   transition: 0.2s ease-in-out;
 }
 
-.fomomojosLink svg {
+.fomoMojosLink svg {
   opacity: 0.6;
 }
 
-.fomomojosLink a,
-.fomomojosLink:active a {
+.fomoMojosLink a,
+.fomoMojosLink:active a {
   font-family: 'PT Root UI', sans-serif;
   font-weight: 500;
   padding-left: 0.5rem;
@@ -124,8 +124,8 @@ h4 {
   color: rgb(95, 95, 95);
 }
 
-.fomomojosLink:hover,
-.fomomojosLink:hover a {
+.fomoMojosLink:hover,
+.fomoMojosLink:hover a {
   text-decoration: none;
   color: black;
   opacity: 1;

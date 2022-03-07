@@ -2,10 +2,10 @@ import { Container, Col, Button, Row, FloatingLabel, Form } from 'react-bootstra
 import classes from './Playground.module.css';
 import React, { useEffect, useState } from 'react';
 import Link from '../../components/Link';
-import { ImageData, getNounData, getRandomNounSeed } from '@mojos/assets';
+import { ImageData, getMojoData, getRandomMojoSeed } from '@mojos/assets';
 import { buildSVG } from '@mojos/sdk';
-import Mojos from '../../components/Mojos';
-import NounModal from './NounModal';
+import Mojo from '../../components/Mojo';
+import MojoModal from './MojosModal';
 
 interface Trait {
   title: string;
@@ -14,8 +14,8 @@ interface Trait {
 
 const mojosProtocolLink = (
   <Link
-    text="mojos Protocol"
-    url="https://www.notion.so/Mojos-Protocol-32e4f0bf74fe433e927e2ea35e52a507"
+    text="Mojos Protocol"
+    url="https://www.notion.so/Mojo-Protocol-32e4f0bf74fe433e927e2ea35e52a507"
     leavesPage={true}
   />
 );
@@ -42,20 +42,21 @@ const parseTraitName = (partName: string): string =>
 const capitalizeFirstLetter = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
 
 const Playground: React.FC = () => {
-  const [mojosvgs, setmojosvgs] = useState<string[]>();
+  const [mojoSvgs, setMojoSvgs] = useState<string[]>();
   const [traits, setTraits] = useState<Trait[]>();
   const [modSeed, setModSeed] = useState<{ [key: string]: number }>();
   const [initLoad, setInitLoad] = useState<boolean>(true);
-  const [displayNoun, setDisplayNoun] = useState<boolean>(false);
-  const [indexOfNounToDisplay, setIndexOfNounToDisplay] = useState<number>();
+  const [displayMojo, setDisplayMojo] = useState<boolean>(false);
+  const [indexOfMojoToDisplay, setIndexOfMojoToDisplay] = useState<number>();
 
-  const generatemojosvg = React.useCallback(
+  const generateMojoSvg = React.useCallback(
     (amount: number = 1) => {
       for (let i = 0; i < amount; i++) {
-        const seed = { ...getRandomNounSeed(), ...modSeed };
-        const { parts, background } = getNounData(seed);
+        const seed = { ...getRandomMojoSeed(), ...modSeed };
+        const { parts, background } = getMojoData(seed);
+        debugger;
         const svg = buildSVG(parts, ImageData.palette, background);
-        setmojosvgs(prev => {
+        setMojoSvgs(prev => {
           return prev ? [svg, ...prev] : [svg];
         });
       }
@@ -81,10 +82,10 @@ const Playground: React.FC = () => {
     );
 
     if (initLoad) {
-      generatemojosvg(8);
+      generateMojoSvg(8);
       setInitLoad(false);
     }
-  }, [generatemojosvg, initLoad]);
+  }, [generateMojoSvg, initLoad]);
 
   const traitOptions = (trait: Trait) => {
     return Array.from(Array(trait.traitNames.length + 1)).map((_, index) => {
@@ -110,12 +111,12 @@ const Playground: React.FC = () => {
 
   return (
     <>
-      {displayNoun && indexOfNounToDisplay !== undefined && mojosvgs && (
-        <NounModal
+      {displayMojo && indexOfMojoToDisplay !== undefined && mojoSvgs && (
+        <MojoModal
           onDismiss={() => {
-            setDisplayNoun(false);
+            setDisplayMojo(false);
           }}
-          svg={mojosvgs[indexOfNounToDisplay]}
+          svg={mojoSvgs[indexOfMojoToDisplay]}
         />
       )}
 
@@ -125,8 +126,8 @@ const Playground: React.FC = () => {
             <span>Explore</span>
             <h1>Playground</h1>
             <p>
-              The playground was built using the {mojosProtocolLink}. Mojos's traits are determined
-              by the Mojos Seed. The seed was generated using {mojosAssetsLink} and rendered using
+              The playground was built using the {mojosProtocolLink}. Mojo's traits are determined
+              by the Mojo Seed. The seed was generated using {mojosAssetsLink} and rendered using
               the {mojosSDKLink}.
             </p>
           </Col>
@@ -135,11 +136,11 @@ const Playground: React.FC = () => {
           <Col lg={3}>
             <Button
               onClick={() => {
-                generatemojosvg();
+                generateMojoSvg();
               }}
               className={classes.generateBtn}
             >
-              Generate mojos
+              Generate Mojos
             </Button>
             {traits &&
               traits.map((trait, index) => {
@@ -165,28 +166,28 @@ const Playground: React.FC = () => {
                   </Form>
                 );
               })}
-            <p className={classes.nounYearsFooter}>
-              You've generated {mojosvgs ? (mojosvgs.length / 365).toFixed(2) : '0'} years worth of
-              mojos
+            <p className={classes.mojoYearsFooter}>
+              You've generated {mojoSvgs ? (mojoSvgs.length / 365).toFixed(2) : '0'} years worth of
+              Mojos
             </p>
           </Col>
           <Col lg={9}>
             <Row>
-              {mojosvgs &&
-                mojosvgs.map((svg, i) => {
+              {mojoSvgs &&
+                mojoSvgs.map((svg, i) => {
                   return (
                     <Col xs={4} lg={3} key={i}>
                       <div
                         onClick={() => {
-                          setIndexOfNounToDisplay(i);
-                          setDisplayNoun(true);
+                          setIndexOfMojoToDisplay(i);
+                          setDisplayMojo(true);
                         }}
                       >
-                        <Mojos
+                        <Mojo
                           imgPath={`data:image/svg+xml;base64,${btoa(svg)}`}
-                          alt="noun"
-                          className={classes.nounImg}
-                          wrapperClassName={classes.nounWrapper}
+                          alt="mojo"
+                          className={classes.mojoImg}
+                          wrapperClassName={classes.mojoWrapper}
                         />
                       </div>
                     </Col>

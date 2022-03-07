@@ -37,21 +37,21 @@ interface IMojosDescriptor {
 
     function bodies(uint256 index) external view returns (bytes memory);
 
-    function accessories(uint256 index) external view returns (bytes memory);
+    function bodyAccessories(uint256 index) external view returns (bytes memory);
 
-    function heads(uint256 index) external view returns (bytes memory);
+    function faces(uint256 index) external view returns (bytes memory);
 
-    function glasses(uint256 index) external view returns (bytes memory);
+    function headAccessories(uint256 index) external view returns (bytes memory);
 
     function backgroundCount() external view returns (uint256);
 
     function bodyCount() external view returns (uint256);
 
-    function accessoryCount() external view returns (uint256);
+    function bodyAccessoryCount() external view returns (uint256);
 
-    function headCount() external view returns (uint256);
+    function faceCount() external view returns (uint256);
 
-    function glassesCount() external view returns (uint256);
+    function headAccessoryCount() external view returns (uint256);
 
     function addManyColorsToPalette(uint8 paletteIndex, string[] calldata newColors) external;
 
@@ -59,11 +59,11 @@ interface IMojosDescriptor {
 
     function addManyBodies(bytes[] calldata bodies) external;
 
-    function addManyAccessories(bytes[] calldata accessories) external;
+    function addManyBodyAccessories(bytes[] calldata bodyAccessories) external;
 
-    function addManyHeads(bytes[] calldata heads) external;
+    function addManyFaces(bytes[] calldata faces) external;
 
-    function addManyGlasses(bytes[] calldata glasses) external;
+    function addManyHeadAccessories(bytes[] calldata headAccessories) external;
 
     function addColorToPalette(uint8 paletteIndex, string calldata color) external;
 
@@ -71,11 +71,11 @@ interface IMojosDescriptor {
 
     function addBody(bytes calldata body) external;
 
-    function addAccessory(bytes calldata accessory) external;
+    function addBodyAccessory(bytes calldata bodyAccessory) external;
 
-    function addHead(bytes calldata head) external;
+    function addFace(bytes calldata face) external;
 
-    function addGlasses(bytes calldata glasses) external;
+    function addHeadAccessory(bytes calldata headAccessory) external;
 
     function lockParts() external;
 

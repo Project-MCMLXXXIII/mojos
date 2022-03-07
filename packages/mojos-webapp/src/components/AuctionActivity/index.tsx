@@ -13,15 +13,15 @@ import { Modal } from 'react-bootstrap';
 import AuctionNavigation from '../AuctionNavigation';
 import AuctionActivityWrapper from '../AuctionActivityWrapper';
 import AuctionTitleAndNavWrapper from '../AuctionTitleAndNavWrapper';
-import AuctionActivityNounTitle from '../AuctionActivityNounTitle';
+import AuctionActivityMojoTitle from '../AuctionActivityMojoTitle';
 import AuctionActivityDateHeadline from '../AuctionActivityDateHeadline';
 import BidHistoryBtn from '../BidHistoryBtn';
-import StandaloneNoun from '../StandaloneNoun';
+import StandaloneMojo from '../StandaloneMojo';
 import config from '../../config';
 import { buildEtherscanAddressLink } from '../../utils/etherscan';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import NounInfoCard from '../NounInfoCard';
+import MojoInfoCard from '../MojoInfoCard';
 import { useAppSelector } from '../../hooks';
 
 const openEtherscanBidHistory = () => {
@@ -63,7 +63,7 @@ const AuctionActivity: React.FC<AuctionActivityProps> = (props: AuctionActivityP
 
   const bidHistoryTitle = (
     <h1>
-      Mojos {auction && auction.nounId.toString()}
+      Mojo {auction && auction.mojoId.toString()}
       <br /> Bid History
     </h1>
   );
@@ -102,13 +102,13 @@ const AuctionActivity: React.FC<AuctionActivityProps> = (props: AuctionActivityP
           dialogClassName="modal-90w"
         >
           <Modal.Header closeButton className={classes.modalHeader}>
-            <div className={classes.modalHeaderNounImgWrapper}>
-              <StandaloneNoun nounId={auction && auction.nounId} />
+            <div className={classes.modalHeaderMojoImgWrapper}>
+              <StandaloneMojo mojoId={auction && auction.mojoId} />
             </div>
             <Modal.Title className={classes.modalTitleWrapper}>{bidHistoryTitle}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <BidHistory auctionId={auction.nounId.toString()} max={9999} />
+            <BidHistory auctionId={auction.mojoId.toString()} max={9999} />
           </Modal.Body>
         </Modal>
       )}
@@ -128,7 +128,7 @@ const AuctionActivity: React.FC<AuctionActivityProps> = (props: AuctionActivityP
               <AuctionActivityDateHeadline startTime={auction.startTime} />
             </AuctionTitleAndNavWrapper>
             <Col lg={12}>
-              <AuctionActivityNounTitle isCool={isCool} nounId={auction.nounId} />
+              <AuctionActivityMojoTitle isCool={isCool} mojoId={auction.mojoId} />
             </Col>
           </Row>
           <Row className={classes.activityRow}>
@@ -149,10 +149,10 @@ const AuctionActivity: React.FC<AuctionActivityProps> = (props: AuctionActivityP
         </div>
         {!auctionEnded && (
           <Row className={classes.activityRow}>
-            <Col lg={12} className={classes.fomomojosLink}>
+            <Col lg={12} className={classes.fomoMojosLink}>
               <FontAwesomeIcon icon={faInfoCircle} />
               <a href={'https://fomomojos.wtf'} target={'_blank'} rel="noreferrer">
-                Help mint the next Mojos
+                Help mint the next Mojo
               </a>
             </Col>
           </Row>
@@ -169,14 +169,14 @@ const AuctionActivity: React.FC<AuctionActivityProps> = (props: AuctionActivityP
         <Row className={classes.activityRow}>
           <Col lg={12}>
             {!isLastAuction ? (
-              <NounInfoCard
-                nounId={auction.nounId.toNumber()}
+              <MojoInfoCard
+                mojoId={auction.mojoId.toNumber()}
                 bidHistoryOnClickHandler={showBidModalHandler}
               />
             ) : (
               displayGraphDepComps && (
                 <BidHistory
-                  auctionId={auction.nounId.toString()}
+                  auctionId={auction.mojoId.toString()}
                   max={3}
                   classes={bidHistoryClasses}
                 />

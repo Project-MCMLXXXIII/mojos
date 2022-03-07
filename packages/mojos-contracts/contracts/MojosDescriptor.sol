@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 
-/// @title The Mojos NFT descriptor
+/// @title The Mojos NFT Descriptor
 
 /*********************************
  * ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ *
@@ -26,11 +26,11 @@ import { MultiPartRLEToSVG } from './libs/MultiPartRLEToSVG.sol';
 contract MojosDescriptor is IMojosDescriptor, Ownable {
     using Strings for uint256;
 
-    // prettier-ignore
+    // prettier-ignore TODO Check this license
     // https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
     bytes32 constant COPYRIGHT_CC0_1_0_UNIVERSAL_LICENSE = 0xa2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499;
 
-    // Whether or not new Mojos parts can be added
+    // Whether or not new Mojo parts can be added
     bool public override arePartsLocked;
 
     // Whether or not `tokenURI` should be returned as a data URI (Default: true)
@@ -39,23 +39,23 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     // Base URI
     string public override baseURI;
 
-    // Mojos Color Palettes (Index => Hex Colors)
+    // Mojo Color Palettes (Index => Hex Colors)
     mapping(uint8 => string[]) public override palettes;
 
-    // Mojos Backgrounds (Hex Colors)
+    // Mojo Backgrounds (Hex Colors)
     string[] public override backgrounds;
 
-    // Mojos Bodies (Custom RLE)
+    // Mojo Bodies (Custom RLE)
     bytes[] public override bodies;
 
-    // Mojos Accessories (Custom RLE)
-    bytes[] public override accessories;
+    // Mojo Body Accessories (Custom RLE)
+    bytes[] public override bodyAccessories;
 
-    // Mojos Heads (Custom RLE)
-    bytes[] public override heads;
+    // Mojo Faces (Custom RLE)
+    bytes[] public override faces;
 
-    // Mojos Glasses (Custom RLE)
-    bytes[] public override glasses;
+    // Mojo Head Accessories (Custom RLE)
+    bytes[] public override headAccessories;
 
     /**
      * @notice Require that the parts have not been locked.
@@ -66,38 +66,38 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     }
 
     /**
-     * @notice Get the number of available Mojos `backgrounds`.
+     * @notice Get the number of available Mojo `backgrounds`.
      */
     function backgroundCount() external view override returns (uint256) {
         return backgrounds.length;
     }
 
     /**
-     * @notice Get the number of available Mojos `bodies`.
+     * @notice Get the number of available Mojo `bodies`.
      */
     function bodyCount() external view override returns (uint256) {
         return bodies.length;
     }
 
     /**
-     * @notice Get the number of available Mojos `accessories`.
+     * @notice Get the number of available Mojo `bodyAccessories`.
      */
-    function accessoryCount() external view override returns (uint256) {
-        return accessories.length;
+    function bodyAccessoryCount() external view override returns (uint256) {
+        return bodyAccessories.length;
     }
 
     /**
-     * @notice Get the number of available Mojos `heads`.
+     * @notice Get the number of available Mojo `faces`.
      */
-    function headCount() external view override returns (uint256) {
-        return heads.length;
+    function faceCount() external view override returns (uint256) {
+        return faces.length;
     }
 
     /**
-     * @notice Get the number of available Mojos `glasses`.
+     * @notice Get the number of available Mojo `headAccessories`.
      */
-    function glassesCount() external view override returns (uint256) {
-        return glasses.length;
+    function headAccessoryCount() external view override returns (uint256) {
+        return headAccessories.length;
     }
 
     /**
@@ -112,7 +112,7 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     }
 
     /**
-     * @notice Batch add Mojos backgrounds.
+     * @notice Batch add Mojo backgrounds.
      * @dev This function can only be called by the owner when not locked.
      */
     function addManyBackgrounds(string[] calldata _backgrounds) external override onlyOwner whenPartsNotLocked {
@@ -122,7 +122,7 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     }
 
     /**
-     * @notice Batch add Mojos bodies.
+     * @notice Batch add Mojo bodies.
      * @dev This function can only be called by the owner when not locked.
      */
     function addManyBodies(bytes[] calldata _bodies) external override onlyOwner whenPartsNotLocked {
@@ -132,32 +132,32 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     }
 
     /**
-     * @notice Batch add Mojos accessories.
+     * @notice Batch add Mojo bodyAccessories.
      * @dev This function can only be called by the owner when not locked.
      */
-    function addManyAccessories(bytes[] calldata _accessories) external override onlyOwner whenPartsNotLocked {
-        for (uint256 i = 0; i < _accessories.length; i++) {
-            _addAccessory(_accessories[i]);
+    function addManyBodyAccessories(bytes[] calldata _bodyAccessories) external override onlyOwner whenPartsNotLocked {
+        for (uint256 i = 0; i < _bodyAccessories.length; i++) {
+            _addBodyAccessory(_bodyAccessories[i]);
         }
     }
 
     /**
-     * @notice Batch add Mojos heads.
+     * @notice Batch add Mojo faces.
      * @dev This function can only be called by the owner when not locked.
      */
-    function addManyHeads(bytes[] calldata _heads) external override onlyOwner whenPartsNotLocked {
-        for (uint256 i = 0; i < _heads.length; i++) {
-            _addHead(_heads[i]);
+    function addManyFaces(bytes[] calldata _faces) external override onlyOwner whenPartsNotLocked {
+        for (uint256 i = 0; i < _faces.length; i++) {
+            _addFace(_faces[i]);
         }
     }
 
     /**
-     * @notice Batch add Mojos glasses.
+     * @notice Batch add Mojo headAccessories.
      * @dev This function can only be called by the owner when not locked.
      */
-    function addManyGlasses(bytes[] calldata _glasses) external override onlyOwner whenPartsNotLocked {
-        for (uint256 i = 0; i < _glasses.length; i++) {
-            _addGlasses(_glasses[i]);
+    function addManyHeadAccessories(bytes[] calldata _headAccessories) external override onlyOwner whenPartsNotLocked {
+        for (uint256 i = 0; i < _headAccessories.length; i++) {
+            _addHeadAccessory(_headAccessories[i]);
         }
     }
 
@@ -171,7 +171,7 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     }
 
     /**
-     * @notice Add a Mojos background.
+     * @notice Add a Mojo background.
      * @dev This function can only be called by the owner when not locked.
      */
     function addBackground(string calldata _background) external override onlyOwner whenPartsNotLocked {
@@ -179,7 +179,7 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     }
 
     /**
-     * @notice Add a Mojos body.
+     * @notice Add a Mojo body.
      * @dev This function can only be called by the owner when not locked.
      */
     function addBody(bytes calldata _body) external override onlyOwner whenPartsNotLocked {
@@ -187,31 +187,31 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     }
 
     /**
-     * @notice Add a Mojos accessory.
+     * @notice Add a Mojo bodyAccessory.
      * @dev This function can only be called by the owner when not locked.
      */
-    function addAccessory(bytes calldata _accessory) external override onlyOwner whenPartsNotLocked {
-        _addAccessory(_accessory);
+    function addBodyAccessory(bytes calldata _bodyAccessory) external override onlyOwner whenPartsNotLocked {
+        _addBodyAccessory(_bodyAccessory);
     }
 
     /**
-     * @notice Add a Mojos head.
+     * @notice Add a Mojo face.
      * @dev This function can only be called by the owner when not locked.
      */
-    function addHead(bytes calldata _head) external override onlyOwner whenPartsNotLocked {
-        _addHead(_head);
+    function addFace(bytes calldata _face) external override onlyOwner whenPartsNotLocked {
+        _addFace(_face);
     }
 
     /**
-     * @notice Add Mojos glasses.
+     * @notice Add Mojo headAccessory.
      * @dev This function can only be called by the owner when not locked.
      */
-    function addGlasses(bytes calldata _glasses) external override onlyOwner whenPartsNotLocked {
-        _addGlasses(_glasses);
+    function addHeadAccessory(bytes calldata _headAccessory) external override onlyOwner whenPartsNotLocked {
+        _addHeadAccessory(_headAccessory);
     }
 
     /**
-     * @notice Lock all Mojos parts.
+     * @notice Lock all Mojo parts.
      * @dev This cannot be reversed and can only be called by the owner when not locked.
      */
     function lockParts() external override onlyOwner whenPartsNotLocked {
@@ -245,7 +245,7 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     }
 
     /**
-     * @notice Given a token ID and seed, construct a token URI for an official Mojos DAO noun.
+     * @notice Given a token ID and seed, construct a token URI for an official Mojos DAO Mojo.
      * @dev The returned value may be a base64 encoded data URI or an API URL.
      */
     function tokenURI(uint256 tokenId, IMojosSeeder.Seed memory seed) external view override returns (string memory) {
@@ -256,12 +256,12 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     }
 
     /**
-     * @notice Given a token ID and seed, construct a base64 encoded data URI for an official Mojos DAO noun.
+     * @notice Given a token ID and seed, construct a base64 encoded data URI for an official Mojos DAO Mojo.
      */
     function dataURI(uint256 tokenId, IMojosSeeder.Seed memory seed) public view override returns (string memory) {
-        string memory nounId = tokenId.toString();
-        string memory name = string(abi.encodePacked('Mojos ', nounId));
-        string memory description = string(abi.encodePacked('Mojos ', nounId, ' is a member of the Mojos DAO'));
+        string memory mojoId = tokenId.toString();
+        string memory name = string(abi.encodePacked('Mojo ', mojoId));
+        string memory description = string(abi.encodePacked('Mojo ', mojoId, ' is a member of the Mojos DAO'));
 
         return genericDataURI(name, description, seed);
     }
@@ -275,10 +275,10 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
         IMojosSeeder.Seed memory seed
     ) public view override returns (string memory) {
         NFTDescriptor.TokenURIParams memory params = NFTDescriptor.TokenURIParams({
-            name: name,
-            description: description,
-            parts: _getPartsForSeed(seed),
-            background: backgrounds[seed.background]
+        name: name,
+        description: description,
+        parts: _getPartsForSeed(seed),
+        background: backgrounds[seed.background]
         });
         return NFTDescriptor.constructTokenURI(params, palettes);
     }
@@ -288,8 +288,8 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
      */
     function generateSVGImage(IMojosSeeder.Seed memory seed) external view override returns (string memory) {
         MultiPartRLEToSVG.SVGParams memory params = MultiPartRLEToSVG.SVGParams({
-            parts: _getPartsForSeed(seed),
-            background: backgrounds[seed.background]
+        parts: _getPartsForSeed(seed),
+        background: backgrounds[seed.background]
         });
         return NFTDescriptor.generateSVGImage(params, palettes);
     }
@@ -302,49 +302,49 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     }
 
     /**
-     * @notice Add a Mojos background.
+     * @notice Add a Mojo background.
      */
     function _addBackground(string calldata _background) internal {
         backgrounds.push(_background);
     }
 
     /**
-     * @notice Add a Mojos body.
+     * @notice Add a Mojo body.
      */
     function _addBody(bytes calldata _body) internal {
         bodies.push(_body);
     }
 
     /**
-     * @notice Add a Mojos accessory.
+     * @notice Add a Mojo bodyAccessory.
      */
-    function _addAccessory(bytes calldata _accessory) internal {
-        accessories.push(_accessory);
+    function _addBodyAccessory(bytes calldata _bodyAccessory) internal {
+        bodyAccessories.push(_bodyAccessory);
     }
 
     /**
-     * @notice Add a Mojos head.
+     * @notice Add a Mojo face.
      */
-    function _addHead(bytes calldata _head) internal {
-        heads.push(_head);
+    function _addFace(bytes calldata _face) internal {
+        faces.push(_face);
     }
 
     /**
-     * @notice Add Mojos glasses.
+     * @notice Add Mojo headAccessory.
      */
-    function _addGlasses(bytes calldata _glasses) internal {
-        glasses.push(_glasses);
+    function _addHeadAccessory(bytes calldata _headAccessory) internal {
+        headAccessories.push(_headAccessory);
     }
 
     /**
-     * @notice Get all Mojos parts for the passed `seed`.
+     * @notice Get all Mojo parts for the passed `seed`.
      */
     function _getPartsForSeed(IMojosSeeder.Seed memory seed) internal view returns (bytes[] memory) {
         bytes[] memory _parts = new bytes[](4);
         _parts[0] = bodies[seed.body];
-        _parts[1] = accessories[seed.accessory];
-        _parts[2] = heads[seed.head];
-        _parts[3] = glasses[seed.glasses];
+        _parts[1] = bodyAccessories[seed.accessory];
+        _parts[2] = faces[seed.head];
+        _parts[3] = headAccessories[seed.glasses];
         return _parts;
     }
 }

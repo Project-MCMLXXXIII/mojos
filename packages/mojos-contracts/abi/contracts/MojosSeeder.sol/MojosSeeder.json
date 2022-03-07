@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "nounId",
+        "name": "mojoId",
         "type": "uint256"
       },
       {

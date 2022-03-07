@@ -5,7 +5,7 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "nounId",
+        "name": "mojoId",
         "type": "uint256"
       },
       {
@@ -36,7 +36,7 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "nounId",
+        "name": "mojoId",
         "type": "uint256"
       },
       {
@@ -61,7 +61,7 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "nounId",
+        "name": "mojoId",
         "type": "uint256"
       },
       {
@@ -106,7 +106,7 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "nounId",
+        "name": "mojoId",
         "type": "uint256"
       },
       {
@@ -185,12 +185,37 @@
   },
   {
     "inputs": [],
-    "name": "Mojos",
+    "name": "auction1",
     "outputs": [
       {
-        "internalType": "contract IMojosToken",
-        "name": "",
+        "internalType": "uint256",
+        "name": "mojoId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "startTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "endTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address payable",
+        "name": "bidder",
         "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "settled",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -198,11 +223,11 @@
   },
   {
     "inputs": [],
-    "name": "auction",
+    "name": "auction2",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "nounId",
+        "name": "mojoId",
         "type": "uint256"
       },
       {
@@ -238,13 +263,26 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "nounId",
+        "name": "mojoId",
         "type": "uint256"
       }
     ],
     "name": "createBid",
     "outputs": [],
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "creationDate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -264,7 +302,12 @@
     "inputs": [
       {
         "internalType": "contract IMojosToken",
-        "name": "_Mojos",
+        "name": "_mojos1",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IMojosToken",
+        "name": "_mojos2",
         "type": "address"
       },
       {
@@ -291,6 +334,11 @@
         "internalType": "uint256",
         "name": "_duration",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_multisigFeeWallet",
+        "type": "address"
       }
     ],
     "name": "initialize",
@@ -306,6 +354,58 @@
         "internalType": "uint8",
         "name": "",
         "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mojos1",
+    "outputs": [
+      {
+        "internalType": "contract IMojosToken",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mojos2",
+    "outputs": [
+      {
+        "internalType": "contract IMojosToken",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "multiSigFeeWallet",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "oneYearHavePassed",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",

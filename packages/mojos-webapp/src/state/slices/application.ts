@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { grey } from '../../utils/nounBgColors';
+import { grey } from '../../utils/mojosBgColors';
 
 export interface AlertModal {
   show: boolean;

@@ -2,17 +2,17 @@ import { log } from '@graphprotocol/graph-ts';
 import {
   DelegateChanged,
   DelegateVotesChanged,
-  NounCreated,
+  MojoCreated,
   Transfer,
-} from './types/mojosToken/mojosToken';
-import { Mojos, Seed } from './types/schema';
+} from './types/MojosToken/MojosToken';
+import { Mojo, Seed } from './types/schema';
 import { BIGINT_ONE, BIGINT_ZERO, ZERO_ADDRESS } from './utils/constants';
 import { getGovernanceEntity, getOrCreateDelegate, getOrCreateAccount } from './utils/helpers';
 
-export function handleNounCreated(event: NounCreated): void {
-  let nounId = event.params.tokenId.toString();
+export function handleMojoCreated(event: MojoCreated): void {
+  let mojoId = event.params.tokenId.toString();
 
-  let seed = new Seed(nounId);
+  let seed = new Seed(mojoId);
   seed.background = event.params.seed.background;
   seed.body = event.params.seed.body;
   seed.accessory = event.params.seed.accessory;
@@ -20,41 +20,41 @@ export function handleNounCreated(event: NounCreated): void {
   seed.glasses = event.params.seed.glasses;
   seed.save();
 
-  let noun = Mojos.load(nounId);
-  if (noun == null) {
-    log.error('[handleNounCreated] Mojos #{} not found. Hash: {}', [
-      nounId,
+  let mojo = Mojo.load(mojoId);
+  if (mojo == null) {
+    log.error('[handleMojoCreated] Mojo #{} not found. Hash: {}', [
+      mojoId,
       event.transaction.hash.toHex(),
     ]);
     return;
   }
 
-  noun.seed = seed.id;
-  noun.save();
+  mojo.seed = seed.id;
+  mojo.save();
 }
 
-let accountmojos: string[] = []; // Use WebAssembly global due to lack of closure support
+let accountMojos: string[] = []; // Use WebAssembly global due to lack of closure support
 export function handleDelegateChanged(event: DelegateChanged): void {
   let tokenHolder = getOrCreateAccount(event.params.delegator.toHexString());
   let previousDelegate = getOrCreateDelegate(event.params.fromDelegate.toHexString());
   let newDelegate = getOrCreateDelegate(event.params.toDelegate.toHexString());
-  accountmojos = tokenHolder.mojos;
+  accountMojos = tokenHolder.mojos;
 
   tokenHolder.delegate = newDelegate.id;
   tokenHolder.save();
 
   previousDelegate.tokenHoldersRepresentedAmount =
     previousDelegate.tokenHoldersRepresentedAmount - 1;
-  let previousmojosRepresented = previousDelegate.mojosRepresented; // Re-assignment required to update array
-  previousDelegate.mojosRepresented = previousmojosRepresented.filter(
-    n => !accountmojos.includes(n),
+  let previousMojosRepresented = previousDelegate.mojosRepresented; // Re-assignment required to update array
+  previousDelegate.mojosRepresented = previousMojosRepresented.filter(
+    n => !accountMojos.includes(n),
   );
   newDelegate.tokenHoldersRepresentedAmount = newDelegate.tokenHoldersRepresentedAmount + 1;
-  let newmojosRepresented = newDelegate.mojosRepresented; // Re-assignment required to update array
-  for (let i = 0; i < accountmojos.length; i++) {
-    newmojosRepresented.push(accountmojos[i]);
+  let newMojosRepresented = newDelegate.mojosRepresented; // Re-assignment required to update array
+  for (let i = 0; i < accountMojos.length; i++) {
+    newMojosRepresented.push(accountMojos[i]);
   }
-  newDelegate.mojosRepresented = newmojosRepresented;
+  newDelegate.mojosRepresented = newMojosRepresented;
   previousDelegate.save();
   newDelegate.save();
 }
@@ -79,12 +79,12 @@ export function handleDelegateVotesChanged(event: DelegateVotesChanged): void {
   governance.save();
 }
 
-let transferredNounId: string; // Use WebAssembly global due to lack of closure support
+let transferredMojoId: string; // Use WebAssembly global due to lack of closure support
 export function handleTransfer(event: Transfer): void {
   let fromHolder = getOrCreateAccount(event.params.from.toHexString());
   let toHolder = getOrCreateAccount(event.params.to.toHexString());
   let governance = getGovernanceEntity();
-  transferredNounId = event.params.tokenId.toString();
+  transferredMojoId = event.params.tokenId.toString();
 
   // fromHolder
   if (event.params.from.toHexString() == ZERO_ADDRESS) {
@@ -94,14 +94,14 @@ export function handleTransfer(event: Transfer): void {
     let fromHolderPreviousBalance = fromHolder.tokenBalanceRaw;
     fromHolder.tokenBalanceRaw = fromHolder.tokenBalanceRaw - BIGINT_ONE;
     fromHolder.tokenBalance = fromHolder.tokenBalanceRaw;
-    let fromHoldermojos = fromHolder.mojos; // Re-assignment required to update array
-    fromHolder.mojos = fromHoldermojos.filter(n => n !== transferredNounId);
+    let fromHolderMojos = fromHolder.mojos; // Re-assignment required to update array
+    fromHolder.mojos = fromHolderMojos.filter(n => n !== transferredMojoId);
 
     if (fromHolder.delegate != null) {
       let fromHolderDelegate = getOrCreateDelegate(fromHolder.delegate);
-      let fromHoldermojosRepresented = fromHolderDelegate.mojosRepresented; // Re-assignment required to update array
-      fromHolderDelegate.mojosRepresented = fromHoldermojosRepresented.filter(
-        n => n !== transferredNounId,
+      let fromHolderMojosRepresented = fromHolderDelegate.mojosRepresented; // Re-assignment required to update array
+      fromHolderDelegate.mojosRepresented = fromHolderMojosRepresented.filter(
+        n => n !== transferredMojoId,
       );
       fromHolderDelegate.save();
     }
@@ -136,9 +136,9 @@ export function handleTransfer(event: Transfer): void {
   }
 
   let toHolderDelegate = getOrCreateDelegate(toHolder.id);
-  let toHoldermojosRepresented = toHolderDelegate.mojosRepresented; // Re-assignment required to update array
-  toHoldermojosRepresented.push(transferredNounId);
-  toHolderDelegate.mojosRepresented = toHoldermojosRepresented;
+  let toHolderMojosRepresented = toHolderDelegate.mojosRepresented; // Re-assignment required to update array
+  toHolderMojosRepresented.push(transferredMojoId);
+  toHolderDelegate.mojosRepresented = toHolderMojosRepresented;
   toHolderDelegate.save();
 
   let toHolderPreviousBalance = toHolder.tokenBalanceRaw;
@@ -146,9 +146,9 @@ export function handleTransfer(event: Transfer): void {
   toHolder.tokenBalance = toHolder.tokenBalanceRaw;
   toHolder.totalTokensHeldRaw = toHolder.totalTokensHeldRaw + BIGINT_ONE;
   toHolder.totalTokensHeld = toHolder.totalTokensHeldRaw;
-  let toHoldermojos = toHolder.mojos; // Re-assignment required to update array
-  toHoldermojos.push(event.params.tokenId.toString());
-  toHolder.mojos = toHoldermojos;
+  let toHolderMojos = toHolder.mojos; // Re-assignment required to update array
+  toHolderMojos.push(event.params.tokenId.toString());
+  toHolder.mojos = toHolderMojos;
 
   if (toHolder.tokenBalanceRaw == BIGINT_ZERO && toHolderPreviousBalance > BIGINT_ZERO) {
     governance.currentTokenHolders = governance.currentTokenHolders - BIGINT_ONE;
@@ -160,13 +160,13 @@ export function handleTransfer(event: Transfer): void {
     toHolder.delegate = toHolder.id;
   }
 
-  let noun = Mojos.load(transferredNounId);
-  if (noun == null) {
-    noun = new Mojos(transferredNounId);
+  let mojo = Mojo.load(transferredMojoId);
+  if (mojo == null) {
+    mojo = new Mojo(transferredMojoId);
   }
 
-  noun.owner = toHolder.id;
-  noun.save();
+  mojo.owner = toHolder.id;
+  mojo.save();
 
   toHolder.save();
 }

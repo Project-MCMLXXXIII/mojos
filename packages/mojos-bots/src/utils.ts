@@ -26,21 +26,19 @@ export async function resolveEnsOrFormatAddress(address: string) {
 export function formatAuctionStartedTweetText(auctionId: number) {
   return `＊Bleep Bloop Blop＊
         
- An auction has started for Mojos #${auctionId}
+ An auction has started for Mojo #${auctionId}
  Learn more at https://mojos.wtf`;
 }
 
 /**
  * Get the formatted text for a new bid.
- * @param id The auction/noun id
+ * @param id The auction/mojo id
  * @param bid The amount of the current bid
  * @returns The bid update tweet text
  */
 export async function formatBidMessageText(id: number, bid: Bid) {
   const bidder = await resolveEnsOrFormatAddress(bid.bidder.id);
-  return `Mojos ${id} has received a bid of Ξ${ethers.utils.formatEther(
-    bid.amount,
-  )} from ${bidder}`;
+  return `Mojo ${id} has received a bid of Ξ${ethers.utils.formatEther(bid.amount)} from ${bidder}`;
 }
 
 /**
@@ -48,15 +46,15 @@ export async function formatBidMessageText(id: number, bid: Bid) {
  * @returns The auction ending soon text
  */
 export function getAuctionEndingSoonTweetText() {
-  return `This auction is ending soon! Bid now at https://mojos.wtf`;
+  return `This auction is ending soon! Bid now `;
 }
 
 /**
- * Get the PNG buffer data of a Mojos
+ * Get the PNG buffer data of a Mojo
  * @param tokenId The ERC721 token id
- * @returns The png buffer of the Mojos or undefined
+ * @returns The png buffer of the Mojo or undefined
  */
-export async function getNounPngBuffer(tokenId: string): Promise<Buffer | undefined> {
+export async function getMojoPngBuffer(tokenId: string): Promise<Buffer | undefined> {
   const dataURI = await tryF(() => mojosTokenContract.dataURI(tokenId));
   if (isError(dataURI)) {
     console.error(`Error fetching dataURI for token ID ${tokenId}: ${dataURI.message}`);

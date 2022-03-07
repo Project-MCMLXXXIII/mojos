@@ -19,32 +19,33 @@ export interface IMojoSeed {
 
 const abi = new utils.Interface(MojosTokenABI);
 
-export const useMojoToken = (nounId: EthersBN) => {
-  const [noun] =
+export const useMojoToken = (mojoId: EthersBN) => {
+  const [mojo] =
     useContractCall<[string]>({
       abi,
       address: config.addresses.mojosToken,
       method: 'dataURI',
-      args: [nounId],
+      args: [mojoId],
     }) || [];
 
-  if (!noun) {
+  if (!mojo) {
     return;
   }
 
-  const mojoImgData = noun.split(';base64,').pop() as string;
+  const mojoImgData = mojo.split(';base64,').pop() as string;
   const json: MojoToken = JSON.parse(atob(mojoImgData));
 
   return json;
 };
 
-export const useMojoSeed = (nounId: EthersBN) => {
+export const useMojoSeed = (mojoId: EthersBN) => {
   const seed = useContractCall<IMojoSeed>({
     abi,
     address: config.addresses.mojosToken,
     method: 'seeds',
-    args: [nounId],
+    args: [mojoId],
   });
+  debugger;
   return seed;
 };
 

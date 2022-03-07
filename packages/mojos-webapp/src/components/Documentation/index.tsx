@@ -25,13 +25,13 @@ const Documentation = () => {
         <div className={classes.headerWrapper}>
           <h1>WTF?</h1>
           <p className={classes.aboutText}>
-            mojos are an experimental attempt to improve the formation of on-chain avatar
+            Mojos are an experimental attempt to improve the formation of on-chain avatar
             communities. While projects such as {cryptopunksLink} have attempted to bootstrap
-            digital community and identity, mojos attempt to bootstrap identity, community,
+            digital community and identity, Mojos attempt to bootstrap identity, community,
             governance, and a treasury that can be used by the community.
           </p>
           <p className={classes.aboutText} style={{ paddingBottom: '4rem' }}>
-            Learn more below, or start creating mojos off-chain using the {playgroundLink}.
+            Learn more below, or start creating Mojos off-chain using the {playgroundLink}.
           </p>
         </div>
         <Accordion flush>
@@ -39,18 +39,18 @@ const Documentation = () => {
             <Accordion.Header className={classes.accordionHeader}>Summary</Accordion.Header>
             <Accordion.Body>
               <ul>
-                <li>mojos artwork is in the {publicDomainLink}.</li>
-                <li>One Mojos is trustlessly auctioned every 24 hours, forever.</li>
-                <li>100% of Mojos auction proceeds are trustlessly sent to the treasury.</li>
+                <li>Mojos artwork is in the {publicDomainLink}.</li>
+                <li>One Mojo is trustlessly auctioned every 24 hours, forever.</li>
+                <li>100% of Mojo auction proceeds are trustlessly sent to the treasury.</li>
                 <li>Settlement of one auction kicks off the next.</li>
-                <li>All mojos are members of mojos DAO.</li>
-                <li>mojos DAO uses a fork of {compoundGovLink}.</li>
-                <li>One Mojos is equal to one vote.</li>
-                <li>The treasury is controlled exclusively by mojos via governance.</li>
+                <li>All Mojos are members of Mojos DAO.</li>
+                <li>Mojos DAO uses a fork of {compoundGovLink}.</li>
+                <li>One Mojo is equal to one vote.</li>
+                <li>The treasury is controlled exclusively by Mojos via governance.</li>
                 <li>Artwork is generative and stored directly on-chain (not IPFS).</li>
-                <li>No explicit rules exist for attribute scarcity; all mojos are equally rare.</li>
+                <li>No explicit rules exist for attribute scarcity; all Mojos are equally rare.</li>
                 <li>
-                  Mojos receive rewards in the form of mojos (10% of supply for first 5 years).
+                  Mojoders receive rewards in the form of Mojos (10% of supply for first 5 years).
                 </li>
               </ul>
             </Accordion.Body>
@@ -60,32 +60,32 @@ const Documentation = () => {
             <Accordion.Header className={classes.accordionHeader}>Daily Auctions</Accordion.Header>
             <Accordion.Body>
               <p className={classes.aboutText}>
-                The mojos Auction Contract will act as a self-sufficient Mojos generation and
-                distribution mechanism, auctioning one Mojos every 24 hours, forever. 100% of
-                auction proceeds (ETH) are automatically deposited in the mojos DAO treasury, where
-                they are governed by Mojos owners.
+                The Mojos Auction Contract will act as a self-sufficient Mojo generation and
+                distribution mechanism, auctioning one Mojo every 24 hours, forever. 100% of auction
+                proceeds (ETH) are automatically deposited in the Mojos DAO treasury, where they are
+                governed by Mojo owners.
               </p>
 
               <p className={classes.aboutText}>
                 Each time an auction is settled, the settlement transaction will also cause a new
-                Mojos to be minted and a new 24 hour auction to begin.{' '}
+                Mojo to be minted and a new 24 hour auction to begin.{' '}
               </p>
               <p>
                 While settlement is most heavily incentivized for the winning bidder, it can be
-                triggered by anyone, allowing the system to trustlessly auction mojos as long as
+                triggered by anyone, allowing the system to trustlessly auction Mojos as long as
                 Ethereum is operational and there are interested bidders.
               </p>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="2" className={classes.accordionItem}>
-            <Accordion.Header className={classes.accordionHeader}>mojos DAO</Accordion.Header>
+            <Accordion.Header className={classes.accordionHeader}>Mojos DAO</Accordion.Header>
             <Accordion.Body>
-              mojos DAO utilizes a fork of {compoundGovLink} and is the main governing body of the
-              mojos ecosystem. The mojos DAO treasury receives 100% of ETH proceeds from daily Mojos
-              auctions. Each Mojos is an irrevocable member of mojos DAO and entitled to one vote in
-              all governance matters. Mojos votes are non-transferable (if you sell your Mojos the
+              Mojos DAO utilizes a fork of {compoundGovLink} and is the main governing body of the
+              Mojos ecosystem. The Mojos DAO treasury receives 100% of ETH proceeds from daily Mojo
+              auctions. Each Mojo is an irrevocable member of Mojos DAO and entitled to one vote in
+              all governance matters. Mojo votes are non-transferable (if you sell your Mojo the
               vote goes with it) but delegatable, which means you can assign your vote to someone
-              else as long as you own your Mojos.
+              else as long as you own your Mojo.
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="3" className={classes.accordionItem}>
@@ -94,25 +94,25 @@ const Documentation = () => {
             </Accordion.Header>
             <Accordion.Body>
               <p>
-                In addition to the precautions taken by Compound Governance, Mojos have given
+                In addition to the precautions taken by Compound Governance, Mojoders have given
                 themselves a special veto right to ensure that no malicious proposals can be passed
-                while the Mojos supply is low. This veto right will only be used if an obviously
+                while the Mojo supply is low. This veto right will only be used if an obviously
                 harmful governance proposal has been passed, and is intended as a last resort.
               </p>
               <p>
-                Mojos will proveably revoke this veto right when they deem it safe to do so. This
-                decision will be based on a healthy Mojos distribution and a community that is
+                Mojoders will proveably revoke this veto right when they deem it safe to do so. This
+                decision will be based on a healthy Mojo distribution and a community that is
                 engaged in the governance process.
               </p>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="4" className={classes.accordionItem}>
-            <Accordion.Header className={classes.accordionHeader}>Mojos Traits</Accordion.Header>
+            <Accordion.Header className={classes.accordionHeader}>Mojo Traits</Accordion.Header>
             <Accordion.Body>
               <p>
-                mojos are generated randomly based Ethereum block hashes. There are no 'if'
-                statements or other rules governing Mojos trait scarcity, which makes all mojos
-                equally rare. As of this writing, mojos are made up of:
+                Mojos are generated randomly based Ethereum block hashes. There are no 'if'
+                statements or other rules governing Mojo trait scarcity, which makes all Mojos
+                equally rare. As of this writing, Mojos are made up of:
               </p>
               <ul>
                 <li>backgrounds (2) </li>
@@ -121,7 +121,7 @@ const Documentation = () => {
                 <li>heads (234) </li>
                 <li>glasses (21)</li>
               </ul>
-              You can experiment with off-chain Mojos generation at the {playgroundLink}.
+              You can experiment with off-chain Mojo generation at the {playgroundLink}.
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="5" className={classes.accordionItem}>
@@ -130,10 +130,9 @@ const Documentation = () => {
             </Accordion.Header>
             <Accordion.Body>
               <p>
-                mojos are stored directly on Ethereum and do not utilize pointers to other networks
-                such as IPFS. This is possible because Mojos parts are compressed and stored
-                on-chain using a custom run-length encoding (RLE), which is a form of lossless
-                compression.
+                Mojos are stored directly on Ethereum and do not utilize pointers to other networks
+                such as IPFS. This is possible because Mojo parts are compressed and stored on-chain
+                using a custom run-length encoding (RLE), which is a form of lossless compression.
               </p>
 
               <p>
@@ -146,31 +145,34 @@ const Documentation = () => {
           </Accordion.Item>
           <Accordion.Item eventKey="6" className={classes.accordionItem}>
             <Accordion.Header className={classes.accordionHeader}>
-              Mojos Seeder Contract
+              Mojo Seeder Contract
             </Accordion.Header>
             <Accordion.Body>
               <p>
-                The Mojos Seeder contract is used to determine Mojos traits during the minting
+                The Mojo Seeder contract is used to determine Mojo traits during the minting
                 process. The seeder contract can be replaced to allow for future trait generation
-                algorithm upgrades. Additionally, it can be locked by the mojos DAO to prevent any
-                future updates. Currently, Mojos traits are determined using pseudo-random number
+                algorithm upgrades. Additionally, it can be locked by the Mojos DAO to prevent any
+                future updates. Currently, Mojo traits are determined using pseudo-random number
                 generation:
               </p>
-              <code>keccak256(abi.encodePacked(blockhash(block.number - 1), nounId))</code>
+              <code>keccak256(abi.encodePacked(blockhash(block.number - 1), mojoId))</code>
               <br />
               <br />
               <p>
-                Trait generation is not truly random. Traits can be predicted when minting a Mojos
-                on the pending block.
+                Trait generation is not truly random. Traits can be predicted when minting a Mojo on
+                the pending block.
               </p>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="7" className={classes.accordionItem}>
             <Accordion.Header className={classes.accordionHeader}>
-              Nounder's Reward
+              Mojoder's Reward
             </Accordion.Header>
             <Accordion.Body>
-              <p>'Mojos' are the group of ten builders that initiated mojos. Here are the Mojos:</p>
+              <p>
+                'Mojoders' are the group of ten builders that initiated Mojos. Here are the
+                Mojoders:
+              </p>
               <ul>
                 <li>
                   <Link
@@ -214,16 +216,16 @@ const Documentation = () => {
                 </li>
               </ul>
               <p>
-                Because 100% of Mojos auction proceeds are sent to mojos DAO, Mojos have chosen to
-                compensate themselves with mojos. Every 10th Mojos for the first 5 years of the
-                project (Mojos ids #0, #10, #20, #30 and so on) will be automatically sent to the
-                Nounder's multisig to be vested and shared among the founding members of the
+                Because 100% of Mojo auction proceeds are sent to Mojos DAO, Mojoders have chosen to
+                compensate themselves with Mojos. Every 10th Mojo for the first 5 years of the
+                project (Mojo ids #0, #10, #20, #30 and so on) will be automatically sent to the
+                Mojoder's multisig to be vested and shared among the founding members of the
                 project.
               </p>
               <p>
-                Nounder distributions don't interfere with the cadence of 24 hour auctions. mojos
-                are sent directly to the Nounder's Multisig, and auctions continue on schedule with
-                the next available Mojos ID.
+                Mojoder distributions don't interfere with the cadence of 24 hour auctions. Mojos
+                are sent directly to the Mojoder's Multisig, and auctions continue on schedule with
+                the next available Mojo ID.
               </p>
             </Accordion.Body>
           </Accordion.Item>

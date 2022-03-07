@@ -1,16 +1,16 @@
 import { ethers, network } from 'hardhat';
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import {
-  mojosDescriptor,
-  mojosDescriptor__factory as mojosDescriptorFactory,
-  mojosToken,
-  mojosToken__factory as mojosTokenFactory,
-  mojosSeeder,
-  mojosSeeder__factory as mojosSeederFactory,
+  MojosDescriptor,
+  MojosDescriptor__factory,
+  MojosToken,
+  MojosToken__factory,
+  MojosSeeder,
+  MojosSeeder__factory,
   Weth,
-  Weth__factory as WethFactory,
+  Weth__factory,
 } from '../typechain';
-import ImageData from '../files/image-data.json';
+import { bgcolors, partcolors, parts } from '../files/encoded-layers.json';
 import { Block } from '@ethersproject/abstract-provider';
 import { chunkArray } from '../utils';
 
@@ -31,13 +31,13 @@ export const getSigners = async (): Promise<TestSigners> => {
   };
 };
 
-export const deploymojosDescriptor = async (
+export const deployMojosDescriptor = async (
   deployer?: SignerWithAddress,
-): Promise<mojosDescriptor> => {
+): Promise<MojosDescriptor> => {
   const signer = deployer || (await getSigners()).deployer;
   const nftDescriptorLibraryFactory = await ethers.getContractFactory('NFTDescriptor', signer);
   const nftDescriptorLibrary = await nftDescriptorLibraryFactory.deploy();
-  const mojosDescriptorFactory = new mojosDescriptorFactory(
+  const mojosDescriptorFactory = new MojosDescriptor__factory(
     {
       __$e1d8844a0810dc0e87a665b1f2b5fa7c69$__: nftDescriptorLibrary.address,
     },
@@ -47,69 +47,68 @@ export const deploymojosDescriptor = async (
   return mojosDescriptorFactory.deploy();
 };
 
-export const deploymojosSeeder = async (deployer?: SignerWithAddress): Promise<mojosSeeder> => {
-  const factory = new mojosSeederFactory(deployer || (await getSigners()).deployer);
+export const deployMojosSeeder = async (deployer?: SignerWithAddress): Promise<MojosSeeder> => {
+  const factory = new MojosSeeder__factory(deployer || (await getSigners()).deployer);
 
   return factory.deploy();
 };
 
-export const deploymojosToken = async (
+export const deployMojosToken = async (
   deployer?: SignerWithAddress,
-  noundersDAO?: string,
+  mojosDAO?: string,
   minter?: string,
   descriptor?: string,
   seeder?: string,
   proxyRegistryAddress?: string,
-): Promise<mojosToken> => {
+): Promise<MojosToken> => {
   const signer = deployer || (await getSigners()).deployer;
-  const factory = new mojosTokenFactory(signer);
+  const factory = new MojosToken__factory(signer);
 
   return factory.deploy(
-    noundersDAO || signer.address,
+    mojosDAO || signer.address,
     minter || signer.address,
-    descriptor || (await deploymojosDescriptor(signer)).address,
-    seeder || (await deploymojosSeeder(signer)).address,
+    descriptor || (await deployMojosDescriptor(signer)).address,
+    seeder || (await deployMojosSeeder(signer)).address,
     proxyRegistryAddress || address(0),
   );
 };
 
 export const deployWeth = async (deployer?: SignerWithAddress): Promise<Weth> => {
-  const factory = new WethFactory(deployer || (await await getSigners()).deployer);
+  const factory = new Weth__factory(deployer || (await await getSigners()).deployer);
 
   return factory.deploy();
 };
 
-export const populateDescriptor = async (mojosDescriptor: mojosDescriptor): Promise<void> => {
-  const { bgcolors, palette, images } = ImageData;
-  const { bodies, accessories, heads, glasses } = images;
+export const populateDescriptor = async (mojosDescriptor: MojosDescriptor): Promise<void> => {
+  const [bodies, bodyAccessories, faces, headAccessories] = parts;
 
-  // Split up head and accessory population due to high gas usage
+  // Split up face and bodyAccessory population due to high gas usage
   await Promise.all([
     mojosDescriptor.addManyBackgrounds(bgcolors),
-    mojosDescriptor.addManyColorsToPalette(0, palette),
+    mojosDescriptor.addManyColorsToPalette(0, partcolors),
     mojosDescriptor.addManyBodies(bodies.map(({ data }) => data)),
-    chunkArray(accessories, 10).map(chunk =>
-      mojosDescriptor.addManyAccessories(chunk.map(({ data }) => data)),
+    chunkArray(bodyAccessories, 10).map(chunk =>
+      mojosDescriptor.addManyBodyAccessories(chunk.map(({ data }) => data)),
     ),
-    chunkArray(heads, 10).map(chunk => mojosDescriptor.addManyHeads(chunk.map(({ data }) => data))),
-    mojosDescriptor.addManyGlasses(glasses.map(({ data }) => data)),
+    chunkArray(faces, 10).map(chunk => mojosDescriptor.addManyFaces(chunk.map(({ data }) => data))),
+    mojosDescriptor.addManyHeadAccessories(headAccessories.map(({ data }) => data)),
   ]);
 };
 
 /**
- * Return a function used to mint `amount` mojos on the provided `token`
- * @param token The mojos ERC721 token
- * @param amount The number of mojos to mint
+ * Return a function used to mint `amount` Mojos on the provided `token`
+ * @param token The Mojos ERC721 token
+ * @param amount The number of Mojos to mint
  */
-export const Mintmojos = (
-  token: mojosToken,
-  burnNoundersTokens = true,
+export const MintMojos = (
+  token: MojosToken,
+  burnMojosTokens = true,
 ): ((amount: number) => Promise<void>) => {
   return async (amount: number): Promise<void> => {
     for (let i = 0; i < amount; i++) {
       await token.mint();
     }
-    if (!burnNoundersTokens) return;
+    if (!burnMojosTokens) return;
 
     await setTotalSupply(token, amount);
   };
@@ -118,14 +117,14 @@ export const Mintmojos = (
 /**
  * Mints or burns tokens to target a total supply. Due to Mojos' rewards tokens may be burned and tokenIds will not be sequential
  */
-export const setTotalSupply = async (token: mojosToken, newTotalSupply: number): Promise<void> => {
+export const setTotalSupply = async (token: MojosToken, newTotalSupply: number): Promise<void> => {
   const totalSupply = (await token.totalSupply()).toNumber();
 
   if (totalSupply < newTotalSupply) {
     for (let i = 0; i < newTotalSupply - totalSupply; i++) {
       await token.mint();
     }
-    // If Nounder's reward tokens were minted totalSupply will be more than expected, so run setTotalSupply again to burn extra tokens
+    // If Mojo's reward tokens were minted totalSupply will be more than expected, so run setTotalSupply again to burn extra tokens
     await setTotalSupply(token, newTotalSupply);
   }
 

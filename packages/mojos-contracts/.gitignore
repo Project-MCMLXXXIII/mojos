@@ -7,11 +7,11 @@ artifacts
 typechain/*.js
 typechain/*.ts
 typechain/factories/*
-!typechain/factories/mojosToken__factory.ts
-!typechain/factories/mojosAuctionHouse__factory.ts
-!typechain/factories/mojosDescriptor__factory.ts
-!typechain/factories/mojosSeeder__factory.ts
-!typechain/factories/mojosDaoLogicV1__factory.ts
+!typechain/factories/MojosToken__factory.ts
+!typechain/factories/MojosAuctionHouse__factory.ts
+!typechain/factories/MojosDescriptor__factory.ts
+!typechain/factories/MojosSeeder__factory.ts
+!typechain/factories/MojosDaoLogicV1__factory.ts
 .openzeppelin
 
 # Script output
