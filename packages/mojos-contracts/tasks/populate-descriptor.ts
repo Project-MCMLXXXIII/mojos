@@ -1,5 +1,6 @@
 import { task, types } from 'hardhat/config';
-import ImageData from '../files/image-data.json';
+// import ImageData from '../files/encoded-layers.json';
+import { bgcolors, partcolors, parts } from '../files/encoded-layers.json';
 import { chunkArray } from '../utils';
 
 task('populate-descriptor', 'Populates the descriptor with color palettes and Mojo parts')
@@ -23,25 +24,24 @@ task('populate-descriptor', 'Populates the descriptor with color palettes and Mo
     });
     const descriptorContract = descriptorFactory.attach(mojosDescriptor);
 
-    const { bgcolors, palette, images } = ImageData;
-    const { bodies, accessories, heads, glasses } = images;
+    const [bodies, bodyAccessories, faces, headAccessories] = parts;
 
     // Chunk head and bodyAccessory population due to high gas usage
     await descriptorContract.addManyBackgrounds(bgcolors);
-    await descriptorContract.addManyColorsToPalette(0, palette);
+    await descriptorContract.addManyColorsToPalette(0, partcolors);
     await descriptorContract.addManyBodies(bodies.map(({ data }) => data));
 
-    const bodyAccessoryChunk = chunkArray(accessories, 10);
+    const bodyAccessoryChunk = chunkArray(bodyAccessories, 10);
     for (const chunk of bodyAccessoryChunk) {
       await descriptorContract.addManyBodyAccessories(chunk.map(({ data }) => data));
     }
 
-    const headChunk  = chunkArray(heads, 10);
+    const headChunk = chunkArray(faces, 10);
     for (const chunk of headChunk) {
       await descriptorContract.addManyFaces(chunk.map(({ data }) => data));
     }
 
-    await descriptorContract.addManyHeadAccessories(glasses.map(({ data }) => data));
+    await descriptorContract.addManyHeadAccessories(headAccessories.map(({ data }) => data));
 
     console.log('Descriptor populated with palettes and parts');
   });

@@ -28,7 +28,8 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
 
     // prettier-ignore TODO Check this license
     // https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt
-    bytes32 constant COPYRIGHT_CC0_1_0_UNIVERSAL_LICENSE = 0xa2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499;
+    bytes32 constant COPYRIGHT_CC0_1_0_UNIVERSAL_LICENSE =
+        0xa2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499;
 
     // Whether or not new Mojo parts can be added
     bool public override arePartsLocked;
@@ -275,10 +276,10 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
         IMojosSeeder.Seed memory seed
     ) public view override returns (string memory) {
         NFTDescriptor.TokenURIParams memory params = NFTDescriptor.TokenURIParams({
-        name: name,
-        description: description,
-        parts: _getPartsForSeed(seed),
-        background: backgrounds[seed.background]
+            name: name,
+            description: description,
+            parts: _getPartsForSeed(seed),
+            background: backgrounds[seed.background]
         });
         return NFTDescriptor.constructTokenURI(params, palettes);
     }
@@ -288,8 +289,8 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
      */
     function generateSVGImage(IMojosSeeder.Seed memory seed) external view override returns (string memory) {
         MultiPartRLEToSVG.SVGParams memory params = MultiPartRLEToSVG.SVGParams({
-        parts: _getPartsForSeed(seed),
-        background: backgrounds[seed.background]
+            parts: _getPartsForSeed(seed),
+            background: backgrounds[seed.background]
         });
         return NFTDescriptor.generateSVGImage(params, palettes);
     }
@@ -342,9 +343,9 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
     function _getPartsForSeed(IMojosSeeder.Seed memory seed) internal view returns (bytes[] memory) {
         bytes[] memory _parts = new bytes[](4);
         _parts[0] = bodies[seed.body];
-        _parts[1] = bodyAccessories[seed.accessory];
-        _parts[2] = faces[seed.head];
-        _parts[3] = headAccessories[seed.glasses];
+        _parts[1] = bodyAccessories[seed.bodyAccessory];
+        _parts[2] = faces[seed.face];
+        _parts[3] = headAccessories[seed.headAccessory];
         return _parts;
     }
 }

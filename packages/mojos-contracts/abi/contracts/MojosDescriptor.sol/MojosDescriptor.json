@@ -359,17 +359,17 @@
           },
           {
             "internalType": "uint48",
-            "name": "accessory",
+            "name": "bodyAccessory",
             "type": "uint48"
           },
           {
             "internalType": "uint48",
-            "name": "head",
+            "name": "face",
             "type": "uint48"
           },
           {
             "internalType": "uint48",
-            "name": "glasses",
+            "name": "headAccessory",
             "type": "uint48"
           }
         ],
@@ -437,17 +437,17 @@
           },
           {
             "internalType": "uint48",
-            "name": "accessory",
+            "name": "bodyAccessory",
             "type": "uint48"
           },
           {
             "internalType": "uint48",
-            "name": "head",
+            "name": "face",
             "type": "uint48"
           },
           {
             "internalType": "uint48",
-            "name": "glasses",
+            "name": "headAccessory",
             "type": "uint48"
           }
         ],
@@ -493,17 +493,17 @@
           },
           {
             "internalType": "uint48",
-            "name": "accessory",
+            "name": "bodyAccessory",
             "type": "uint48"
           },
           {
             "internalType": "uint48",
-            "name": "head",
+            "name": "face",
             "type": "uint48"
           },
           {
             "internalType": "uint48",
-            "name": "glasses",
+            "name": "headAccessory",
             "type": "uint48"
           }
         ],
@@ -660,17 +660,17 @@
           },
           {
             "internalType": "uint48",
-            "name": "accessory",
+            "name": "bodyAccessory",
             "type": "uint48"
           },
           {
             "internalType": "uint48",
-            "name": "head",
+            "name": "face",
             "type": "uint48"
           },
           {
             "internalType": "uint48",
-            "name": "glasses",
+            "name": "headAccessory",
             "type": "uint48"
           }
         ],

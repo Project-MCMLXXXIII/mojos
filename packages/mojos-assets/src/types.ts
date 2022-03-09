@@ -1,13 +1,13 @@
 export interface MojoSeed {
   background: number;
   body: number;
-  accessory: number;
-  head: number;
-  glasses: number;
+  bodyAccessory: number;
+  face: number;
+  headAccessory: number;
 }
 
 export interface EncodedImage {
-  filename: string;
+  name: string;
   data: string;
 }
 

@@ -31,9 +31,9 @@ contract MojosSeeder is IMojosSeeder {
 
         uint256 backgroundCount = descriptor.backgroundCount();
         uint256 bodyCount = descriptor.bodyCount();
-        uint256 accessoryCount = descriptor.bodyAccessoryCount();
-        uint256 headCount  = descriptor.faceCount();
-        uint256 glassesCount  = descriptor.headAccessoryCount();
+        uint256 bodyAccessoryCount = descriptor.bodyAccessoryCount();
+        uint256 faceCount  = descriptor.faceCount();
+        uint256 headAccessoryCount  = descriptor.headAccessoryCount();
 
         return Seed({
         background: uint48(
@@ -42,14 +42,14 @@ contract MojosSeeder is IMojosSeeder {
         body: uint48(
                 uint48(pseudorandomness >> 48) % bodyCount
             ),
-        accessory: uint48(
-                uint48(pseudorandomness >> 96) % accessoryCount
+        bodyAccessory: uint48(
+                uint48(pseudorandomness >> 96) % bodyAccessoryCount
             ),
-        head: uint48(
-                uint48(pseudorandomness >> 144) % headCount
+        face: uint48(
+                uint48(pseudorandomness >> 144) % faceCount
             ),
-        glasses: uint48(
-                uint48(pseudorandomness >> 192) % glassesCount
+        headAccessory: uint48(
+                uint48(pseudorandomness >> 192) % headAccessoryCount
             )
         });
     }

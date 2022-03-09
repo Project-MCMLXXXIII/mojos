@@ -54,7 +54,7 @@ const Playground: React.FC = () => {
       for (let i = 0; i < amount; i++) {
         const seed = { ...getRandomMojoSeed(), ...modSeed };
         const { parts, background } = getMojoData(seed);
-        debugger;
+
         const svg = buildSVG(parts, ImageData.palette, background);
         setMojoSvgs(prev => {
           return prev ? [svg, ...prev] : [svg];

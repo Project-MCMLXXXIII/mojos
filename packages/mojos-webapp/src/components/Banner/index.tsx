@@ -1,7 +1,7 @@
 import classes from './Banner.module.css';
 import Section from '../../layout/Section';
 import { Col } from 'react-bootstrap';
-import calendar_mojo from '../../assets/calendar_mojo.png';
+import calendar_mojo from '../../assets/03-mojo.svg';
 import Mojo from '../Mojo';
 
 const Banner = () => {
@@ -10,11 +10,11 @@ const Banner = () => {
       <Col lg={6}>
         <div className={classes.wrapper}>
           <h1>
-            TWO MOJOS,
+            2 MOJOS
             <br />
-            EVERY DAY,
+            EVERYDAY,
             <br />
-            FOREVER.
+            FOREVER
           </h1>
         </div>
       </Col>

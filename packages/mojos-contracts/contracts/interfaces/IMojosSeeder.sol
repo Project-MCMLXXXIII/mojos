@@ -22,9 +22,9 @@ interface IMojosSeeder {
     struct Seed {
         uint48 background;
         uint48 body;
-        uint48 accessory;
-        uint48 head;
-        uint48 glasses;
+        uint48 bodyAccessory;
+        uint48 face;
+        uint48 headAccessory;
     }
 
     function generateSeed(uint256 mojoId, IMojosDescriptor descriptor) external view returns (Seed memory);

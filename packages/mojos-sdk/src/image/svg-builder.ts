@@ -39,7 +39,7 @@ export const buildSVG = (
 ): string => {
   const svgWithoutEndTag = parts.reduce((result, part) => {
     const svgRects: string[] = [];
-    debugger;
+
     const { bounds, rects } = decodeImage(part.data);
 
     let currentX = bounds.left;

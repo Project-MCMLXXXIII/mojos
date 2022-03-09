@@ -23,7 +23,7 @@ const getMojo = (mojoId: string | EthersBN, seed: IMojoSeed) => {
   const name = `Mojo ${id}`;
   const description = `Mojo ${id} is a member of the Mojos DAO`;
   const { parts, background } = getMojoData(seed);
-  debugger;
+
   const image = `data:image/svg+xml;base64,${btoa(buildSVG(parts, data.palette, background))}`;
 
   return {
