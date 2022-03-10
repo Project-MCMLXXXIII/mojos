@@ -16,7 +16,7 @@ yarn
 import { ImageData } from '@mojos/assets';
 
 const { bgcolors, palette, images } = ImageData;
-const { bodies, accessories, heads, glasses } = images;
+const { bodies, bodyAccessories, faces, headAccessories } = images;
 ```
 
 **Get Mojo Part & Background Data**
@@ -27,9 +27,9 @@ import { getMojoData } from '@mojos/assets';
 const seed = {
   background: 0,
   body: 17,
-  accessory: 41,
-  head: 71,
-  glasses: 2,
+  bodyAccessory: 41,
+  face: 71,
+  headAccessory: 2,
 };
 const { parts, background } = getMojoData(seed);
 ```
@@ -46,9 +46,9 @@ const mojoId = 116;
  {
     background: 1,
     body: 28,
-    accessory: 120,
-    head: 95,
-    glasses: 15
+    bodyAccessory: 120,
+    face: 95,
+    headAccessory: 15
   }
 */
 const seed = getMojoSeedFromBlockHash(mojoId, blockHash);
@@ -77,9 +77,9 @@ const { palette } = ImageData; // Used with `buildSVG``
    {
       background: 1,
       body: 28,
-      accessory: 120,
-      head: 95,
-      glasses: 15
+      bodyAccessory: 120,
+      face: 95,
+      headAccessory: 15
     }
 */
 const seed = getMojoSeedFromBlockHash(nextMojoId, latestBlockHash);

@@ -9,17 +9,17 @@ import {
 import { images } from '../src/image-data.json';
 import { MojoSeed } from '../src/types';
 
-const { bodies, accessories, heads, glasses } = images;
+const { bodies, bodyAccessories, faces, headAccessories } = images;
 
 describe('@mojo/assets utils', () => {
   // Test against Mojo 116, created at block 13661786
   const MOJO116_ID = 116;
   const MOJO116_SEED: MojoSeed = {
     background: 1,
-    body: 28,
-    accessory: 120,
-    head: 95,
-    glasses: 15,
+    body: 8,
+    bodyAccessory: 22,
+    face: 33,
+    headAccessory: 4,
   };
   const MOJO116_PREV_BLOCKHASH =
     '0x5014101691e81d79a2eba711e698118e1a90c9be7acb2f40d7f200134ee53e01';
@@ -38,9 +38,9 @@ describe('@mojo/assets utils', () => {
   describe('getPseudorandomPart', () => {
     it('should match MojosSeeder.sol implementation for a pseudorandomly chosen part', () => {
       const headShift = 144;
-      const { head } = MOJO116_SEED;
-      expect(getPseudorandomPart(MOJO116_PSEUDORANDOMNESS, heads.length, headShift)).to.be.equal(
-        head,
+      const { face } = MOJO116_SEED;
+      expect(getPseudorandomPart(MOJO116_PSEUDORANDOMNESS, faces.length, headShift)).to.be.equal(
+        face,
       );
     });
   });

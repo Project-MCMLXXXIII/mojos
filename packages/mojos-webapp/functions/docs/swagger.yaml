@@ -169,15 +169,15 @@ components:
       type: object
       description: The attributes that make up a Mojo's seed
       properties:
-        head:
+        face:
           type: integer
         body:
           type: integer
         background:
           type: integer
-        accessory:
+        bodyAccessory:
           type: integer
-        glasses:
+        headAccessory:
           type: integer
     NormalizedMojo:
       type: object

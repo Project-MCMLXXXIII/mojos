@@ -15,9 +15,9 @@ export function handleMojoCreated(event: MojoCreated): void {
   let seed = new Seed(mojoId);
   seed.background = event.params.seed.background;
   seed.body = event.params.seed.body;
-  seed.accessory = event.params.seed.accessory;
+  seed.bodyAccessory = event.params.seed.bodyAccessory;
+  seed.face = event.params.seed.face;
   seed.head = event.params.seed.head;
-  seed.glasses = event.params.seed.glasses;
   seed.save();
 
   let mojo = Mojo.load(mojoId);

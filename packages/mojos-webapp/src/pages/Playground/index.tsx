@@ -65,7 +65,7 @@ const Playground: React.FC = () => {
   );
 
   useEffect(() => {
-    const traitTitles = ['background', 'body', 'accessory', 'head', 'glasses'];
+    const traitTitles = ['background', 'body', 'bodyAccessory', 'face', 'headAccessory'];
     const traitNames = [
       ['cool', 'warm'],
       ...Object.values(ImageData.images).map(i => {
