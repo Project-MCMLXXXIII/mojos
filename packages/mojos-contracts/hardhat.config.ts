@@ -9,6 +9,8 @@ import 'hardhat-typechain';
 import 'hardhat-abi-exporter';
 import '@openzeppelin/hardhat-upgrades';
 import 'hardhat-gas-reporter';
+import 'hardhat-deploy';
+import 'hardhat-deploy-ethers';
 import './tasks';
 
 dotenv.config();
@@ -46,10 +48,8 @@ const config: HardhatUserConfig = {
         ? { mnemonic: process.env.MNEMONIC }
         : [process.env.WALLET_PRIVATE_KEY!].filter(Boolean),
     },
-    hardhat: {
-      initialBaseFeePerGas: 0,
-    },
   },
+
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
@@ -64,6 +64,7 @@ const config: HardhatUserConfig = {
     src: 'contracts',
     coinmarketcap: '7643dfc7-a58f-46af-8314-2db32bdd18ba',
   },
+
   mocha: {
     timeout: 60_000,
   },

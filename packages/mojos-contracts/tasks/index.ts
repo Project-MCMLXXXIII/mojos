@@ -1,6 +1,6 @@
 export * from './accounts';
 export * from './create-proposal';
-export * from './deploy';
+export * from './deploy-contracts';
 export * from './deploy-ci';
 export * from './deploy-local';
 export * from './mint-mojo';

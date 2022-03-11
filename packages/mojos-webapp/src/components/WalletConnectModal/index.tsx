@@ -87,7 +87,7 @@ const WalletConnectModal: React.FC<{ onDismiss: () => void }> = props => {
           const trezor = new TrezorConnector({
             chainId: CHAIN_ID,
             url: config.app.jsonRpcUri,
-            manifestAppUrl: 'https://mojos.wtf',
+            manifestAppUrl: 'https://getmojos.com/',
             manifestEmail: 'mojoops+trezorconnect@protonmail.com',
           });
           activate(trezor);

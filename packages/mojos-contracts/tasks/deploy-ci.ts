@@ -10,7 +10,7 @@ task('deploy-ci', 'Deploy contracts (automated by CI)')
   )
   .setAction(async ({ mojosdao, weth }, { ethers, run }) => {
     const [deployer] = await ethers.getSigners();
-    const contracts = await run('deploy', {
+    const contracts = await run('deploy-contracts', {
       weth,
       mojosDAO: mojosdao || deployer.address,
     });

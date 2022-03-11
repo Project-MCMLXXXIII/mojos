@@ -10,10 +10,10 @@ export const externalURL = (externalURL: ExternalURL) => {
     case ExternalURL.discord:
       return 'http://discord.gg/mojos';
     case ExternalURL.twitter:
-      return 'https://twitter.com/mojosdao';
+      return 'https://twitter.com/MojosHQ';
     case ExternalURL.notion:
-      return 'https://mojos.notion.site/Explore-Mojos-a2a9dceeb1d54e10b9cbf3f931c2266f';
+      return 'https://getmojos.com/';
     case ExternalURL.discourse:
-      return 'https://discourse.mojos.wtf/';
+      return 'https://getmojos.com/';
   }
 };

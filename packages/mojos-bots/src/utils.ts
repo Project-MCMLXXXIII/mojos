@@ -27,7 +27,7 @@ export function formatAuctionStartedTweetText(auctionId: number) {
   return `＊Bleep Bloop Blop＊
         
  An auction has started for Mojo #${auctionId}
- Learn more at https://mojos.wtf`;
+ Learn more at https://getmojos.com/`;
 }
 
 /**

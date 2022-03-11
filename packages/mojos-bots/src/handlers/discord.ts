@@ -17,7 +17,7 @@ export class DiscordAuctionLifecycleHandler implements IAuctionLifecycleHandler 
       const message = new Discord.MessageEmbed()
         .setTitle(`New Auction Discovered`)
         .setDescription(`An auction has started for Mojo #${auctionId}`)
-        .setURL('https://mojos.wtf')
+        .setURL('https://getmojos.com/')
         .addField('Mojo ID', auctionId, true)
         .attachFiles([attachment])
         .setImage(`attachment://${attachmentName}`)
@@ -35,7 +35,7 @@ export class DiscordAuctionLifecycleHandler implements IAuctionLifecycleHandler 
   async handleNewBid(auctionId: number, bid: Bid) {
     const message = new Discord.MessageEmbed()
       .setTitle(`New Bid Placed`)
-      .setURL('https://mojos.wtf')
+      .setURL('https://getmojos.com/')
       .setDescription(await formatBidMessageText(auctionId, bid))
       .setTimestamp();
     await Promise.all(this.discordClients.map(c => c.send(message)));

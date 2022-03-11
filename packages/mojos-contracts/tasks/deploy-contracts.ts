@@ -3,7 +3,7 @@ import { Interface } from 'ethers/lib/utils';
 import { task, types } from 'hardhat/config';
 import promptjs from 'prompt';
 
-promptjs.colors = false;
+promptjs.colors = true;
 promptjs.message = '> ';
 promptjs.delimiter = '';
 
@@ -26,7 +26,7 @@ interface Contract {
   waitForConfirmation?: boolean;
 }
 
-task('deploy', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosToken')
+task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosToken')
   .addOptionalParam('mojosdao', 'The mojos DAO contract address', undefined, types.string)
   .addOptionalParam('weth', 'The WETH contract address', undefined, types.string)
   .addOptionalParam('auctionTimeBuffer', 'The auction time buffer (seconds)', 5 * 60, types.int)
@@ -137,7 +137,7 @@ task('deploy', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosTo
           gasPrice: {
             type: 'integer',
             required: true,
-            description: `${network.chainId} - Enter a gas price (gwei)`,
+            description: `${deployer.address} - ${network.chainId} - Enter a gas price (gwei)`,
             default: gasInGwei,
           },
         },
@@ -184,22 +184,25 @@ task('deploy', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosTo
         return;
       }
 
-      console.log('Deploying...');
+      try {
+        console.log('Deploying...');
+        const deployedContract = await factory.deploy(
+          ...(contract.args?.map(a => (typeof a === 'function' ? a() : a)) ?? []),
+          {
+            gasPrice,
+          },
+        );
 
-      const deployedContract = await factory.deploy(
-        ...(contract.args?.map(a => (typeof a === 'function' ? a() : a)) ?? []),
-        {
-          gasPrice,
-        },
-      );
-
-      if (contract.waitForConfirmation) {
+        // if (contract.waitForConfirmation) {
         await deployedContract.deployed();
+        // }
+
+        contracts[name as ContractName].address = deployedContract.address;
+
+        console.log(`${name} contract deployed to ${deployedContract.address}`);
+      } catch (error) {
+        console.error(`Error Deploying ${error}`);
       }
-
-      contracts[name as ContractName].address = deployedContract.address;
-
-      console.log(`${name} contract deployed to ${deployedContract.address}`);
     }
 
     return contracts;

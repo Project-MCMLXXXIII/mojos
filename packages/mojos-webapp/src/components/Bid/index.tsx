@@ -238,7 +238,7 @@ const Bid: React.FC<{
   const minBidCopy = `Ξ ${minBidEth(minBid)} or more`;
   const fomoMojosBtnOnClickHandler = () => {
     // Open Fomo Mojos in a new tab
-    window.open('https://fomomojos.wtf', '_blank')?.focus();
+    window.open('https://getmojos.com/', '_blank')?.focus();
   };
 
   const isWalletConnected = activeAccount !== undefined;
