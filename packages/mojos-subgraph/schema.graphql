@@ -8,14 +8,14 @@ type Seed @entity {
   "The body index"
   body: BigInt!
 
-  "The accessory index"
-  accessory: BigInt!
+  "The bodyAccessory index"
+  bodyAccessory: BigInt!
 
-  "The head index"
-  head: BigInt!
+  "The face index"
+  face: BigInt!
 
-  "The glasses index"
-  glasses: BigInt!
+  "The headAccessory index"
+  headAccessory: BigInt!
 }
 
 type Mojo @entity {

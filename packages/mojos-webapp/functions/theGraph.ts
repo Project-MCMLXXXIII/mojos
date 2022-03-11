@@ -11,9 +11,9 @@ export interface NormalizedVote {
 export interface Seed {
   background: number;
   body: number;
-  accessory: number;
-  head: number;
-  glasses: number;
+  bodyAccessory: number;
+  face: number;
+  headAccessory: number;
 }
 
 export interface NormalizedMojo {
@@ -43,9 +43,9 @@ const mojosGql = `
     seed {
       background
       body
-      accessory
-      head
-      glasses
+      bodyAccessory
+      face
+      headAccessory
     }
   }
 }
@@ -59,9 +59,9 @@ export const normalizeVote = (vote: any): NormalizedVote => ({
 export const normalizeSeed = (seed: any): Seed => ({
   background: Number(seed.background),
   body: Number(seed.body),
-  glasses: Number(seed.glasses),
-  accessory: Number(seed.accessory),
-  head: Number(seed.head),
+  headAccessory: Number(seed.headAccessory),
+  bodyAccessory: Number(seed.bodyAccessory),
+  face: Number(seed.face),
 });
 
 export const normalizeMojo = (mojo: any): NormalizedMojo => ({

@@ -36,9 +36,9 @@ export const auctionQuery = (auctionId: number) => gql`
 		  id
 		  background
 		  body
-		  accessory
-		  head
-		  glasses
+		  bodyAccessory
+		  face
+		  headAccessory
 		}
 		owner {
 		  id
@@ -79,9 +79,9 @@ export const mojoQuery = (id: string) => gql`
 	  seed {
 	  background
 		body
-		accessory
-		head
-		glasses
+		bodyAccessory
+		face
+		headAccessory
 	}
 	  owner {
 		id

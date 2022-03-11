@@ -1,5 +1,5 @@
 import { task, types } from 'hardhat/config';
-// import ImageData from '../files/encoded-layers.json';
+//import ImageData from '../files/image-data.json';
 import { bgcolors, partcolors, parts } from '../files/encoded-layers.json';
 import { chunkArray } from '../utils';
 
