@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@float-capital/solidity-coverage": "^0.7.17",
-    "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.13",
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-etherscan": "^2.1.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@openzeppelin/contracts": "^4.1.0",
@@ -36,16 +36,18 @@
     "base64-sol": "^1.0.1",
     "dotenv": "^10.0.0",
     "ethereum-waffle": "^3.3.0",
-    "ethers": "^5.6.0",
     "hardhat": "^2.1.1",
     "hardhat-abi-exporter": "^2.2.1",
-    "hardhat-deploy": "^0.10.5",
-    "hardhat-deploy-ethers": "^0.3.0-beta.13",
     "hardhat-gas-reporter": "^1.0.4",
     "hardhat-typechain": "^0.3.5",
     "prettier-plugin-solidity": "^1.0.0-beta.12",
     "prompt": "^1.1.0",
     "shx": "^0.3.3",
     "ts-node": "^10.0.0"
+  },
+  "dependencies": {
+    "ethers": "5.5.0",
+    "hardhat-deploy": "^0.10.5",
+    "hardhat-deploy-ethers": "^0.3.0-beta.13"
   }
 }

@@ -11,7 +11,8 @@
     "./typechain",
     "../abi",
     "./abi",
-    "./files/*.json"
+    "./files/*.json",
+    "./scripts"
   ],
   "files": ["./hardhat.config.ts"],
   "references": [

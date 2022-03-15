@@ -5,34 +5,34 @@
 import { Signer, Contract, ContractFactory, Overrides } from "ethers";
 import { Provider, TransactionRequest } from "@ethersproject/providers";
 
-import type { MojosDAOLogicV1 } from "../MojosDAOLogicV1";
+import type { MojosDaoLogicV1 } from "../MojosDaoLogicV1";
 
-export class MojosDAOLogicV1__factory extends ContractFactory {
+export class MojosDaoLogicV1__factory extends ContractFactory {
   constructor(signer?: Signer) {
     super(_abi, _bytecode, signer);
   }
 
   deploy(
     overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<MojosDAOLogicV1> {
-    return super.deploy(overrides || {}) as Promise<MojosDAOLogicV1>;
+  ): Promise<MojosDaoLogicV1> {
+    return super.deploy(overrides || {}) as Promise<MojosDaoLogicV1>;
   }
   getDeployTransaction(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): TransactionRequest {
     return super.getDeployTransaction(overrides || {});
   }
-  attach(address: string): MojosDAOLogicV1 {
-    return super.attach(address) as MojosDAOLogicV1;
+  attach(address: string): MojosDaoLogicV1 {
+    return super.attach(address) as MojosDaoLogicV1;
   }
-  connect(signer: Signer): MojosDAOLogicV1__factory {
-    return super.connect(signer) as MojosDAOLogicV1__factory;
+  connect(signer: Signer): MojosDaoLogicV1__factory {
+    return super.connect(signer) as MojosDaoLogicV1__factory;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): MojosDAOLogicV1 {
-    return new Contract(address, _abi, signerOrProvider) as MojosDAOLogicV1;
+  ): MojosDaoLogicV1 {
+    return new Contract(address, _abi, signerOrProvider) as MojosDaoLogicV1;
   }
 }
 
