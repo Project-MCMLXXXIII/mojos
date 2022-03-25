@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false
+  },
+  "include": [
+    "utils.ts",
+    "./tasks",
+    "./src",
+    "./test",
+    "./typechain",
+    "../abi",
+    "./abi",
+    "./files/*.json",
+    "./scripts"
+  ],
+  "files": ["./hardhat.config.ts"],
+  "references": [
+    {
+      "path": "../mojos-assets/tsconfig.build.json"
+    }
+  ]
+}
