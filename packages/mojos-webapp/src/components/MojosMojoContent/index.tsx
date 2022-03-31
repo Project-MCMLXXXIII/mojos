@@ -74,14 +74,14 @@ const MojosMojo: React.FC<{
                 ` ${mojoContentClasses.bidRow}`
               }
             >
-              All Mojo auction proceeds are sent to the{' '}
+              All Mojos auction proceeds are sent to the{' '}
               <Link to="/vote" className={mojoContentClasses.link}>
                 Mojos DAO
               </Link>
-              . For this reason, we, the project's founders (‘Mojoders’) have chosen to compensate
+              . For this reason, we, the project's founders (Mojos) have chosen to compensate
               ourselves with Mojos. Every 10th Mojo for the first 5 years of the project will be
               sent to our multisig (5/10), where it will be vested and distributed to individual
-              Mojoders.
+              Mojos.
             </li>
           </ul>
           <div
