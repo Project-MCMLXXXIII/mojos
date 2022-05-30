@@ -27,7 +27,7 @@ const NavBar = () => {
   const history = useHistory();
   const ethBalance = useEtherBalance(config.addresses.mojosDaoExecutor);
   const lidoBalanceAsETH = useLidoBalance();
-  const treasuryBalance = ethBalance && lidoBalanceAsETH && ethBalance.add(lidoBalanceAsETH);
+  const treasuryBalance = ethBalance;
   const daoEtherscanLink = buildEtherscanHoldingsLink(config.addresses.mojosDaoExecutor);
 
   const useStateBg =

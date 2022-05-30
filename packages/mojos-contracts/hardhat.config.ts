@@ -42,8 +42,22 @@ const config: HardhatUserConfig = {
         ? { mnemonic: process.env.MNEMONIC }
         : [process.env.WALLET_PRIVATE_KEY!].filter(Boolean),
     },
-    fantomtest: {
+    fantom_test: {
       url: `https://rpcapi-tracing.testnet.fantom.network`,
+      accounts: process.env.MNEMONIC
+        ? { mnemonic: process.env.MNEMONIC }
+        : [process.env.WALLET_PRIVATE_KEY!].filter(Boolean),
+    },
+    optimistic: {
+      url: `https://mainnet.optimism.io`,
+      chainId: 10,
+      accounts: process.env.MNEMONIC
+        ? { mnemonic: process.env.MNEMONIC }
+        : [process.env.WALLET_PRIVATE_KEY!].filter(Boolean),
+    },
+    optimistic_test: {
+      url: `https://kovan.optimism.io`,
+      chainId: 69,
       accounts: process.env.MNEMONIC
         ? { mnemonic: process.env.MNEMONIC }
         : [process.env.WALLET_PRIVATE_KEY!].filter(Boolean),
@@ -58,7 +72,7 @@ const config: HardhatUserConfig = {
     clear: true,
   },
   gasReporter: {
-    enabled: !process.env.CI,
+    enabled: true,
     currency: 'USD',
     gasPrice: 50,
     src: 'contracts',

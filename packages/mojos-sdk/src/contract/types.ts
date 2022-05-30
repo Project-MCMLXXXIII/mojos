@@ -33,4 +33,7 @@ export enum ChainId {
   Rinkeby = 4,
   Kovan = 42,
   Local = 31337,
+  Fantom = 250,
+  Optimistic=10,
+  OptimisticTest=69
 }

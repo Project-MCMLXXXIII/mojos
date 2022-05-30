@@ -85,7 +85,13 @@ const useDappConfig = {
     [ChainId.Rinkeby]: createNetworkHttpUrl('rinkeby'),
     [ChainId.Mainnet]: createNetworkHttpUrl('mainnet'),
     [ChainId.Hardhat]: 'http://localhost:8545',
+    [ChainId.Fantom]: createNetworkHttpUrl('fantom'),
+    [4002]: createNetworkHttpUrl('fantomtest'),
   },
+  // multicallAddresses: {
+  //   1: '0xeefba1e63905ef1d7acba5a8513c70307c1ce441',
+  //   4002: '0xA01917aF773b703717C25C483a619e9218343531',
+  // },
 };
 
 const client = clientFactory(config.app.subgraphApiUri);
@@ -148,6 +154,7 @@ const ChainSubscriber: React.FC = () => {
     };
 
     // Fetch the current auction
+    // debugger;
     const currentAuction = await mojosAuctionHouseContract.auction1();
     dispatch(setFullAuction(reduxSafeAuction(currentAuction)));
     dispatch(setLastAuctionMojoId(currentAuction.mojoId.toNumber()));
