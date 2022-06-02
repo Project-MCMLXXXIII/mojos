@@ -77,6 +77,10 @@
   height: auto;
 }
 
+.modal-content{
+  color: black ;
+}
+
 @media (max-width: 992px) {
   .modal {
     top: auto;

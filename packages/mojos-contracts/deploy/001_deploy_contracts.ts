@@ -5,6 +5,8 @@ import { ethers } from 'hardhat';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { Console } from 'console';
 
+const LZ_ENDPOINTS = require('./layerzeroEndpoints.json');
+
 module.exports = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments } = hre;
   const { deploy } = deployments;
@@ -59,7 +61,10 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
   const mojosSeeder = await deploy('MojosSeeder', {
     from: deployer.address,
   });
-  const mojosToken = await deploy('MojosToken', {
+
+  const lzEndpointAddress = LZ_ENDPOINTS[hre.network.name];
+
+  const mojosToken = await deploy('UniversalMojo', {
     from: deployer.address,
     args: [
       MOJOS_DAO_ADDRESS,
@@ -67,8 +72,24 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
       mojosDescriptor.address,
       mojosSeeder.address,
       proxyRegistryAddress,
+      lzEndpointAddress,
+      0,
+      6000,
     ],
+    log: true,
+    waitConfirmations: 1,
   });
+
+  // const mojosToken = await deploy('MojosToken', {
+  //   from: deployer.address,
+  //   args: [
+  //     MOJOS_DAO_ADDRESS,
+  //     expectedAuctionHouseProxyAddress,
+  //     mojosDescriptor.address,
+  //     mojosSeeder.address,
+  //     proxyRegistryAddress,
+  //   ],
+  // });
 
   const mojosAuctionHouse = await deploy('MojosAuctionHouse', {
     from: deployer.address,

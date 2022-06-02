@@ -19,6 +19,7 @@ interface StandaloneMojoWithSeedProps {
 }
 
 const getMojo = (mojoId: string | EthersBN, seed: IMojoSeed) => {
+  debugger;
   const id = mojoId.toString();
   const name = `Mojo ${id}`;
   const description = `Mojo ${id} is a member of the Mojos DAO`;
@@ -34,6 +35,7 @@ const getMojo = (mojoId: string | EthersBN, seed: IMojoSeed) => {
 };
 
 const StandaloneMojo: React.FC<StandaloneMojoProps> = (props: StandaloneMojoProps) => {
+  debugger;
   const { mojoId } = props;
   const seed = useMojoSeed(mojoId);
   const mojo = seed && getMojo(mojoId, seed);
@@ -58,6 +60,7 @@ const StandaloneMojo: React.FC<StandaloneMojoProps> = (props: StandaloneMojoProp
 export const StandaloneMojoWithSeed: React.FC<StandaloneMojoWithSeedProps> = (
   props: StandaloneMojoWithSeedProps,
 ) => {
+  debugger;
   const { mojoId, onLoadSeed, shouldLinkToProfile } = props;
 
   const dispatch = useDispatch();

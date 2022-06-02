@@ -154,7 +154,7 @@ const ChainSubscriber: React.FC = () => {
     };
 
     // Fetch the current auction
-    // debugger;
+    debugger;
     const currentAuction = await mojosAuctionHouseContract.auction1();
     dispatch(setFullAuction(reduxSafeAuction(currentAuction)));
     dispatch(setLastAuctionMojoId(currentAuction.mojoId.toNumber()));

@@ -1,0 +1,27 @@
+$ npx hardhat deploy --network rinkeby
+Nothing to compile
+Creating Typechain artifacts in directory typechain for target ethers-v5
+Successfully generated Typechain artifacts!
+deploying "UniversalMojo" (tx: 0xb3ce42fcb3a470840b6e967eeeb2c8feac87c4ae9b52f5810df2cd9a053e5192)...: deployed at 0xF84bAA198DFEA37F76DF6a69019B618ea9AFB300 with 5247477 gas
+
+Contracts deployed to 4 using address 0x50779Ecf871ba1a1BD97a5C7379fd8e3c35b2abB
+---
+NFTDescriptor Library deployed to 0x9ffd4f9F305cA481AfB5ec638f6b0A05a47a6D38
+---
+MojosDescriptor deployed to 0x120E026DC69cB8AdBC37010D8Be0C49E7342F2f0---
+MojosSeeder deployed to 0x079dA8Ff26E5279a9d7ce202e2d878481A912c9E    
+---
+MojosToken deployed to 0xF84bAA198DFEA37F76DF6a69019B618ea9AFB300     
+---
+MojosAuctionHouse deployed to 0x24a206289cC99D502F38B766D9Db987dCf9ae6bc
+---
+MojosAuctionHouseProxyAdmin deployed to 0x972FaB7c69D9b45612153c3A9A01f5FD8bbE869D
+---
+MojosAuctionHouseProxy deployed to 0x5449607AB5f146B69F8A9483e920d4BC226221df
+---
+MojosDAOExecutor deployed to 0x21A521c72442646189Fac98A9dF109315D7f5B5b
+---
+MojosDAOLogicV1 deployed to 0x9A231A0715dc94482D298582B56cc14B3d3811d4---
+MojosDAOProxy deployed to 0xCCfD4286F4AD0DF4FA3f015C52842E44b16CFD98  
+---
+*** Deploy Completed ***
