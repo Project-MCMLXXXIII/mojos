@@ -5,7 +5,7 @@ import { ethers } from 'hardhat';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { Console } from 'console';
 
-const LZ_ENDPOINTS = require('./layerzeroEndpoints.json');
+const LZ_ENDPOINTS = require('../constants/layerzeroEndpoints.json');
 
 module.exports = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments } = hre;
@@ -34,7 +34,7 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   const MOJOS_DAO_ADDRESS = '0xc5cab4c37D7C00B36DE99C32b1f4462B8d923d90';
-  const WETH_ADDRESS = '0x74b23882a30290451A17c44f4F05243b6b58C76d';
+  const WETH_ADDRESS = '0xDf032Bc4B9dC2782Bb09352007D4C57B75160B15';
   const AUCTION_TIME_BUFFER = 5 * 60;
   const AUCTION_RESERVE_PRICE = 1;
   const AUCTION_MIN_INCREMENT_BID_PERCENTAGE = 5;
@@ -138,6 +138,8 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
       QUORUM_VOTES_BPS,
     ],
   });
+
+
 
   console.log(`Contracts deployed to ${network.chainId} using address ${deployer.address}`);
   console.log(`---`);

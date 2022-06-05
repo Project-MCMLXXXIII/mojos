@@ -2,7 +2,7 @@
 import { HardhatUserConfig } from 'hardhat/config';
 import dotenv from 'dotenv';
 import '@nomiclabs/hardhat-waffle';
-import '@nomiclabs/hardhat-waffle';
+
 import '@nomiclabs/hardhat-etherscan';
 import '@float-capital/solidity-coverage';
 import 'hardhat-typechain';
@@ -11,6 +11,7 @@ import '@openzeppelin/hardhat-upgrades';
 import 'hardhat-gas-reporter';
 import 'hardhat-deploy';
 import 'hardhat-deploy-ethers';
+import '@nomiclabs/hardhat-ethers';
 import './tasks';
 
 dotenv.config();

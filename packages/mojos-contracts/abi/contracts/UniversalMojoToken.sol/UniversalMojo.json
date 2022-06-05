@@ -30,6 +30,16 @@
         "internalType": "address",
         "name": "_lzEndpoint",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_startMintId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_endMintId",
+        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -1029,6 +1039,19 @@
   },
   {
     "inputs": [],
+    "name": "maxMintId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "mint",
     "outputs": [
       {
@@ -1074,6 +1097,19 @@
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nextMintId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
