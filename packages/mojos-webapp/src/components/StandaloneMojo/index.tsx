@@ -52,7 +52,7 @@ const StandaloneMojo: React.FC<StandaloneMojoProps> = (props: StandaloneMojoProp
       className={classes.clickableMojo}
       onClick={onClickHandler}
     >
-      <Mojo imgPath={mojo ? mojo.image : ''} alt={mojo ? mojo.description : 'Mojo'} />
+      <Mojo imgPath={mojo ? mojo.image : ''} alt={mojo ? mojo.description : 'Mojo '} />
     </Link>
   );
 };
