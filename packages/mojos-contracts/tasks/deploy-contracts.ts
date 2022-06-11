@@ -35,7 +35,7 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
     5,
     types.int,
   )
-  .addOptionalParam('auctionDuration', 'The auction duration (seconds)', 60 * 60 * 24, types.int) // Default: 24 hours
+  .addOptionalParam('auctionDuration', 'The auction duration (seconds)', 60 * 60 * 12, types.int) // Default: 12 hours
   .addOptionalParam('timelockDelay', 'The timelock delay (seconds)', 60 * 60 * 24 * 2, types.int) // Default: 2 days
   .addOptionalParam('votingPeriod', 'The voting period (blocks)', 4 * 60 * 24 * 3, types.int) // Default: 3 days
   .addOptionalParam('votingDelay', 'The voting delay (blocks)', 1, types.int) // Default: 1 block

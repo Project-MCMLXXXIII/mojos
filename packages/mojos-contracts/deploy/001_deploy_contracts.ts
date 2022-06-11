@@ -38,7 +38,7 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
   const AUCTION_TIME_BUFFER = 5 * 60;
   const AUCTION_RESERVE_PRICE = 1;
   const AUCTION_MIN_INCREMENT_BID_PERCENTAGE = 5;
-  const AUCTION_DURATION = 60 * 60 * 24;
+  const AUCTION_DURATION = 60 * 60 * 12;
   const MULTISIG_ADDRESS = '0xc5cab4c37D7C00B36DE99C32b1f4462B8d923d90';
 
   const TIMELOCK_DELAY = 60 * 60 * 24 * 2;
