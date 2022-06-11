@@ -1,0 +1,15 @@
+{
+  "network": "optimistic",
+  "mojosToken": {
+    "address": "0xcd4311448D0c7E8A75aCe3024e52181145C1cA72",
+    "startBlock": 10791177
+  },
+  "mojosAuctionHouse": {
+    "address": "0x1Acfe86d9dC3F1d45FE6749D87831DBe69847B1B",
+    "startBlock": 10791177
+  },
+  "mojosDAO": {
+    "address": "0xFA0A93B07D712B45f10ED7C67A6f94d104A929b0",
+    "startBlock": 10791177
+  }
+}
