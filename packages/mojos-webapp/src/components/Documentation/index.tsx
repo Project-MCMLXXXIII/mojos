@@ -25,7 +25,7 @@ const Documentation = () => {
         <div className={classes.headerWrapper}>
           <h1>Own Your Piece Of The Puzzle</h1>
           <p className={classes.aboutText}>
-            Mojos are an experimental attempt to improve the formation of on-chain avatar
+            Mojos are an experimental attempt to improve the formation of Omni on-chain avatar
             communities. While projects such as {cryptopunksLink} have attempted to bootstrap
             digital community and identity, Mojos attempt to bootstrap identity, community,
             governance, and a treasury that can be used by the community.
@@ -62,7 +62,7 @@ const Documentation = () => {
               <p className={classes.aboutText}>
                 The Mojos smart contract will act as a self-sufficient Mojo generation and
                 distribution mechanism, auctioning one Mojo every 24 hours, forever. 100% of auction
-                proceeds (FTM) are automatically deposited in the Mojo treasury balance, where they
+                proceeds (ETH) are automatically deposited in the Mojo treasury balance, where they
                 are governed by Mojo owners.
               </p>
               <p className={classes.aboutText}>
@@ -72,7 +72,7 @@ const Documentation = () => {
               <p className={classes.aboutText}>
                 While settlement is most heavily incentivized for the winning bidder, it can be
                 triggered by anyone, allowing the system to trustlessly auction Mojos as long as
-                Fantom is operational and there are interested bidders.
+                Optimism is operational and there are interested bidders.
               </p>
             </Accordion.Body>
           </Accordion.Item>
@@ -109,7 +109,7 @@ const Documentation = () => {
             <Accordion.Header className={classes.accordionHeader}>Mojo Traits</Accordion.Header>
             <Accordion.Body className={classes.accordionBody}>
               <p>
-                Mojos are generated randomly based Fantom block hashes. There are no ‘if’ statements
+                Mojos are generated randomly based Optimism block hashes. There are no ‘if’ statements
                 or other rules governing Mojo trait scarcity, which makes all Mojos equally rare. As
                 of this writing, Mojos are made up of:
               </p>
