@@ -4,11 +4,13 @@ import { task, types } from 'hardhat/config';
 import promptjs from 'prompt';
 import { Contract as EthersContract } from 'ethers';
 
+const LZ_ENDPOINTS = require('../constants/layerzeroEndpoints.json');
+
 type ContractName =
   | 'NFTDescriptor'
   | 'MojosDescriptor'
   | 'MojosSeeder'
-  | 'MojosToken'
+  | 'UniversalMojo'
   | 'MojosAuctionHouse'
   | 'MojosAuctionHouseProxyAdmin'
   | 'MojosAuctionHouseProxy'
@@ -66,6 +68,9 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
       from: deployer.address,
       nonce: nonce + GOVERNOR_N_DELEGATOR_NONCE_OFFSET,
     });
+
+     const lzEndpointAddress = LZ_ENDPOINTS[network.name];
+
     const contracts: Record<ContractName, Contract> = {
       NFTDescriptor: { waitForConfirmation: true },
       MojosDescriptor: {
@@ -74,27 +79,30 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
         }),
       },
       MojosSeeder: {},
-      MojosToken: {
-        args: [
-          args.mojosdao || deployer.address,
-          expectedAuctionHouseProxyAddress,
-          () => contracts['MojosDescriptor'].instance?.address,
-          () => contracts['MojosSeeder'].instance?.address,
-          proxyRegistryAddress,
-        ],
-      },
-      // UniversalMojo: {
+      // MojosToken: {
       //   args: [
       //     args.mojosdao || deployer.address,
       //     expectedAuctionHouseProxyAddress,
-      //     () => contracts['MojosDescriptor'].address,
-      //     () => contracts['MojosSeeder'].address,
+      //     () => contracts['MojosDescriptor'].instance?.address,
+      //     () => contracts['MojosSeeder'].instance?.address,
       //     proxyRegistryAddress,
-      //     '0x79a63d6d8BBD5c6dfc774dA79bCcD948EAcb53FA',
-      //     0,
-      //     6000,
       //   ],
       // },
+
+     
+      
+      UniversalMojo: {
+        args: [
+     args.mojosdao || deployer.address,
+      expectedAuctionHouseProxyAddress,
+      () => contracts['MojosDescriptor'].instance?.address,
+      () => contracts['MojosSeeder'].instance?.address,
+      proxyRegistryAddress,
+      lzEndpointAddress,
+      0,
+      6000,
+        ],
+      },
       MojosAuctionHouse: {
         waitForConfirmation: true,
       },
@@ -105,9 +113,8 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
           () => contracts['MojosAuctionHouseProxyAdmin'].instance?.address,
           () =>
             new Interface(MojosAuctionHouseABI).encodeFunctionData('initialize', [
-              contracts['MojosToken'].instance?.address,
-              contracts['MojosToken'].instance?.address,
-              args.weth || "0xdf032bc4b9dc2782bb09352007d4c57b75160b15",
+              contracts['UniversalMojo'].instance?.address,
+              args.weth || '0xdf032bc4b9dc2782bb09352007d4c57b75160b15',
               args.auctionTimeBuffer,
               args.auctionReservePrice,
               args.auctionMinIncrementBidPercentage,
@@ -125,7 +132,7 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
       MojosDAOProxy: {
         args: [
           () => contracts['MojosDAOExecutor'].instance?.address,
-          () => contracts['MojosToken'].instance?.address,
+          () => contracts['UniversalMojo'].instance?.address,
           args.mojosdao || deployer.address,
           () => contracts['MojosDAOExecutor'].instance?.address,
           () => contracts['MojosDAOLogicV1'].instance?.address,

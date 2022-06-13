@@ -2,6 +2,10 @@
   color: var(--brand-dark-red);
 }
 
+.votePage{
+  color: black;
+}
+
 .proposal {
   margin-top: 1em;
   background-color: white;
