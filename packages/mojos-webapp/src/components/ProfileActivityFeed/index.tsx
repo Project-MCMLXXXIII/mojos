@@ -61,8 +61,9 @@ const ProfileActivityFeed: React.FC<ProfileActivityFeedProps> = props => {
 
   const filteredProposals = proposals.filter((p: Proposal, id: number) => {
     return (
-      parseInt(proposalCreatedTimestamps.proposals[id].createdTimestamp) >
-        mojoCanVoteTimestamp.toNumber() ||
+      proposalCreatedTimestamps.proposals.length && parseInt(
+        proposalCreatedTimestamps.proposals[id].createdTimestamp,
+      ) > mojoCanVoteTimestamp.toNumber() ||
       (p.id && mojoVotes[p.id])
     );
   });
