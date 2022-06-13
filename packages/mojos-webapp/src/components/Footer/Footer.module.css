@@ -1,6 +1,7 @@
 .wrapper {
   display: flex;
   flex: 1;
+  color: white;
 }
 .container {
   display: flex;
@@ -21,7 +22,7 @@
 
 .footerSignature a {
   text-decoration: none;
-  color: black;
+  color: white !important;
   margin: 8px 14px;
   transition: all 0.15s ease-in-out;
 }
