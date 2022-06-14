@@ -1,5 +1,5 @@
 {
-  "network": "optimistic",
+  "network": "optimism",
   "mojosToken": {
     "address": "0x01961e8d0a2dA0c6AFCcB95D86E84F80bD5Bc338",
     "startBlock": 11775919
