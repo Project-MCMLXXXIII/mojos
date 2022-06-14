@@ -151,7 +151,7 @@ contract MojosToken is IMojosToken, NonblockingLzApp, ERC721Checkpointable {
      * @dev Call _mintTo with the to address(es).
      */
     function mint() public override onlyMinter returns (uint256) {
-        if (_currentMojoId <= 1820 && _currentMojoId % 10 == 0) {
+        if (_currentMojoId <= 3640 && _currentMojoId % 10 == 0) {
             _mintTo(mojosDAO, _currentMojoId++);
         }
         return _mintTo(minter, _currentMojoId++);
