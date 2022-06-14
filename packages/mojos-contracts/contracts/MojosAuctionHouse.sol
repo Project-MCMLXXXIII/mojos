@@ -201,7 +201,7 @@ contract MojosAuctionHouse is IMojosAuctionHouse, PausableUpgradeable, Reentranc
     }
 
     function oneYearHavePassed() public view returns (bool) {
-        return (block.timestamp >= (creationDate + 365 days));
+        return (block.timestamp >= (creationDate + 720 days));
     }
 
     /**

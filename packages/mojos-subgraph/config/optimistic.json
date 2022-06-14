@@ -1,15 +1,15 @@
 {
   "network": "optimistic",
   "mojosToken": {
-    "address": "0xcd4311448D0c7E8A75aCe3024e52181145C1cA72",
-    "startBlock": 10791177
+    "address": "0x01961e8d0a2dA0c6AFCcB95D86E84F80bD5Bc338",
+    "startBlock": 11775919
   },
   "mojosAuctionHouse": {
-    "address": "0x1Acfe86d9dC3F1d45FE6749D87831DBe69847B1B",
-    "startBlock": 10791177
+    "address": "0xAdE76D1C45F8487E4717CbB22ae8C677e7402d04",
+    "startBlock": 11775919
   },
   "mojosDAO": {
-    "address": "0xFA0A93B07D712B45f10ED7C67A6f94d104A929b0",
-    "startBlock": 10791177
+    "address": "0x7d347cb7473dA7f64f9Ea940a6F9b5e1b3f89559",
+    "startBlock": 11775919
   }
 }

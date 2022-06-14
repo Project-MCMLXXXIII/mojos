@@ -11,14 +11,16 @@
   "scripts": {
     "clean": "rimraf ./src/types ./build subgraph.yaml",
     "codegen": "graph codegen --output-dir src/types/",
-    "deploy": "graph deploy --debug --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/",
+    "deploy": "graph deploy --debug --deploy-key f936aeda26b04c0e8404affbc54e7d46 --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/",
     "prepare:rinkeby": "mustache config/rinkeby.json subgraph.yaml.mustache > subgraph.yaml",
     "prepare:mainnet": "mustache config/mainnet.json subgraph.yaml.mustache > subgraph.yaml",
     "prepare:fantomTest": "mustache config/fantomTest.json subgraph.yaml.mustache > subgraph.yaml",
     "prepare:fantom": "mustache config/fantom.json subgraph.yaml.mustache > subgraph.yaml",
+    "prepare:optimistic": "mustache config/optimistic.json subgraph.yaml.mustache > subgraph.yaml",
     "deploy:rinkeby": "yarn clean && yarn prepare:rinkeby && yarn codegen && yarn deploy pavelespitia/mojo-rinkeby",
     "deploy:fantom": "yarn clean && yarn prepare:fantom && yarn codegen && yarn deploy pavelespitia/mojo-fantom",
     "deploy:fantomTest": "yarn clean && yarn prepare:fantomTest && yarn codegen && yarn deploy pavelespitia/mojo-fantombeta",
+    "deploy:optimistic": "yarn clean && yarn prepare:optimistic && yarn codegen && yarn deploy project-mcmlxxxiii/mojos",
     "deploy:mainnet": "yarn clean && yarn prepare:mainnet && yarn codegen && yarn deploy mojosdao/mojos-subgraph"
   },
   "devDependencies": {

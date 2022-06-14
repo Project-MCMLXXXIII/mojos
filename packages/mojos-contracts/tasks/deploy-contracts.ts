@@ -27,8 +27,18 @@ interface Contract {
 }
 
 task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosToken')
-  .addOptionalParam('mojosdao', 'The mojos DAO contract address', undefined, types.string)
-  .addOptionalParam('weth', 'The WETH contract address', undefined, types.string)
+  .addOptionalParam(
+    'mojosdao',
+    'The mojos DAO contract address',
+    '0xc5cab4c37D7C00B36DE99C32b1f4462B8d923d90',
+    types.string,
+  )
+  .addOptionalParam(
+    'weth',
+    'The WETH contract address',
+    '0x4200000000000000000000000000000000000006',
+    types.string,
+  )
   .addOptionalParam('auctionTimeBuffer', 'The auction time buffer (seconds)', 5 * 60, types.int)
   .addOptionalParam('auctionReservePrice', 'The auction reserve price (wei)', 1, types.int)
   .addOptionalParam(
@@ -46,7 +56,7 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
   .addOptionalParam(
     'multiSigFeeWallet',
     'MultiSig wallet for fees',
-    '0x50779Ecf871ba1a1BD97a5C7379fd8e3c35b2abB',
+    '0xc5cab4c37D7C00B36DE99C32b1f4462B8d923d90',
   ) // Must change
   .setAction(async (args, { ethers }) => {
     const network = await ethers.provider.getNetwork();
@@ -69,7 +79,7 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
       nonce: nonce + GOVERNOR_N_DELEGATOR_NONCE_OFFSET,
     });
 
-     const lzEndpointAddress = LZ_ENDPOINTS[network.name];
+    const lzEndpointAddress = LZ_ENDPOINTS[network.name];
 
     const contracts: Record<ContractName, Contract> = {
       NFTDescriptor: { waitForConfirmation: true },
@@ -89,18 +99,16 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
       //   ],
       // },
 
-     
-      
       UniversalMojo: {
         args: [
-     args.mojosdao || deployer.address,
-      expectedAuctionHouseProxyAddress,
-      () => contracts['MojosDescriptor'].instance?.address,
-      () => contracts['MojosSeeder'].instance?.address,
-      proxyRegistryAddress,
-      lzEndpointAddress,
-      0,
-      6000,
+          args.mojosdao || deployer.address,
+          expectedAuctionHouseProxyAddress,
+          () => contracts['MojosDescriptor'].instance?.address,
+          () => contracts['MojosSeeder'].instance?.address,
+          proxyRegistryAddress,
+          lzEndpointAddress,
+          0,
+          6000,
         ],
       },
       MojosAuctionHouse: {
