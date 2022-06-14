@@ -38,7 +38,7 @@ function App() {
   console.log(`CHAIN ID ${CHAIN_ID}-- chainId ${chainId}`);
   return (
     <div className={`${classes.wrapper}`}>
-      {/* {Number(CHAIN_ID) !== chainId && <NetworkAlert />} */} //TODO: Check this
+      {chainId !== undefined && Number(CHAIN_ID) !== chainId  && <NetworkAlert />}
       {alertModal.show && (
         <AlertModal
           title={alertModal.title}
