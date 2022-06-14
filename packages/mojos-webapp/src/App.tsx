@@ -35,9 +35,10 @@ function App() {
 
   const alertModal = useAppSelector(state => state.application.alertModal);
 
+  console.log(`CHAIN ID ${CHAIN_ID}-- chainId ${chainId}`);
   return (
     <div className={`${classes.wrapper}`}>
-      {Number(CHAIN_ID) !== chainId && <NetworkAlert />}
+      {/* {Number(CHAIN_ID) !== chainId && <NetworkAlert />} */} //TODO: Check this
       {alertModal.show && (
         <AlertModal
           title={alertModal.title}

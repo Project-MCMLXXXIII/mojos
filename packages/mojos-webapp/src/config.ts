@@ -63,7 +63,7 @@ const app: Record<SupportedChains, AppConfig> = {
   [ChainId.Optimism]: {
     jsonRpcUri: createNetworkHttpUrl('optimism'),
     wsRpcUri: createNetworkWsUrl('optimism'),
-    subgraphApiUri: 'https://api.thegraph.com/subgraphs/name/mojosdao/mojos-subgraph',
+    subgraphApiUri: 'https://api.thegraph.com/subgraphs/name/kingassune/mojos',
     enableHistory: process.env.REACT_APP_ENABLE_HISTORY === 'true',
   },
   [ChainId.OptimismKovan]: {
