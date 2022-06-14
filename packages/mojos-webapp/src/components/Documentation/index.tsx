@@ -168,6 +168,28 @@ const Documentation = () => {
               Founder’s Rewards
             </Accordion.Header>
             <Accordion.Body className={classes.accordionBody}>
+              <ul>
+                <li>
+                  <Link
+                    text="@cotlage"
+                    url="https://twitter.com/cotlage"
+                    leavesPage={true}
+                  />
+                </li>
+                <li>
+                  <Link
+                    text="@The_NooksCranny"
+                    url="https://twitter.com/The_NooksCranny"
+                    leavesPage={true}
+                  />
+                </li>
+                <li>
+                  <Link text="@phd_justin" url="https://twitter.com/phd_justin" leavesPage={true} />
+                </li>
+                <li>
+                  <Link text="@hashwarlock" url="https://twitter.com/hashwarlock" leavesPage={true} />
+                </li>
+              </ul>
               <p>
                 100% of Mojos auction proceeds are sent to Mojos DAO after the first year. Because
                 of this the Mojos founding team have chosen to compensate themselves with Mojos.

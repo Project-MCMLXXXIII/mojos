@@ -16,7 +16,7 @@ export const config = {
   twitterAccessToken: process.env.TWITTER_ACCESS_TOKEN ?? '',
   twitterAccessSecret: process.env.TWITTER_ACCESS_SECRET ?? '',
   mojosTokenAddress:
-    process.env.MOJOS_TOKEN_ADDRESS ?? '0x9C8fF314C9Bc7F6e59A9d9225Fb22946427eDC03',
+    process.env.MOJOS_TOKEN_ADDRESS ?? '0x07DAD9555d9FE47031034651a02b138EC4A302E4',
   jsonRpcUrl: process.env.JSON_RPC_URL ?? 'http://localhost:8545',
   discordEnabled: process.env.DISCORD_ENABLED === 'true',
   discordWebhookToken: process.env.DISCORD_WEBHOOK_TOKEN ?? '',
