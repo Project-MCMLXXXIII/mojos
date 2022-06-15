@@ -1,0 +1,4 @@
+
+Subgraph endpoints:
+Queries (HTTP):     https://api.thegraph.com/subgraphs/name/kingassune/mojos
+Subscriptions (WS): wss://api.thegraph.com/subgraphs/name/kingassune/mojos

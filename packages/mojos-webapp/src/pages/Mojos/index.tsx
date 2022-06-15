@@ -129,24 +129,24 @@ const MojosPage = () => {
   return (
     <Section fullWidth={true} className={classes.mojossPage}>
       <Col lg={{ span: 6, offset: 3 }}>
-        <h2 style={{ marginBottom: '2rem' }}>The Mojoders</h2>
+        <h2 style={{ marginBottom: '2rem' }}>The Mojos</h2>
         <h3 style={{ marginBottom: '2rem' }}>3.5 artists, 6.5 technologists</h3>
         <Row style={{ marginBottom: '0rem' }}>
           <BioCards min={0} max={5} />
           <BioCards min={5} max={10} />
         </Row>
-        <h3>Mojoders' Reward</h3>
+        <h3>Mojos' Reward</h3>
         <p style={{ textAlign: 'justify' }}>
           All Mojo auction proceeds are sent to the Mojos DAO. For this reason, we, the project's
-          founders (‘Mojoders’) have chosen to compensate ourselves with Mojos. Every 10th mojo for
-          the first 5 years of the project will be sent to our multisig (5/10), where it will be
-          vested and distributed to individual Mojoders.
+          founders (Mojos) have chosen to compensate ourselves with Mojos. Every 10th mojo for the
+          first 5 years of the project will be sent to our multisig (5/10), where it will be vested
+          and distributed to individual Mojos.
         </p>
         <p style={{ textAlign: 'justify' }}>
-          The Mojoders reward is intended as compensation for our pre and post-launch contributions
-          to the project, and to help us participate meaningfully in governance as the project
-          matures. Since there are 10 Mojoders, after 5 years each Mojoder could receive up to 1% of
-          the Mojo supply.
+          The Mojos reward is intended as compensation for our pre and post-launch contributions to
+          the project, and to help us participate meaningfully in governance as the project matures.
+          Since there are 10 Mojos, after 5 years each Mojos could receive up to 1% of the Mojo
+          supply.
         </p>
       </Col>
     </Section>

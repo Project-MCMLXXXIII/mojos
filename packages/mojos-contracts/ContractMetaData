@@ -1,0 +1,8 @@
+{
+  "name": "Mojos",
+  "description": "Two Mojos, every day, forever.\r\n\r\ngetmojos.com",
+  "image": "ipfs://QmTJL29ZQe6P2bX4HVnr9f53MsnwoEBhSB3SJ47DV5AFeg",
+  "external_link": "https://getmojos.com",
+  "seller_fee_basis_points": 4,
+  "fee_recipient": "0x0000000000000000000000000000000000000000"
+}

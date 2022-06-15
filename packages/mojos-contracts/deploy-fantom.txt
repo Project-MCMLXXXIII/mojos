@@ -1,0 +1,27 @@
+$ npx hardhat deploy --network fantom
+Nothing to compile
+Creating Typechain artifacts in directory typechain for target ethers-v5
+Successfully generated Typechain artifacts!
+Contracts deployed to 250 using address 0x50779Ecf871ba1a1BD97a5C7379fd8e3c35b2abB
+---
+NFTDescriptor Library deployed to 0x03790D1569Bf72DCaCa9C4f160dcD83CD36F5a04
+---
+MojosDescriptor deployed to 0x0809cb55cD13a52f54346936d7d8bBE3e7D835FB
+---
+MojosSeeder deployed to 0x8D6f90E99c4E6f9377FfA8bb26F696dc15dc5f67
+---
+MojosToken deployed to 0xBecC447bf7C197290D8d6Ac1553E5f3aB2Fc3998
+---
+MojosAuctionHouse deployed to 0x048bc82948ce852131fAEA071d79288AD279Cd9A
+---
+MojosAuctionHouseProxyAdmin deployed to 0x30dEaEB2b4e0c0035F0074F735bab8257956c75c
+---
+MojosAuctionHouseProxy deployed to 0x5B7147d5C850CdcD6A2094aDe867a35b429cBA06
+---
+MojosDAOExecutor deployed to 0x630c4B0D3f10Db00Cf1083F7775D62eFEecB9fdE
+---
+MojosDAOLogicV1 deployed to 0xc7e08c0BCF41875C538629b538e254e1E9377241
+---
+MojosDAOProxy deployed to 0x4F7983ECEf1a6C7D08075A3F8b81Ca2fead036d5
+---
+*** Deploy Completed ***

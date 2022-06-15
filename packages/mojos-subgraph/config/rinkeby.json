@@ -1,15 +1,15 @@
 {
   "network": "rinkeby",
   "mojosToken": {
-    "address": "0xc52bb4Fc4ed72f2a910BF0481D620B927Ded76f7",
-    "startBlock": 8947618
+    "address": "0x07DAD9555d9FE47031034651a02b138EC4A302E4",
+    "startBlock": 10834000
   },
   "mojosAuctionHouse": {
-    "address": "0xBA088c634394775D89cAC7c67DFD52D73bfdFa05",
-    "startBlock": 8947622
+    "address": "0xCFbafc8D27e58aCb4fEA102aF859697DA6545c29",
+    "startBlock": 10834000
   },
   "mojosDAO": {
-    "address": "0x2817A1A4Ae32AEc0D15b2E751AC207Da306Ea213",
-    "startBlock": 8973384
+    "address": "0x73F27CF8c10123dDB37a539741B967570f42C9Dd",
+    "startBlock": 10834000
   }
 }

@@ -27,7 +27,7 @@ const NavBar = () => {
   const history = useHistory();
   const ethBalance = useEtherBalance(config.addresses.mojosDaoExecutor);
   const lidoBalanceAsETH = useLidoBalance();
-  const treasuryBalance = ethBalance && lidoBalanceAsETH && ethBalance.add(lidoBalanceAsETH);
+  const treasuryBalance = ethBalance;
   const daoEtherscanLink = buildEtherscanHoldingsLink(config.addresses.mojosDaoExecutor);
 
   const useStateBg =
@@ -53,12 +53,13 @@ const NavBar = () => {
             <Navbar.Brand as={Link} to="/" className={classes.navBarBrand}>
               <img src={logo} className={classes.navBarLogo} alt="Mojos DAO logo" />
             </Navbar.Brand>
-            {Number(CHAIN_ID) !== 1 && (
-              <Nav.Item>
-                <img className={classes.testnetImg} src={testnetMojo} alt="testnet mojo" />
-                TESTNET
-              </Nav.Item>
-            )}
+            {(Number(CHAIN_ID) !== 1 ||
+              (Number(CHAIN_ID) !== 10) && (
+                <Nav.Item>
+                  <img className={classes.testnetImg} src={testnetMojo} alt="testnet mojo" />
+                  TESTNET
+                </Nav.Item>
+              ))}
             <Nav.Item>
               {treasuryBalance && (
                 <Nav.Link

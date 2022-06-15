@@ -7,7 +7,7 @@ export const useReverseENSLookUp = (address: string) => {
 
   useEffect(() => {
     let mounted = true;
-    if (address && library) {
+    if (address && address.length > 1 && library) {
       library
         .lookupAddress(address)
         .then(name => {

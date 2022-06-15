@@ -62,4 +62,4 @@ export const publicDiscordWebhook = new Discord.WebhookClient(
  * @returns
  */
 export const incrementCounter = (counterName: string) =>
-  axios.post(`https://simple-counter.mojos.tools/count/inc/${counterName}`);
+  axios.post(`https://simple-counter.nouns.tools/count/inc/${counterName}`);

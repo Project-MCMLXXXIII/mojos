@@ -2,7 +2,7 @@
 import { HardhatUserConfig } from 'hardhat/config';
 import dotenv from 'dotenv';
 import '@nomiclabs/hardhat-waffle';
-import '@nomiclabs/hardhat-waffle';
+
 import '@nomiclabs/hardhat-etherscan';
 import '@float-capital/solidity-coverage';
 import 'hardhat-typechain';
@@ -11,6 +11,7 @@ import '@openzeppelin/hardhat-upgrades';
 import 'hardhat-gas-reporter';
 import 'hardhat-deploy';
 import 'hardhat-deploy-ethers';
+import '@nomiclabs/hardhat-ethers';
 import './tasks';
 
 dotenv.config();
@@ -21,7 +22,7 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 10_000,
+        runs: 200,
       },
     },
   },
@@ -42,8 +43,22 @@ const config: HardhatUserConfig = {
         ? { mnemonic: process.env.MNEMONIC }
         : [process.env.WALLET_PRIVATE_KEY!].filter(Boolean),
     },
-    fantomtest: {
+    fantom_test: {
       url: `https://rpcapi-tracing.testnet.fantom.network`,
+      accounts: process.env.MNEMONIC
+        ? { mnemonic: process.env.MNEMONIC }
+        : [process.env.WALLET_PRIVATE_KEY!].filter(Boolean),
+    },
+    optimistic: {
+      url: `https://mainnet.optimism.io`,
+      chainId: 10,
+      accounts: process.env.MNEMONIC
+        ? { mnemonic: process.env.MNEMONIC }
+        : [process.env.WALLET_PRIVATE_KEY!].filter(Boolean),
+    },
+    optimistic_test: {
+      url: `https://kovan.optimism.io`,
+      chainId: 69,
       accounts: process.env.MNEMONIC
         ? { mnemonic: process.env.MNEMONIC }
         : [process.env.WALLET_PRIVATE_KEY!].filter(Boolean),
@@ -58,7 +73,7 @@ const config: HardhatUserConfig = {
     clear: true,
   },
   gasReporter: {
-    enabled: !process.env.CI,
+    enabled: true,
     currency: 'USD',
     gasPrice: 50,
     src: 'contracts',

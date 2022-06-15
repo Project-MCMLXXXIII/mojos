@@ -1,0 +1,15 @@
+{
+  "network": "fantom-testnet",
+  "mojosToken": {
+    "address": "0x15D352fB9FA2214DFC61Fb28145cFc2BC93A751D",
+    "startBlock": 8633287
+  },
+  "mojosAuctionHouse": {
+    "address": "0x3377B1bdFB24Df84CfA712B770864eD1abd81c29",
+    "startBlock": 8351796
+  },
+  "mojosDAO": {
+    "address": "0x2817A1A4Ae32AEc0D15b2E751AC207Da306Ea213",
+    "startBlock": 8351796
+  }
+}

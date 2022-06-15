@@ -16,6 +16,7 @@ const WalletConnectModal: React.FC<{ onDismiss: () => void }> = props => {
   const { activate } = useEthers();
   const supportedChainIds = [CHAIN_ID];
 
+  
   const wallets = (
     <div className={classes.walletConnectModal}>
       <WalletButton

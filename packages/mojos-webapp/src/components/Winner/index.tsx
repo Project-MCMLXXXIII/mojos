@@ -45,7 +45,7 @@ const Winner: React.FC<WinnerProps> = props => {
     <ShortAddress size={40} address={winner} avatar={true} />
   );
 
-  const mojosMojoContent = <h2>mojoders.eth</h2>;
+  const mojosMojoContent = <h2>mojos.eth</h2>;
 
   return (
     <>

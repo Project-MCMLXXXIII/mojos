@@ -5,6 +5,8 @@ import { ethers } from 'hardhat';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { Console } from 'console';
 
+const LZ_ENDPOINTS = require('../constants/layerzeroEndpoints.json');
+
 module.exports = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments } = hre;
   const { deploy } = deployments;
@@ -31,13 +33,13 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
     nonce: nonce + GOVERNOR_N_DELEGATOR_NONCE_OFFSET,
   });
 
-  const MOJOS_DAO_ADDRESS = '0x50779Ecf871ba1a1BD97a5C7379fd8e3c35b2abB';
-  const WETH_ADDRESS = '0x50779Ecf871ba1a1BD97a5C7379fd8e3c35b2abB';
+  const MOJOS_DAO_ADDRESS = '0xc5cab4c37D7C00B36DE99C32b1f4462B8d923d90';
+  const WETH_ADDRESS = '0x4200000000000000000000000000000000000006';
   const AUCTION_TIME_BUFFER = 5 * 60;
   const AUCTION_RESERVE_PRICE = 1;
   const AUCTION_MIN_INCREMENT_BID_PERCENTAGE = 5;
-  const AUCTION_DURATION = 60 * 60 * 24;
-  const MULTISIG_ADDRESS = '0x50779Ecf871ba1a1BD97a5C7379fd8e3c35b2abB';
+  const AUCTION_DURATION = 60 * 60 * 12;
+  const MULTISIG_ADDRESS = '0xc5cab4c37D7C00B36DE99C32b1f4462B8d923d90';
 
   const TIMELOCK_DELAY = 60 * 60 * 24 * 2;
 
@@ -59,7 +61,10 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
   const mojosSeeder = await deploy('MojosSeeder', {
     from: deployer.address,
   });
-  const mojosToken = await deploy('MojosToken', {
+
+  const lzEndpointAddress = LZ_ENDPOINTS[hre.network.name];
+
+  const mojosToken = await deploy('UniversalMojo', {
     from: deployer.address,
     args: [
       MOJOS_DAO_ADDRESS,
@@ -67,8 +72,24 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
       mojosDescriptor.address,
       mojosSeeder.address,
       proxyRegistryAddress,
+      lzEndpointAddress,
+      0,
+      6000,
     ],
+    log: true,
+    waitConfirmations: 1,
   });
+
+  // const mojosToken = await deploy('MojosToken', {
+  //   from: deployer.address,
+  //   args: [
+  //     MOJOS_DAO_ADDRESS,
+  //     expectedAuctionHouseProxyAddress,
+  //     mojosDescriptor.address,
+  //     mojosSeeder.address,
+  //     proxyRegistryAddress,
+  //   ],
+  // });
 
   const mojosAuctionHouse = await deploy('MojosAuctionHouse', {
     from: deployer.address,
@@ -117,6 +138,8 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
       QUORUM_VOTES_BPS,
     ],
   });
+
+
 
   console.log(`Contracts deployed to ${network.chainId} using address ${deployer.address}`);
   console.log(`---`);

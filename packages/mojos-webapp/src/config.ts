@@ -17,7 +17,7 @@ interface AppConfig {
   enableHistory: boolean;
 }
 
-type SupportedChains = ChainId.Rinkeby | ChainId.Mainnet | ChainId.Hardhat;
+type SupportedChains = ChainId.Rinkeby | ChainId.Mainnet | ChainId.Hardhat | ChainId.Fantom | ChainId.Optimism | ChainId.OptimismKovan;
 
 export const CHAIN_ID: SupportedChains = parseInt(process.env.REACT_APP_CHAIN_ID ?? '4');
 
@@ -39,7 +39,7 @@ const app: Record<SupportedChains, AppConfig> = {
   [ChainId.Rinkeby]: {
     jsonRpcUri: createNetworkHttpUrl('rinkeby'),
     wsRpcUri: createNetworkWsUrl('rinkeby'),
-    subgraphApiUri: 'https://api.thegraph.com/subgraphs/name/mojosdao/mojos-subgraph-rinkeby-v4',
+    subgraphApiUri: 'https://api.thegraph.com/subgraphs/name/pavelespitia/mojo-rinkeby',
     enableHistory: process.env.REACT_APP_ENABLE_HISTORY === 'true',
   },
   [ChainId.Mainnet]: {
@@ -54,6 +54,24 @@ const app: Record<SupportedChains, AppConfig> = {
     subgraphApiUri: '',
     enableHistory: false,
   },
+  [ChainId.Fantom]: {
+    jsonRpcUri: createNetworkHttpUrl('fantom'),
+    wsRpcUri: createNetworkWsUrl('fantom'),
+    subgraphApiUri: 'https://api.thegraph.com/subgraphs/name/mojosdao/mojos-subgraph',
+    enableHistory: process.env.REACT_APP_ENABLE_HISTORY === 'true',
+  },
+  [ChainId.Optimism]: {
+    jsonRpcUri: createNetworkHttpUrl('optimism'),
+    wsRpcUri: createNetworkWsUrl('optimism'),
+    subgraphApiUri: 'https://api.thegraph.com/subgraphs/name/kingassune/mojos',
+    enableHistory: process.env.REACT_APP_ENABLE_HISTORY === 'true',
+  },
+  [ChainId.OptimismKovan]: {
+    jsonRpcUri: createNetworkHttpUrl('optimismkovan'),
+    wsRpcUri: createNetworkWsUrl('optimismkovan'),
+    subgraphApiUri: 'https://api.thegraph.com/subgraphs/name/mojosdao/mojos-subgraph',
+    enableHistory: process.env.REACT_APP_ENABLE_HISTORY === 'true',
+  },
 };
 
 const externalAddresses: Record<SupportedChains, ExternalContractAddresses> = {
@@ -64,6 +82,15 @@ const externalAddresses: Record<SupportedChains, ExternalContractAddresses> = {
     lidoToken: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
   },
   [ChainId.Hardhat]: {
+    lidoToken: undefined,
+  },
+  [ChainId.Fantom]: {
+    lidoToken: undefined,
+  },
+  [ChainId.Optimism]: {
+    lidoToken: undefined,
+  },
+  [ChainId.OptimismKovan]: {
     lidoToken: undefined,
   },
 };

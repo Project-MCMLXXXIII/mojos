@@ -222,44 +222,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "auction2",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "mojoId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "startTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "endTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address payable",
-        "name": "bidder",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "settled",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -303,11 +265,6 @@
       {
         "internalType": "contract IMojosToken",
         "name": "_mojos1",
-        "type": "address"
-      },
-      {
-        "internalType": "contract IMojosToken",
-        "name": "_mojos2",
         "type": "address"
       },
       {
@@ -362,19 +319,6 @@
   {
     "inputs": [],
     "name": "mojos1",
-    "outputs": [
-      {
-        "internalType": "contract IMojosToken",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "mojos2",
     "outputs": [
       {
         "internalType": "contract IMojosToken",

@@ -80,13 +80,28 @@ export type AppDispatch = typeof store.dispatch;
 
 // prettier-ignore
 const useDappConfig = {
+  supportedChain: [
+    ChainId.Mainnet,
+    ChainId.Goerli,
+    ChainId.Kovan,
+    ChainId.Rinkeby,
+    ChainId.Ropsten,
+    ChainId.xDai,
+    ChainId.BSC,
+    ChainId.Localhost,
+    ChainId.Hardhat,
+  ],
   readOnlyChainId: CHAIN_ID,
   readOnlyUrls: {
     [ChainId.Rinkeby]: createNetworkHttpUrl('rinkeby'),
     [ChainId.Mainnet]: createNetworkHttpUrl('mainnet'),
     [ChainId.Hardhat]: 'http://localhost:8545',
+    // multicallAddresses: {
+    //   4: '0x42ad527de7d4e9d9d011ac45b31d8551f8fe9821',
+    // },
   },
 };
+
 
 const client = clientFactory(config.app.subgraphApiUri);
 
@@ -105,6 +120,7 @@ const ChainSubscriber: React.FC = () => {
 
   const loadState = async () => {
     const wsProvider = new WebSocketProvider(config.app.wsRpcUri);
+    
     const mojosAuctionHouseContract = MojosAuctionHouseFactory.connect(
       config.addresses.mojosAuctionHouseProxy,
       wsProvider,
@@ -148,6 +164,7 @@ const ChainSubscriber: React.FC = () => {
     };
 
     // Fetch the current auction
+    
     const currentAuction = await mojosAuctionHouseContract.auction1();
     dispatch(setFullAuction(reduxSafeAuction(currentAuction)));
     dispatch(setLastAuctionMojoId(currentAuction.mojoId.toNumber()));

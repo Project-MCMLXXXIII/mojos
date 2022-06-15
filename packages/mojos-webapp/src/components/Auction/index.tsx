@@ -30,7 +30,7 @@ const Auction: React.FC<AuctionProps> = props => {
   const lastMojoId = useAppSelector(state => state.onDisplayAuction.lastAuctionMojoId);
 
   const loadedMojoHandler = (seed: IMojoSeed) => {
-    dispatch(setStateBackgroundColor(seed.background === 1 ? '#3A3A3A' : beige));
+    dispatch(setStateBackgroundColor(seed.background === 1 ? '#3A3A3A' : grey));
   };
 
   const prevAuctionHandler = () => {
