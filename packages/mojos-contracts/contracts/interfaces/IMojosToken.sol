@@ -22,6 +22,7 @@ import { IMojosSeeder } from './IMojosSeeder.sol';
 
 interface IMojosToken is IERC721 {
     event MojoCreated(uint256 indexed tokenId, IMojosSeeder.Seed seed);
+    event LogThis(string  message, IMojosSeeder.Seed seed);
 
     event MojoBurned(uint256 indexed tokenId);
 

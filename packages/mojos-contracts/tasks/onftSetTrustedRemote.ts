@@ -11,9 +11,14 @@ task(
   // .setAction(async function (taskArgs, hre) {
   .setAction(async (taskArgs, hre) => {
     const dstChainId = CHAIN_ID[taskArgs.targetNetwork];
+    console.log(`dstChainId ${dstChainId}`);
     const dstAddr = getDeploymentAddresses(taskArgs.targetNetwork)['UniversalMojo'];
-    const network = await hre.ethers.provider.getNetwork();
-    const srcAddress = getDeploymentAddresses(network.chainId)['UniversalMojo'];
+    console.log(`dstAddr ${dstAddr}`);
+    const network = hre.network.name;
+    // console.log(`network ${hre.network.name}`);
+    // console.log(`network ${network.chainId}`);
+    const srcAddress = getDeploymentAddresses(network)['UniversalMojo'];
+    // console.log(`srcAddress ${srcAddress}`);
     const UniversalMojoNFT = await hre.ethers.getContractAt('UniversalMojo', srcAddress);
     console.log(`[source] UniversalMojo.address: ${UniversalMojoNFT.address}`);
 
@@ -24,7 +29,7 @@ task(
       console.log(` tx: ${tx.transactionHash}`);
     } catch (e: any) {
       if (
-        e.error.message.includes('The trusted source address has already been set for the chainId')
+        e.error?.message?.includes('The trusted source address has already been set for the chainId')
       ) {
         console.log('*trusted source already set*');
       } else {

@@ -3,12 +3,13 @@ import { default as MojosAuctionHouseABI } from '../abi/contracts/MojosAuctionHo
 import { Interface } from 'ethers/lib/utils';
 import { ethers } from 'hardhat';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
-import { Console } from 'console';
+import { Contract as EthersContract } from 'ethers';
+import { DeployFunction } from 'hardhat-deploy/types';
 
 const LZ_ENDPOINTS = require('../constants/layerzeroEndpoints.json');
 
 module.exports = async function (hre: HardhatRuntimeEnvironment) {
-  const { deployments } = hre;
+  const { deployments, run } = hre;
   const { deploy } = deployments;
 
   const network = await ethers.provider.getNetwork();
@@ -33,13 +34,15 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
     nonce: nonce + GOVERNOR_N_DELEGATOR_NONCE_OFFSET,
   });
 
-  const MOJOS_DAO_ADDRESS = '0xc5cab4c37D7C00B36DE99C32b1f4462B8d923d90';
-  const WETH_ADDRESS = '0x4200000000000000000000000000000000000006';
+  let MojosAuctionHouseInstance: EthersContract;
+
+  const MOJOS_DAO_ADDRESS = '0xBC4B7840DF8f2232239f30955042844e06F9527b';
+  const WETH_ADDRESS = '0xc778417e063141139fce010982780140aa0cd5ab';
   const AUCTION_TIME_BUFFER = 5 * 60;
   const AUCTION_RESERVE_PRICE = 1;
   const AUCTION_MIN_INCREMENT_BID_PERCENTAGE = 5;
-  const AUCTION_DURATION = 60 * 60 * 12;
-  const MULTISIG_ADDRESS = '0xc5cab4c37D7C00B36DE99C32b1f4462B8d923d90';
+  const AUCTION_DURATION = 300; //60 * 60 * 12;
+  const MULTISIG_ADDRESS = '0xBC4B7840DF8f2232239f30955042844e06F9527b';
 
   const TIMELOCK_DELAY = 60 * 60 * 24 * 2;
 
@@ -58,6 +61,7 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
       NFTDescriptor: NFTDescriptorLibrary.address as string,
     },
   });
+
   const mojosSeeder = await deploy('MojosSeeder', {
     from: deployer.address,
   });
@@ -71,49 +75,83 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
       expectedAuctionHouseProxyAddress,
       mojosDescriptor.address,
       mojosSeeder.address,
-      proxyRegistryAddress,
       lzEndpointAddress,
       0,
       6000,
     ],
-    log: true,
-    waitConfirmations: 1,
   });
 
-  // const mojosToken = await deploy('MojosToken', {
-  //   from: deployer.address,
-  //   args: [
-  //     MOJOS_DAO_ADDRESS,
-  //     expectedAuctionHouseProxyAddress,
-  //     mojosDescriptor.address,
-  //     mojosSeeder.address,
-  //     proxyRegistryAddress,
-  //   ],
-  // });
+  console.log(
+    `MojosTokenParams ${MOJOS_DAO_ADDRESS} - ${expectedMojosDAOProxyAddress} - ${mojosDescriptor.address} - ${mojosSeeder.address} - ${lzEndpointAddress} - 0 - 6000`,
+  );
 
   const mojosAuctionHouse = await deploy('MojosAuctionHouse', {
     from: deployer.address,
   });
+
+  // const MojosAuctionHouse = await ethers.getContractFactory('MojosAuctionHouse');
+
+  // const mojosAuctionHouse = await MojosAuctionHouse.deploy();
+
+  // MojosAuctionHouseInstance = await mojosAuctionHouse.deployed();
+
   const mojosAuctionHouseProxyAdmin = await deploy('MojosAuctionHouseProxyAdmin', {
     from: deployer.address,
   });
-  const mojosAuctionHouseProxy = await deploy('MojosAuctionHouseProxy', {
-    from: deployer.address,
-    args: [
-      mojosAuctionHouse.address,
-      mojosAuctionHouseProxyAdmin.address,
-      new Interface(MojosAuctionHouseABI).encodeFunctionData('initialize', [
-        mojosToken.address,
-        mojosToken.address,
-        WETH_ADDRESS,
-        AUCTION_TIME_BUFFER,
-        AUCTION_RESERVE_PRICE,
-        AUCTION_MIN_INCREMENT_BID_PERCENTAGE,
-        AUCTION_DURATION,
-        MULTISIG_ADDRESS,
-      ]),
-    ],
-  });
+
+  // const mojosAuctionHouseProxy = await deploy('MojosAuctionHouseProxy', {
+  //   from: deployer.address,
+  //   proxy:true,
+  //   args: [
+  //     mojosAuctionHouse.address,
+  //     mojosAuctionHouseProxyAdmin.address,
+  //     new Interface(MojosAuctionHouseABI).encodeFunctionData('initialize', [
+  //       mojosToken.address,
+  //       mojosToken.address,
+  //       WETH_ADDRESS,
+  //       AUCTION_TIME_BUFFER,
+  //       AUCTION_RESERVE_PRICE,
+  //       AUCTION_MIN_INCREMENT_BID_PERCENTAGE,
+  //       AUCTION_DURATION,
+  //       MULTISIG_ADDRESS,
+  //     ]),
+  //   ],
+  // });
+
+  const MojosAuctionHouseProxy = await ethers.getContractFactory('MojosAuctionHouseProxy');
+
+  const mojosAuctionHouseProxy = await MojosAuctionHouseProxy.deploy(
+    mojosAuctionHouse.address,
+    mojosAuctionHouseProxyAdmin.address,
+    new Interface(MojosAuctionHouseABI).encodeFunctionData('initialize', [
+      mojosToken.address,
+      WETH_ADDRESS,
+      AUCTION_TIME_BUFFER,
+      AUCTION_RESERVE_PRICE,
+      AUCTION_MIN_INCREMENT_BID_PERCENTAGE,
+      AUCTION_DURATION,
+      MULTISIG_ADDRESS,
+    ]),
+  );
+
+  await mojosAuctionHouseProxy.deployed();
+
+  // const mojosAuctionHouseProxy = await deploy('MojosAuctionHouseProxy', {
+  //   from: deployer.address,
+  //   args: [
+  //     mojosAuctionHouse.address,
+  //     mojosAuctionHouseProxyAdmin.address,
+  //     new Interface(MojosAuctionHouseABI).encodeFunctionData('initialize', [
+  //       mojosToken.address,
+  //       WETH_ADDRESS,
+  //       AUCTION_TIME_BUFFER,
+  //       AUCTION_RESERVE_PRICE,
+  //       AUCTION_MIN_INCREMENT_BID_PERCENTAGE,
+  //       AUCTION_DURATION,
+  //       MULTISIG_ADDRESS,
+  //     ]),
+  //   ],
+  // });
 
   const mojosDAOExecutor = await deploy('MojosDAOExecutor', {
     from: deployer.address,
@@ -139,9 +177,7 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
     ],
   });
 
-
-
-  console.log(`Contracts deployed to ${network.chainId} using address ${deployer.address}`);
+  console.log(`Contracts deployed to ${network.name} using address ${deployer.address}`);
   console.log(`---`);
   console.log(`NFTDescriptor Library deployed to ${NFTDescriptorLibrary.address}`);
   console.log(`---`);
@@ -163,5 +199,59 @@ module.exports = async function (hre: HardhatRuntimeEnvironment) {
   console.log(`---`);
   console.log(`MojosDAOProxy deployed to ${mojosDAOProxy.address}`);
   console.log(`---`);
-  console.log(`*** Deploy Completed ***`);
+
+  await run('populate-descriptor', {
+    nftDescriptor: NFTDescriptorLibrary.address,
+    mojosDescriptor: mojosDescriptor.address,
+  });
+
+  const AUCTION_HOUSE = await ethers.getContractFactory('MojosAuctionHouse');
+
+  const MojosAuctionHouse = await AUCTION_HOUSE.attach(mojosAuctionHouseProxy.address);
+
+  let TX;
+
+  TX = await MojosAuctionHouse.unpause({
+    gasLimit: 1_000_000,
+  });
+
+  await TX.wait();
+
+  const DESCRIPTOR_CONTRACT = await ethers.getContractFactory('MojosDescriptor', {
+    libraries: {
+      NFTDescriptor: NFTDescriptorLibrary.address as string,
+    },
+  });
+
+  const MojosDescriptor = await DESCRIPTOR_CONTRACT.attach(mojosDescriptor.address);
+
+  TX = await MojosDescriptor.transferOwnership(mojosDescriptor.address, {
+    gasLimit: 1_000_000,
+  });
+
+  await TX.wait();
+
+  const PROXY_ADMIN_CONTRACT = await ethers.getContractFactory('MojosAuctionHouseProxyAdmin');
+
+  const ProxyAdmin = await PROXY_ADMIN_CONTRACT.attach(mojosAuctionHouseProxyAdmin.address);
+
+  TX = await ProxyAdmin.transferOwnership(mojosDescriptor.address, {
+    gasLimit: 1_000_000,
+  });
+
+  await TX.wait();
+
+  TX = await MojosAuctionHouse.transferOwnership(mojosDescriptor.address, {
+    gasLimit: 1_000_000,
+  });
+
+  await TX.wait();
+
+  console.log(
+    'Started the first auction and transferred ownership of the auction house to the executor.',
+  );
+
+  console.log(`*** Deploy Completed ✅ ***`);
 };
+
+module.exports.tags = ['Source'];

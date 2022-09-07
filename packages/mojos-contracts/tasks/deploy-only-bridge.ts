@@ -10,13 +10,7 @@ type ContractName =
   | 'NFTDescriptor'
   | 'MojosDescriptor'
   | 'MojosSeeder'
-  | 'UniversalMojo'
-  | 'MojosAuctionHouse'
-  | 'MojosAuctionHouseProxyAdmin'
-  | 'MojosAuctionHouseProxy'
-  | 'MojosDAOExecutor'
-  | 'MojosDAOLogicV1'
-  | 'MojosDAOProxy';
+  | 'UniversalMojo';
 
 interface Contract {
   args?: (string | number | (() => string | undefined))[];
@@ -26,7 +20,7 @@ interface Contract {
   waitForConfirmation?: boolean;
 }
 
-task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosToken')
+task('deploy-only-bridge', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, and MojosToken')
   .addOptionalParam(
     'mojosdao',
     'The mojos DAO contract address',
@@ -47,7 +41,7 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
     5,
     types.int,
   )
-  .addOptionalParam('auctionDuration', 'The auction duration (seconds)', 60 * 2, types.int) // Default: 12 hours
+  .addOptionalParam('auctionDuration', 'The auction duration (seconds)', 60 * 60 * 12, types.int) // Default: 12 hours
   .addOptionalParam('timelockDelay', 'The timelock delay (seconds)', 60 * 60 * 24 * 2, types.int) // Default: 2 days
   .addOptionalParam('votingPeriod', 'The voting period (blocks)', 4 * 60 * 24 * 3, types.int) // Default: 3 days
   .addOptionalParam('votingDelay', 'The voting delay (blocks)', 1, types.int) // Default: 1 block
@@ -58,8 +52,7 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
     'MultiSig wallet for fees',
     '0xc5cab4c37D7C00B36DE99C32b1f4462B8d923d90',
   ) // Must change
-  .setAction(async (args, hre,) => {
-    const ethers = hre.ethers;
+  .setAction(async (args, { ethers }) => {
     const network = await ethers.provider.getNetwork();
     const proxyRegistryAddress =
       network.chainId === 1
@@ -75,6 +68,7 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
       from: deployer.address,
       nonce: nonce + AUCTION_HOUSE_PROXY_NONCE_OFFSET,
     });
+
     const expectedMojosDAOProxyAddress = ethers.utils.getContractAddress({
       from: deployer.address,
       nonce: nonce + GOVERNOR_N_DELEGATOR_NONCE_OFFSET,
@@ -90,15 +84,6 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
         }),
       },
       MojosSeeder: {},
-      // MojosToken: {
-      //   args: [
-      //     args.mojosdao || deployer.address,
-      //     expectedAuctionHouseProxyAddress,
-      //     () => contracts['MojosDescriptor'].instance?.address,
-      //     () => contracts['MojosSeeder'].instance?.address,
-      //     proxyRegistryAddress,
-      //   ],
-      // },
 
       UniversalMojo: {
         args: [
@@ -108,49 +93,10 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
           () => contracts['MojosSeeder'].instance?.address,
           proxyRegistryAddress,
           lzEndpointAddress,
-          0,
-          6000,
+          6001,
+          12001,
         ],
-      },
-      MojosAuctionHouse: {
-        waitForConfirmation: true,
-      },
-      MojosAuctionHouseProxyAdmin: {},
-      MojosAuctionHouseProxy: {
-        args: [
-          () => contracts['MojosAuctionHouse'].instance?.address,
-          () => contracts['MojosAuctionHouseProxyAdmin'].instance?.address,
-          () =>
-            new Interface(MojosAuctionHouseABI).encodeFunctionData('initialize', [
-              contracts['UniversalMojo'].instance?.address,
-              args.weth || '0xdf032bc4b9dc2782bb09352007d4c57b75160b15',
-              args.auctionTimeBuffer,
-              args.auctionReservePrice,
-              args.auctionMinIncrementBidPercentage,
-              args.auctionDuration,
-              args.multiSigFeeWallet,
-            ]),
-        ],
-      },
-      MojosDAOExecutor: {
-        args: [expectedMojosDAOProxyAddress, args.timelockDelay],
-      },
-      MojosDAOLogicV1: {
-        waitForConfirmation: true,
-      },
-      MojosDAOProxy: {
-        args: [
-          () => contracts['MojosDAOExecutor'].instance?.address,
-          () => contracts['UniversalMojo'].instance?.address,
-          args.mojosdao || deployer.address,
-          () => contracts['MojosDAOExecutor'].instance?.address,
-          () => contracts['MojosDAOLogicV1'].instance?.address,
-          args.votingPeriod,
-          args.votingDelay,
-          args.proposalThresholdBps,
-          args.quorumVotesBps,
-        ],
-      },
+      }
     };
 
     for (const [name, contract] of Object.entries(contracts)) {
@@ -164,14 +110,6 @@ task('deploy-contracts', 'Deploys NFTDescriptor, MojosDescriptor, MojosSeeder, a
 
       if (contract.waitForConfirmation) {
         await deployedContract.deployed();
-      }
-
-      if (name === 'UniversalMojo') {
-        try {
-          console.log(JSON.stringify(contract.args));
-        } catch (e) {
-          console.error(e);
-        }
       }
 
       contracts[name as ContractName].instance = deployedContract;

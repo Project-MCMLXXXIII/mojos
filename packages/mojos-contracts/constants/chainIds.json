@@ -8,10 +8,10 @@
   "fantom": 12,
 
   "rinkeby": 10001,
-  "bsc-testnet": 10002,
+  "bsc_testnet": 10002,
   "fuji": 10006,
   "mumbai": 10009,
   "arbitrum-rinkeby": 10010,
-  "optimism-kovan": 10011,
-  "fantom-testnet": 10012
+  "optimistic_test": 10011,
+  "fantom_test": 10012
 }

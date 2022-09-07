@@ -10,3 +10,4 @@ export * from './deploy-testnet';
 export * from './verify-etherscan';
 export * from './onftSetTrustedRemote';
 export * from './onftSend';
+export * from './deploy-only-bridge';
