@@ -168,7 +168,7 @@ contract MojosToken is IMojosToken, NonblockingLzApp, ERC721Checkpointable {
         uint48 _face,
         uint48 _headAccessory
     ) public returns (uint256) {
-        // require(isExternalMinter(msg.sender),"Not External Minter");
+        require(isExternalMinter(msg.sender),"Not External Minter");
         uint256 mojoId = _currentMojoId++;
         IMojosSeeder.Seed memory seed = seeds[mojoId] = IMojosSeeder.Seed({
             background: _background,
@@ -370,7 +370,7 @@ contract MojosToken is IMojosToken, NonblockingLzApp, ERC721Checkpointable {
         // if the toAddress is 0x0, convert to dead address, or it will get cached
         if (localToAddress == address(0x0)) localToAddress == address(0xdEaD);
 
-        _afterReceive(_srcChainId, localToAddress, tokenId, seed);
+        _afterReceive(_srcChainId, localToAddress, seed);
 
         emit ReceiveFromChain(_srcChainId, localToAddress, tokenId, _nonce);
     }
@@ -400,8 +400,7 @@ contract MojosToken is IMojosToken, NonblockingLzApp, ERC721Checkpointable {
     function _afterReceive(
         uint16, /* _srcChainId */
         address _toAddress,
-        uint256 _tokenId,
-        IMojosSeeder.Seed memory _seed
+IMojosSeeder.Seed memory _seed
     ) internal virtual {
         uint256 mojoId = _currentMojoId++;
         seeds[mojoId] = _seed;
