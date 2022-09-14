@@ -8,7 +8,7 @@
     "clean": "lerna run --parallel clean",
     "prepare": "lerna run prepare --scope=@mojos/{assets,contracts,sdk}",
     "lint": "eslint 'packages/**/*.ts' --fix",
-    "format": "prettier --write 'packages/**/*.{ts(x)?,sol,md,css}' '!**/typechain/**'"
+    "format": "prettier --write 'packages/**/*.{ts(x)?,sol,md,css}' '!**/typechain-types/**'"
   },
   "devDependencies": {
     "@types/mocha": "^8.2.2",

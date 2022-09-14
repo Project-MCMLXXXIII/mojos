@@ -5,6 +5,7 @@ parts.html
 cache
 artifacts
 typechain-types/*.js
+typechain-types/*
 typechain-types/*.ts
 typechain-types/factories/*
 !typechain-types/factories/MojosToken__factory.ts
