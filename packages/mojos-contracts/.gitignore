@@ -4,14 +4,14 @@ parts.html
 #Hardhat files
 cache
 artifacts
-typechain/*.js
-typechain/*.ts
-typechain/factories/*
-!typechain/factories/MojosToken__factory.ts
-!typechain/factories/MojosAuctionHouse__factory.ts
-!typechain/factories/MojosDescriptor__factory.ts
-!typechain/factories/MojosSeeder__factory.ts
-!typechain/factories/MojosDaoLogicV1__factory.ts
+typechain-types/*.js
+typechain-types/*.ts
+typechain-types/factories/*
+!typechain-types/factories/MojosToken__factory.ts
+!typechain-types/factories/MojosAuctionHouse__factory.ts
+!typechain-types/factories/MojosDescriptor__factory.ts
+!typechain-types/factories/MojosSeeder__factory.ts
+!typechain-types/factories/MojosDAOLogicV1__factory.ts
 .openzeppelin
 
 # Script output
