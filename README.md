@@ -61,3 +61,40 @@ yarn lint
 ```sh
 yarn format
 ```
+
+### General commands
+
+
+-- Deploy to Destination network (LayerZero)
+```
+npx hardhat deploy --network fantom_test --tags Destination --reset
+```
+
+-- Deploy to Source network (LayerZero)
+```
+npx hardhat deploy --network rinkeby --tags Source --reset
+```
+
+
+-- Generate Trusted relationship between deployed contracts
+```
+npx hardhat --network fantom_test onftSetTrustedRemote --target-network rinkeby
+
+npx hardhat --network rinkeby onftSetTrustedRemote --target-network fantom_test
+```
+
+
+-- Mint a MOJO with a specific Seed, needs to specify the network and the MojosToken Address
+```
+npx hardhat mint-mojo --network rinkeby --mojos-token 0xc236c04A37297e4B6BB1ff9Fad4D2423a31EE27e
+
+npx hardhat mint-mojo --network fantom_test --mojos-token 0x5138483611Df47336934daB1019a846934E63b79
+```
+
+
+-- Send a MOJO between networks, needs to specify the source network, target network and MOJO ID
+```
+npx hardhat --network rinkeby onftSend --target-network fantom_test --token-id 3
+
+npx hardhat --network fantom_test onftSend --target-network rinkeby --token-id 6005
+```

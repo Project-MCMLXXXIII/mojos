@@ -11,6 +11,7 @@ task('mint-mojo', 'Mints a Mojo')
     const nftFactory = await ethers.getContractFactory('MojosToken');
     const nftContract = nftFactory.attach(mojosToken);
 
+    // NEEDS TO CHANGE TO THE DESIRED OWNER OF THE TOKEN AND SEEDS PARAMETERS
     const receipt = await (
       await nftContract.externalMint('0x50779Ecf871ba1a1BD97a5C7379fd8e3c35b2abB', 1, 6, 37, 21, 18)
     ).wait();
