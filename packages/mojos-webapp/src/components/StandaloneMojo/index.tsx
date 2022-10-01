@@ -19,6 +19,7 @@ interface StandaloneMojoWithSeedProps {
 }
 
 const getMojo = (mojoId: string | EthersBN, seed: IMojoSeed) => {
+  
   const id = mojoId.toString();
   const name = `Mojo ${id}`;
   const description = `Mojo ${id} is a member of the Mojos DAO`;
@@ -34,6 +35,7 @@ const getMojo = (mojoId: string | EthersBN, seed: IMojoSeed) => {
 };
 
 const StandaloneMojo: React.FC<StandaloneMojoProps> = (props: StandaloneMojoProps) => {
+  
   const { mojoId } = props;
   const seed = useMojoSeed(mojoId);
   const mojo = seed && getMojo(mojoId, seed);
@@ -50,7 +52,7 @@ const StandaloneMojo: React.FC<StandaloneMojoProps> = (props: StandaloneMojoProp
       className={classes.clickableMojo}
       onClick={onClickHandler}
     >
-      <Mojo imgPath={mojo ? mojo.image : ''} alt={mojo ? mojo.description : 'Mojo'} />
+      <Mojo imgPath={mojo ? mojo.image : ''} alt={mojo ? mojo.description : 'Mojo '} />
     </Link>
   );
 };
@@ -58,6 +60,7 @@ const StandaloneMojo: React.FC<StandaloneMojoProps> = (props: StandaloneMojoProp
 export const StandaloneMojoWithSeed: React.FC<StandaloneMojoWithSeedProps> = (
   props: StandaloneMojoWithSeedProps,
 ) => {
+  
   const { mojoId, onLoadSeed, shouldLinkToProfile } = props;
 
   const dispatch = useDispatch();

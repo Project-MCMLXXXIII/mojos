@@ -1,0 +1,16 @@
+$ npx hardhat deploy-testnet --network rinkeby
+NFTDescriptor contract deployed to 0xF06ad0cbdec7811D03c6Ee9A30645bc31c398a9E
+MojosDescriptor contract deployed to 0x724eBf4449d5EF3bD3f562753101612a153De642
+MojosSeeder contract deployed to 0xD145F9a46E9143493ab7CF5f4034093185793e56
+UniversalMojo contract deployed to 0xC40A9b3E1890A8e7d0266F2027Cfe443a0E99449
+MojosAuctionHouse contract deployed to 0xC7de11953166f1Dd5f23aFfFeE2AEaBa07d8F0B1
+MojosAuctionHouseProxyAdmin contract deployed to 0x7e30bd3966124bbeE6336dAdB263121B308aC813
+MojosAuctionHouseProxy contract deployed to 0x512f6A8E362c462632759f9bb5F546d3B59Be386
+MojosDAOExecutor contract deployed to 0x6636Aad1DbF0D546e62C2f82DfD3F31Bc54C156B
+MojosDAOLogicV1 contract deployed to 0x1BefCD6FaB2fD972d1Cb7970d0AB43A85e9Ecf33
+MojosDAOProxy contract deployed to 0x008Ef58f3F7190b02bcd0De7a2f9f9AeC2313E3d
+Descriptor populated with palettes and parts
+Contracts "0x6636Aad1DbF0D546e62C2f82DfD3F31Bc54C156B"
+DAO Executor Address 0x6636Aad1DbF0D546e62C2f82DfD3F31Bc54C156B
+Transferred ownership of the descriptor, token, and proxy admin contracts to the executor.
+Started the first auction and transferred ownership of the auction house to the executor.

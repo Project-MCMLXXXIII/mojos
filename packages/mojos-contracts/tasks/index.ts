@@ -6,4 +6,8 @@ export * from './deploy-local';
 export * from './mint-mojo';
 export * from './populate-descriptor';
 export * from './run-local';
+export * from './deploy-testnet';
 export * from './verify-etherscan';
+export * from './onftSetTrustedRemote';
+export * from './onftSend';
+export * from './deploy-only-bridge';

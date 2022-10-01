@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0
+// SPDX-License-Identifier: MIT
 
 /// @title The Mojos ERC-721 token
 
@@ -14,7 +14,6 @@
  * ░░░░░░█████████████████░░░░░░ *
  *********************************/
 
-
 pragma solidity ^0.8.6;
 
 import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
@@ -24,9 +23,14 @@ import { IMojosSeeder } from './interfaces/IMojosSeeder.sol';
 import { IMojosToken } from './interfaces/IMojosToken.sol';
 import { ERC721 } from './base/ERC721.sol';
 import { IERC721 } from '@openzeppelin/contracts/token/ERC721/IERC721.sol';
-import { IProxyRegistry } from './external/opensea/IProxyRegistry.sol';
+import './NonBlockingLzApp.sol';
 
-contract MojosToken is IMojosToken, Ownable, ERC721Checkpointable {
+import './base/ERC721Enumerable.sol';
+
+contract MojosToken is IMojosToken, NonblockingLzApp, ERC721Checkpointable {
+    // used for Cross Chain and emergency minting
+    // bytes32 public constant EXT_MINTER_ROLE = keccak256('EXT_MINTER_ROLE');
+
     // The mojos DAO address (creators org)
     address public mojosDAO;
 
@@ -52,13 +56,14 @@ contract MojosToken is IMojosToken, Ownable, ERC721Checkpointable {
     mapping(uint256 => IMojosSeeder.Seed) public seeds;
 
     // The internal mojo ID tracker
-    uint256 private _currentMojoId;
+    uint256 public _currentMojoId;
+
+    uint256 public _maxMintId;
 
     // IPFS content hash of contract-level metadata
-    string private _contractURIHash = 'QmZi1n79FqWt2tTLwCqiy6nLM6xLGRsEPQ5JmReJQKNNzX';
+    string private _contractURIHash = 'QmVFkJo9qBX91V1J7hHE4gPcJTh9HS6MugNHUK5Cq7uabp';
 
-    // OpenSea's Proxy Registry
-    IProxyRegistry public immutable proxyRegistry;
+    mapping(address => bool) externalMinters;
 
     /**
      * @notice Require that the minter has not been locked.
@@ -105,14 +110,21 @@ contract MojosToken is IMojosToken, Ownable, ERC721Checkpointable {
         address _minter,
         IMojosDescriptor _descriptor,
         IMojosSeeder _seeder,
-        IProxyRegistry _proxyRegistry
-    ) ERC721('Mojos', 'MOJO') {
+        address _lzEndpoint,
+        uint256 _startMintId,
+        uint256 _endMintId
+    ) ERC721('Mojos', 'MOJO') NonblockingLzApp(_lzEndpoint) {
         mojosDAO = _mojosDAO;
         minter = _minter;
         descriptor = _descriptor;
         seeder = _seeder;
-        proxyRegistry = _proxyRegistry;
+        _currentMojoId = _startMintId;
+        _maxMintId = _endMintId;
+        addExternalMinter(msg.sender);
+        addExternalMinter(_lzEndpoint);
     }
+
+    string public baseTokenURI;
 
     /**
      * @notice The IPFS URI of contract-level metadata.
@@ -130,27 +142,46 @@ contract MojosToken is IMojosToken, Ownable, ERC721Checkpointable {
     }
 
     /**
-     * @notice Override isApprovedForAll to whitelist user's OpenSea proxy accounts to enable gas-less listings.
-     */
-    function isApprovedForAll(address owner, address operator) public view override(IERC721, ERC721) returns (bool) {
-        // Whitelist OpenSea proxy contract for easy trading.
-        if (proxyRegistry.proxies(owner) == operator) {
-            return true;
-        }
-        return super.isApprovedForAll(owner, operator);
-    }
-
-    /**
      * @notice Mint a Mojo to the minter, along with a possible mojos reward
      * Mojo. Mojos reward Mojos are minted every 10 Mojos, starting at 0,
      * until 183 founder Mojos have been minted (5 years w/ 24 hour auctions).
      * @dev Call _mintTo with the to address(es).
      */
     function mint() public override onlyMinter returns (uint256) {
-        if (_currentMojoId <= 1820 && _currentMojoId % 10 == 0) {
+        if (_currentMojoId <= 3640 && _currentMojoId % 10 == 0) {
             _mintTo(mojosDAO, _currentMojoId++);
         }
         return _mintTo(minter, _currentMojoId++);
+    }
+
+    /**
+     * @notice Mint a Mojo to a specific address, along with a possible mojos reward
+     * Mojo. Mojos reward Mojos are minted every 10 Mojos, starting at 0,
+     * this is only used for Cross-Chain functionality and emergency minting
+     * @dev Call _mintTo with the to address(es).
+     */
+    function externalMint(
+        address _to,
+        uint48 _background,
+        uint48 _body,
+        uint48 _bodyAccessory,
+        uint48 _face,
+        uint48 _headAccessory
+    ) public returns (uint256) {
+        require(isExternalMinter(msg.sender),"Not External Minter");
+        uint256 mojoId = _currentMojoId++;
+        IMojosSeeder.Seed memory seed = seeds[mojoId] = IMojosSeeder.Seed({
+            background: _background,
+            body: _body,
+            bodyAccessory: _bodyAccessory,
+            face: _face,
+            headAccessory: _headAccessory
+        });
+
+        _mint(owner(), _to, mojoId);
+        emit MojoCreated(mojoId, seed);
+
+        return mojoId;
     }
 
     /**
@@ -259,5 +290,142 @@ contract MojosToken is IMojosToken, Ownable, ERC721Checkpointable {
         emit MojoCreated(mojoId, seed);
 
         return mojoId;
+    }
+
+    /// LayerZero Implementation
+    function estimateSendFee(
+        uint16 _dstChainId,
+        bytes calldata _toAddress,
+        uint256 _tokenId,
+        bool _useZro,
+        bytes calldata _adapterParams
+    ) external view virtual override returns (uint256 nativeFee, uint256 zroFee) {
+        // mock the payload for send()
+        bytes memory payload = abi.encode(_toAddress, _tokenId, seeds[_tokenId]);
+        return lzEndpoint.estimateFees(_dstChainId, address(this), payload, _useZro, _adapterParams);
+    }
+
+    function sendFrom(
+        address _from,
+        uint16 _dstChainId,
+        bytes calldata _toAddress,
+        uint256 _tokenId,
+        address payable _refundAddress,
+        address _zroPaymentAddress,
+        bytes calldata _adapterParam
+    ) external payable virtual override {
+        _send(_from, _dstChainId, _toAddress, _tokenId, _refundAddress, _zroPaymentAddress, _adapterParam);
+    }
+
+    function send(
+        uint16 _dstChainId,
+        bytes calldata _toAddress,
+        uint256 _tokenId,
+        address payable _refundAddress,
+        address _zroPaymentAddress,
+        bytes calldata _adapterParam
+    ) external payable virtual override {
+        _send(_msgSender(), _dstChainId, _toAddress, _tokenId, _refundAddress, _zroPaymentAddress, _adapterParam);
+    }
+
+    function _send(
+        address _from,
+        uint16 _dstChainId,
+        bytes memory _toAddress,
+        uint256 _tokenId,
+        address payable _refundAddress,
+        address _zroPaymentAddress,
+        bytes calldata _adapterParam
+    ) internal virtual {
+        require(_isApprovedOrOwner(_msgSender(), _tokenId), 'ONFT721: send caller is not owner nor approved');
+        require(ERC721.ownerOf(_tokenId) == _from, 'ONFT721: send from incorrect owner');
+        _beforeSend(_from, _dstChainId, _toAddress, _tokenId);
+
+        bytes memory payload = abi.encode(_toAddress, _tokenId, seeds[_tokenId]);
+        _lzSend(_dstChainId, payload, _refundAddress, _zroPaymentAddress, _adapterParam);
+
+        uint64 nonce = lzEndpoint.getOutboundNonce(_dstChainId, address(this));
+        emit SendToChain(_from, _dstChainId, _toAddress, _tokenId, nonce);
+        _afterSend(_from, _dstChainId, _toAddress, _tokenId);
+    }
+
+    function _nonblockingLzReceive(
+        uint16 _srcChainId,
+        bytes memory _srcAddress,
+        uint64 _nonce,
+        bytes memory _payload
+    ) internal virtual override {
+        _beforeReceive(_srcChainId, _srcAddress, _payload);
+
+        // decode and load the toAddress
+        (bytes memory toAddress, uint256 tokenId, IMojosSeeder.Seed memory seed) = abi.decode(
+            _payload,
+            (bytes, uint256, IMojosSeeder.Seed)
+        );
+        address localToAddress;
+        assembly {
+            localToAddress := mload(add(toAddress, 20))
+        }
+
+        // if the toAddress is 0x0, convert to dead address, or it will get cached
+        if (localToAddress == address(0x0)) localToAddress == address(0xdEaD);
+
+        _afterReceive(_srcChainId, localToAddress, seed);
+
+        emit ReceiveFromChain(_srcChainId, localToAddress, tokenId, _nonce);
+    }
+
+    function _beforeSend(
+        address, /* _from */
+        uint16, /* _dstChainId */
+        bytes memory, /* _toAddress */
+        uint256 _tokenId
+    ) internal virtual {
+        _burn(_tokenId);
+    }
+
+    function _afterSend(
+        address, /* _from */
+        uint16, /* _dstChainId */
+        bytes memory, /* _toAddress */
+        uint256 /* _tokenId */
+    ) internal virtual {}
+
+    function _beforeReceive(
+        uint16, /* _srcChainId */
+        bytes memory, /* _srcAddress */
+        bytes memory /* _payload */
+    ) internal virtual {}
+
+    function _afterReceive(
+        uint16, /* _srcChainId */
+        address _toAddress,
+IMojosSeeder.Seed memory _seed
+    ) internal virtual {
+        uint256 mojoId = _currentMojoId++;
+        seeds[mojoId] = _seed;
+
+        _mint(owner(), _toAddress, mojoId);
+        emit MojoCreated(mojoId, _seed);
+    }
+
+    function setBaseURI(string memory _baseTokenURI) public onlyOwner {
+        baseTokenURI = _baseTokenURI;
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+        return baseTokenURI;
+    }
+
+    function addExternalMinter(address _member) public onlyOwner {
+        externalMinters[_member] = true;
+    }
+
+    function removeExternalMinter(address _member) public onlyOwner {
+        externalMinters[_member] = false;
+    }
+
+    function isExternalMinter(address _account) public view virtual returns (bool) {
+        return externalMinters[_account];
     }
 }

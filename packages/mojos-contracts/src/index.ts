@@ -4,10 +4,11 @@ export { default as MojosDAOABI } from '../abi/contracts/governance/MojosDAOLogi
 export { default as MojosDescriptorABI } from '../abi/contracts/MojosDescriptor.sol/MojosDescriptor.json';
 export { default as MojosSeederABI } from '../abi/contracts/MojosSeeder.sol/MojosSeeder.json';
 
-export { MojosToken__factory as MojosTokenFactory } from '../typechain/factories/MojosToken__factory';
-export { MojosAuctionHouse__factory as MojosAuctionHouseFactory } from '../typechain/factories/MojosAuctionHouse__factory';
+export { MojosToken__factory as MojosTokenFactory } from '../typechain-types/index';
+// export { MojosToken__factory as MojosTokenFactory } from '../typechain/factories/MojosToken__factory';
+export { MojosAuctionHouse__factory as MojosAuctionHouseFactory } from '../typechain-types/index';
 
-export { MojosDescriptor__factory as MojosDescriptorFactory } from '../typechain/factories/MojosDescriptor__factory';
+export { MojosDescriptor__factory as MojosDescriptorFactory } from '../typechain-types/index';
 
-export { MojosSeeder__factory as MojosSeederFactory } from '../typechain/factories/MojosSeeder__factory';
-export { MojosDaoLogicV1__factory as MojosDaoLogicV1Factory } from '../typechain/factories/MojosDaoLogicV1__factory';
+export { MojosSeeder__factory as MojosSeederFactory } from '../typechain-types/index';
+export { MojosDAOLogicV1__factory as MojosDaoLogicV1Factory } from '../typechain-types/index';

@@ -91,7 +91,7 @@ const Bid: React.FC<{
     const input = event.target.value;
 
     // disable more than 2 digits after decimal point
-    if (input.includes('.') && event.target.value.split('.')[1].length > 2) {
+    if (input.includes('.') && event.target.value.split('.')[1].length > 20) {
       return;
     }
 
@@ -274,11 +274,7 @@ const Bid: React.FC<{
           </Button>
         ) : (
           <>
-            <Col lg={12} className={classes.voteForNextMojoBtnWrapper}>
-              <Button className={classes.bidBtnAuctionEnded} onClick={fomoMojosBtnOnClickHandler}>
-                Vote for the next Mojo ⌐◧-◧
-              </Button>
-            </Col>
+
             {/* Only show force settle button if wallet connected */}
             {isWalletConnected && (
               <Col lg={12}>

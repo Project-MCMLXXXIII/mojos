@@ -20,6 +20,7 @@ export interface IMojoSeed {
 const abi = new utils.Interface(MojosTokenABI);
 
 export const useMojoToken = (mojoId: EthersBN) => {
+  
   const [mojo] =
     useContractCall<[string]>({
       abi,
@@ -39,6 +40,7 @@ export const useMojoToken = (mojoId: EthersBN) => {
 };
 
 export const useMojoSeed = (mojoId: EthersBN) => {
+  
   const seed = useContractCall<IMojoSeed>({
     abi,
     address: config.addresses.mojosToken,

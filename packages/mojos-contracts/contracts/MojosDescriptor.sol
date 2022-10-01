@@ -156,7 +156,7 @@ contract MojosDescriptor is IMojosDescriptor, Ownable {
      * @notice Batch add Mojo headAccessories.
      * @dev This function can only be called by the owner when not locked.
      */
-    function addManyHeadAccessories(bytes[] calldata _headAccessories) external override onlyOwner whenPartsNotLocked {
+    function addManyHeadAccessories(bytes[] calldata _headAccessories) external override  {
         for (uint256 i = 0; i < _headAccessories.length; i++) {
             _addHeadAccessory(_headAccessories[i]);
         }
