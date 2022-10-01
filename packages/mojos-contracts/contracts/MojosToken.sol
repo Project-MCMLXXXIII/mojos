@@ -61,7 +61,7 @@ contract MojosToken is IMojosToken, NonblockingLzApp, ERC721Checkpointable {
     uint256 public _maxMintId;
 
     // IPFS content hash of contract-level metadata
-    string private _contractURIHash = 'QmZi1n79FqWt2tTLwCqiy6nLM6xLGRsEPQ5JmReJQKNNzX';
+    string private _contractURIHash = 'QmVFkJo9qBX91V1J7hHE4gPcJTh9HS6MugNHUK5Cq7uabp';
 
     mapping(address => bool) externalMinters;
 

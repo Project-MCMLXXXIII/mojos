@@ -34,7 +34,7 @@ const config: HardhatUserConfig = {
     strict: true,
   },
   networks: {
-    mainnet: {
+    ethereum: {
       url: `https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
       allowUnlimitedContractSize: true,
       accounts: [process.env.WALLET_PRIVATE_KEY!].filter(Boolean),
@@ -70,9 +70,8 @@ const config: HardhatUserConfig = {
         ? { mnemonic: process.env.MNEMONIC }
         : [process.env.WALLET_PRIVATE_KEY!].filter(Boolean),
     },
-    optimistic: {
-      url: `https://mainnet.optimism.io`,
-
+    optimism: {
+      url: 'https://optimism-mainnet.infura.io/v3/2a4dbcf442cf4f1bb245498bdfd5b4f4', // url: 'https://rpc.ankr.com/optimism', // url: `https://mainnet.optimism.io`,
       chainId: 10,
       allowUnlimitedContractSize: true,
       accounts: process.env.MNEMONIC
